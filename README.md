@@ -6,7 +6,6 @@ Open source messenger based on Express, MongoDB, Socket.IO and React.
 **How to Run?**
 
 **Backend:**
-* `cd frontend`
 * Install all the dependencies by running `npm install`.
 * Execute command `npm start`.
 * Open http://localhost:3000.
