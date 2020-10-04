@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -6,6 +6,7 @@ import { setUser } from "../actions";
 import Cookies from "universal-cookie";
 
 function Login() {
+  //Hooks definitions
   const history = useHistory();
   const dispatch = useDispatch();
   const cookies = new Cookies();
@@ -19,7 +20,7 @@ function Login() {
 
   const redirectToGoogle = () => {
     window.location.href =
-      "http://comma-js.herokuapp.com/api/rest/v1/auth/google";
+      "https://comma-js.herokuapp.com/api/rest/v1/auth/google";
   };
 
   const loginSuccess = () => {
@@ -56,7 +57,7 @@ function Login() {
   //If there is no status
   else {
     return cookies.get("SSID") && cookies.get("SSID").length >= 30 ? (
-      //If token stored in cookie is 40 characters (standard length from server), take user directly to app.
+      //If token stored in cookie is 30 or more characters, take user directly to app.
       <div>{history.push("/conversations")}</div>
     ) : (
       //If there is no token present, it means user is logged out or never logged in.
