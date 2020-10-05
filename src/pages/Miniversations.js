@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Chip from "@material-ui/core/Chip";
@@ -43,6 +44,8 @@ function Miniversations() {
   const classes = useStyles();
 
   const cookies = new Cookies();
+  const history = useHistory();
+
   const user = useSelector((state) => {
     console.log(state.userReducer.user);
     return state.userReducer.user;
