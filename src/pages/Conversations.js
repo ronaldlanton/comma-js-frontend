@@ -9,6 +9,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
+import { useDispatch } from "react-redux";
+import { setCurrentConversation } from "../actions";
+import { useHistory } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Fade from "@material-ui/core/Fade";
+import Cookies from "universal-cookie";
+import socket from "../WebSocket";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,12 +25,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Conversations() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const cookies = new Cookies();
+
   const classes = useStyles();
   const user = useSelector((state) => {
     console.log(state.userReducer.user);
     return state.userReducer.user;
   });
   const [conversationsList, setConversationsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getThreads = () => {
     return new Promise((resolve, reject) => {
@@ -43,55 +55,90 @@ function Conversations() {
     });
   };
 
+  const loadMiniversations = (conversation) => {
+    dispatch(setCurrentConversation(conversation));
+    history.push("/miniversations");
+  };
+
+  const connectSocket = (token) => {
+    return new Promise((resolve, reject) => {
+      console.log(socket.connected);
+      if (socket.connected != true) {
+        console.log("connecting socket...");
+        socket.emit("_connect", {
+          token: "Bearer " + cookies.get("SSID"),
+        });
+
+        socket.on("_connect", () => {
+          resolve(true);
+        });
+      }
+    });
+  };
+
   useEffect(() => {
+    if (user._id === null) history.push("/");
+    connectSocket();
     getThreads().then((threads) => {
-      threads.forEach((thread) => {
+      threads.forEach((thread, index) => {
         let allParticipants = thread.thread_participants;
-        thread.thread_participants = allParticipants.filter((participant) => {
+        threads[index].other_user = allParticipants.find((participant) => {
           return participant._id != user._id;
         });
       });
       setConversationsList(threads);
+      setIsLoading(false);
     });
   }, []);
 
-  return (
-    <div>
-      hi, {user.name.givenName}. Here are your conversations.
-      <List className={classes.root}>
-        {conversationsList.map((conversation) => {
-          return (
-            <div>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar
-                    alt={conversation.thread_participants[0].name.givenName}
-                    src={conversation.thread_participants[0].display_picture}
+  return isLoading === true ? (
+    <CircularProgress />
+  ) : (
+    //If loading is complete.
+    <Fade in={true}>
+      <div>
+        hi, {user.name.givenName}. Here are your conversations.
+        <List className={classes.root}>
+          {/*Render list of threads*/}
+          {conversationsList.map((conversation) => {
+            return (
+              <div>
+                <ListItem
+                  button
+                  onClick={() => loadMiniversations(conversation)}
+                >
+                  <ListItemAvatar>
+                    <Avatar
+                      alt={conversation.other_user.name.givenName}
+                      src={conversation.other_user.display_picture}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      conversation.other_user.name.givenName +
+                      conversation.other_user.name.familyName
+                    }
+                    secondary={
+                      conversation.tabs.length > 0
+                        ? conversation.tabs.length + " miniversation(s)."
+                        : "No miniversations"
+                    }
                   />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    conversation.thread_participants[0].name.givenName +
-                    conversation.thread_participants[0].name.familyName
-                  }
-                  secondary={
-                    conversation.tabs.length > 0
-                      ? conversation.tabs.length + " miniversation(s)."
-                      : "No miniversations"
-                  }
-                />
-                <Badge
-                  color="secondary"
-                  variant="dot"
-                  invisible={false}
-                ></Badge>
-              </ListItem>
-              <Divider variant="inset" component="li" />
-            </div>
-          );
-        })}
-      </List>
-    </div>
+                  {conversation.new_for.includes(user._id) && (
+                    <Badge
+                      color="secondary"
+                      variant="dot"
+                      invisible={false}
+                    ></Badge>
+                  )}
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </div>
+            );
+          })}
+        </List>
+      </div>
+    </Fade>
   );
 }
 
