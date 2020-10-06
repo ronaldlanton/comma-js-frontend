@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../actions";
 import Cookies from "universal-cookie";
+import axios from "axios";
 
 function Login() {
   //Hooks definitions
@@ -28,6 +29,8 @@ function Login() {
     dispatch(setUser(userData));
     localStorage.setItem("userData", JSON.stringify(userData));
     setLoginTokenCookie(token);
+    axios.defaults.headers.common["Authorization"] =
+      "Bearer " + cookies.get("SSID");
     return history.push("/conversations");
   };
 

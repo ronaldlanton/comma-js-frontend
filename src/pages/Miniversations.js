@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 var successHandlerBackup = null;
 var currentTab = null;
+var messageQueue = [];
 function Miniversations() {
   const classes = useStyles();
 
@@ -47,11 +48,9 @@ function Miniversations() {
   const history = useHistory();
 
   const user = useSelector((state) => {
-    console.log(state.userReducer.user);
     return state.userReducer.user;
   });
   const currentConversation = useSelector((state) => {
-    console.log(state);
     return state.conversationReducer.conversation;
   });
   const [tabList, setTabList] = useState([]);
@@ -137,15 +136,30 @@ function Miniversations() {
     setComposedMessage(composed);
   };
 
-  const SendSuccessHandler = (successMessage, originalMessage) => {
-    let stateMessage = {
-      content: originalMessage.content,
-      date_created: successMessage._id,
-      sender: user._id,
-      type: "text",
-      _id: "5f7aeb17f2578800177292f6",
-    };
-    setMessages((messages) => [...messages, stateMessage]);
+  const successHandler = (successMessage) => {
+    console.log("success message", successMessage);
+    switch (successMessage.event) {
+      case "_messageOut":
+        let stateMessage = {
+          content: "",
+          date_created: new Date(successMessage.message_id * 1000),
+          sender: user._id,
+          type: "text",
+          _id: successMessage.inserted_id,
+        };
+        let sentMessage = messageQueue.find((queueItem) => {
+          return queueItem.id === successMessage.message_id;
+        });
+        stateMessage.content = sentMessage.content;
+        messageQueue = messageQueue.filter((queueItem) => {
+          return queueItem.id !== successMessage.message_id;
+        });
+        setMessages((messages) => [...messages, stateMessage]);
+        break;
+
+      default:
+        break;
+    }
   };
 
   const sendMessage = () => {
@@ -156,18 +170,16 @@ function Miniversations() {
       tab_id: currentTab._id,
       content: composedMessage,
     };
+    messageQueue.push(messageObject);
     socket.emit("_messageOut", messageObject);
     setComposedMessage("");
-    successHandlerBackup = function (successMessage) {
-      SendSuccessHandler(successMessage, messageObject);
-    };
-    socket.on("_success", successHandlerBackup);
   };
 
   useEffect(() => {
     if (user._id === null || currentConversation._id === null)
       history.push("/");
     socket.on("_messageIn", addMessageToState);
+    socket.on("_success", successHandler);
     getTabs().then((tabs) => {
       setIsTabListLoading(false);
       setTabList(tabs);
@@ -176,8 +188,7 @@ function Miniversations() {
     // returned function will be called on component unmount
     return () => {
       socket.off("_messageIn", addMessageToState);
-      socket.off("_success", successHandlerBackup);
-      successHandlerBackup = null;
+      socket.off("_success", successHandler);
       currentTab = null;
       console.log("Cleaning up socket callback...");
     };
@@ -206,7 +217,6 @@ function Miniversations() {
               <div>
                 {" "}
                 {messages.map((message) => {
-                  console.log(currentConversation);
                   let displayPicture = currentConversation.thread_participants.find(
                     (participant) => {
                       return participant._id === message.sender;
