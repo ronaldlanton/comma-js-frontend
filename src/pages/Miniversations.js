@@ -38,9 +38,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-var successHandlerBackup = null;
 var currentTab = null;
 var messageQueue = [];
+var isScrollRequestActive = false;
+var tabChanged = false;
+
 function Miniversations() {
   const classes = useStyles();
 
@@ -82,8 +84,8 @@ function Miniversations() {
         .get("/rest/v1/messages/getMessages", {
           params: {
             tab_id: tabId,
-            limit: 200,
-            offset: 0,
+            limit: 8,
+            offset: tabChanged === true ? 0 : messages.length,
           },
         })
         .then((result) => {
@@ -116,6 +118,7 @@ function Miniversations() {
     let seenStatus = {
       token: "Bearer " + cookies.get("SSID"),
       tab_id: currentTab._id,
+      thread_id: currentConversation._id,
       last_read_message_id: messageId,
     };
     socket.emit("_updateMessageSeen", seenStatus);
@@ -124,9 +127,13 @@ function Miniversations() {
   const changeRenderedTab = (tab) => {
     setIsMessageListLoading(true);
     currentTab = tab;
+    tabChanged = true;
     getMessages(tab._id).then((msgs) => {
+      tabChanged = false;
+      msgs = msgs.messages.reverse();
       setIsMessageListLoading(false);
-      setMessages(msgs.messages);
+      setMessages(msgs);
+      document.getElementById("messageEnd").scrollIntoView();
     });
   };
 
@@ -155,6 +162,7 @@ function Miniversations() {
           return queueItem.id !== successMessage.message_id;
         });
         setMessages((messages) => [...messages, stateMessage]);
+        document.getElementById("messageEnd").scrollIntoView();
         break;
 
       default:
@@ -175,6 +183,33 @@ function Miniversations() {
     setComposedMessage("");
   };
 
+  const handleScroll = (e) => {
+    const top = e.target.scrollTop <= 50;
+
+    //Because top scroll threshold is set to 50px, every scroll event fired after reaching gets counted.
+    //So once the threshold is reached, we disable making requests for next 2 seconds.
+    if (top && isScrollRequestActive === false) {
+      console.log("reached top");
+      let messagesContainer = document.getElementById("messagesContainer");
+      //Store the original height of the div.
+      let oldScrollHeight = messagesContainer.scrollHeight;
+      //Set scroll request to active so that this does not get fired again.
+      isScrollRequestActive = true;
+      getMessages(currentTab._id).then((msgs) => {
+        if (msgs.messages.length > 0) {
+          msgs = msgs.messages.reverse();
+          setMessages((messages) => [...msgs, ...messages]);
+          //Restore the div to old scroll position.
+          messagesContainer.scrollTop =
+            messagesContainer.scrollHeight - oldScrollHeight;
+        }
+      });
+      setTimeout(() => {
+        isScrollRequestActive = false;
+      }, 2000);
+    }
+  };
+
   useEffect(() => {
     if (user._id === null || currentConversation._id === null)
       history.push("/");
@@ -182,8 +217,13 @@ function Miniversations() {
     socket.on("_success", successHandler);
     getTabs().then((tabs) => {
       setIsTabListLoading(false);
-      setTabList(tabs);
-      changeRenderedTab(tabs[0]);
+      if (tabs.length > 0) {
+        setTabList(tabs);
+        changeRenderedTab(tabs[0]);
+      } else {
+        console.log("no tabs.");
+        setIsMessageListLoading(false);
+      }
     });
     // returned function will be called on component unmount
     return () => {
@@ -214,7 +254,15 @@ function Miniversations() {
             <CircularProgress />
           ) : (
             <Fade in={true}>
-              <div>
+              <div
+                style={{
+                  height: "auto",
+                  maxHeight: "550px",
+                  overflowY: "scroll",
+                }}
+                onScroll={handleScroll}
+                id="messagesContainer"
+              >
                 {" "}
                 {messages.map((message) => {
                   let displayPicture = currentConversation.thread_participants.find(
@@ -233,6 +281,7 @@ function Miniversations() {
                     </Card>
                   );
                 })}
+                <div id="messageEnd"></div>
               </div>
             </Fade>
           )}
