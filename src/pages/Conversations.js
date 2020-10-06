@@ -76,9 +76,12 @@ function Conversations() {
     });
   };
 
+  const markNewConversation = () => {};
+
   useEffect(() => {
     if (user._id === null) history.push("/");
     connectSocket();
+    socket.on("_messageIn", markNewConversation);
     getThreads().then((threads) => {
       threads.forEach((thread, index) => {
         let allParticipants = thread.thread_participants;
@@ -89,6 +92,10 @@ function Conversations() {
       setConversationsList(threads);
       setIsLoading(false);
     });
+    // returned function will be called on component unmount
+    return () => {
+      socket.off("_messageIn", markNewConversation);
+    };
   }, []);
 
   return isLoading === true ? (

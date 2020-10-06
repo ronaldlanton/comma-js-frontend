@@ -109,6 +109,16 @@ function Miniversations() {
       if (!isAlreadyAdded) {
         setMessages((messages) => [...messages, message]);
         updateSeen(message._id);
+        let messagesContainer = document.getElementById("messagesContainer");
+        //If the user is having the conversation scrolled to almost at the bottom, scroll the div to it's bottom to show the
+        //new message.
+        if (
+          messagesContainer.scrollHeight -
+            messagesContainer.scrollTop -
+            messagesContainer.clientHeight <=
+          500
+        )
+          document.getElementById("messageEnd").scrollIntoView();
       }
     }
   };
