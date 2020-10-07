@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import Cookies from "universal-cookie";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import socket from "./WebSocket";
 
 const cookies = new Cookies();
 
@@ -35,6 +36,16 @@ axios.interceptors.response.use(
     return error;
   }
 );
+
+socket.on("reconnect", function () {
+  socket.emit("_connect", {
+    token: "Bearer " + cookies.get("SSID"),
+  });
+
+  socket.on("_connect", () => {
+    console.log("you have been reconnected");
+  });
+});
 
 const store = createStore(rootReducer);
 

@@ -2,65 +2,43 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Chip from "@material-ui/core/Chip";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import socket from "../WebSocket";
 import Cookies from "universal-cookie";
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
-import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import SendIcon from "@material-ui/icons/Send";
-import Avatar from "@material-ui/core/Avatar";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Fade from "@material-ui/core/Fade";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: "2px 4px",
-    display: "flex",
-    alignItems: "center",
-    width: 400,
-  },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  divider: {
-    height: 28,
-    margin: 4,
-  },
-}));
+import ChatHeader from "../components/ChatHeader";
+import ChatComposer from "../components/ChatComposer";
+import MessageBubble from "../components/MessageBubble";
 
 var currentTab = null;
 var messageQueue = [];
 var isScrollRequestActive = false;
 var tabChanged = false;
+var currentTabIds = [];
 
 function Miniversations() {
-  const classes = useStyles();
-
   const cookies = new Cookies();
   const history = useHistory();
 
+  //Redux selections.
   const user = useSelector((state) => {
     return state.userReducer.user;
   });
   const currentConversation = useSelector((state) => {
     return state.conversationReducer.conversation;
   });
+
+  //State variables.
   const [tabList, setTabList] = useState([]);
   const [messages, setMessages] = useState([]);
   const [composedMessage, setComposedMessage] = useState("");
   const [isTabListLoading, setIsTabListLoading] = useState(true);
   const [isMessageListLoading, setIsMessageListLoading] = useState(true);
+  const [newContentTabs, setNewContentTabs] = useState([]);
 
+  //Functions.
   const getTabs = () => {
     return new Promise((resolve, reject) => {
       axios
@@ -84,7 +62,7 @@ function Miniversations() {
         .get("/rest/v1/messages/getMessages", {
           params: {
             tab_id: tabId,
-            limit: 8,
+            limit: 10,
             offset: tabChanged === true ? 0 : messages.length,
           },
         })
@@ -98,14 +76,12 @@ function Miniversations() {
   };
 
   const addMessageToState = (message) => {
-    console.log("adding message to state");
-    console.log(message, currentTab);
     if (message.tab_id === currentTab._id) {
       let isAlreadyAdded = messages.find((msg) => {
         console.log(msg, message);
         return msg._id === message._id;
       });
-      console.log("is already added?", isAlreadyAdded);
+
       if (!isAlreadyAdded) {
         setMessages((messages) => [...messages, message]);
         updateSeen(message._id);
@@ -119,6 +95,19 @@ function Miniversations() {
           500
         )
           document.getElementById("messageEnd").scrollIntoView();
+      }
+    } else {
+      console.log(message.tab_id, tabList, messages);
+      let tabToMarkNew = currentTabIds.find((id) => {
+        console.log(id, message.tab_id);
+        return id === message.tab_id;
+      });
+      console.log(tabToMarkNew);
+      if (tabToMarkNew) {
+        setNewContentTabs((newContentTabs) => [
+          ...newContentTabs,
+          tabToMarkNew,
+        ]);
       }
     }
   };
@@ -143,6 +132,10 @@ function Miniversations() {
       msgs = msgs.messages.reverse();
       setIsMessageListLoading(false);
       setMessages(msgs);
+      let changedNewContentTabs = newContentTabs.filter((tabId) => {
+        return tabId != tab._id;
+      });
+      setNewContentTabs(changedNewContentTabs);
       document.getElementById("messageEnd").scrollIntoView();
     });
   };
@@ -221,12 +214,22 @@ function Miniversations() {
   };
 
   useEffect(() => {
+    //If user types the url directly, we would not have any conversation to display tabs and messages for, so redirect them to home.
     if (user._id === null || currentConversation._id === null)
       history.push("/");
+
+    //Socket callbacks
     socket.on("_messageIn", addMessageToState);
     socket.on("_success", successHandler);
+
+    //When component loads, get all tabs and then render the messages for first tab in list.
     getTabs().then((tabs) => {
       setIsTabListLoading(false);
+      tabs.forEach((tab) => {
+        currentTabIds.push(tab._id);
+        if (tab.new_for && tab.new_for.includes(user._id))
+          setNewContentTabs((newContentTabs) => [...newContentTabs, tab._id]);
+      });
       if (tabs.length > 0) {
         setTabList(tabs);
         changeRenderedTab(tabs[0]);
@@ -240,26 +243,25 @@ function Miniversations() {
       socket.off("_messageIn", addMessageToState);
       socket.off("_success", successHandler);
       currentTab = null;
+      currentTabIds = [];
+      messageQueue = [];
+      isScrollRequestActive = false;
+      tabChanged = false;
       console.log("Cleaning up socket callback...");
     };
   }, []);
 
+  //Render.
   return (
     <div>
       <Card>
         <CardContent>
-          {isTabListLoading === true ? (
-            <CircularProgress />
-          ) : (
-            tabList.map((tab) => {
-              return (
-                <Chip
-                  label={tab.tab_name}
-                  onClick={() => changeRenderedTab(tab)}
-                />
-              );
-            })
-          )}
+          <ChatHeader
+            isTabListLoading={isTabListLoading}
+            tabList={tabList}
+            newContentTabs={newContentTabs}
+            changeRenderedTab={changeRenderedTab}
+          />
           {isMessageListLoading === true ? (
             <CircularProgress />
           ) : (
@@ -267,7 +269,7 @@ function Miniversations() {
               <div
                 style={{
                   height: "auto",
-                  maxHeight: "550px",
+                  maxHeight: "80vh",
                   overflowY: "scroll",
                 }}
                 onScroll={handleScroll}
@@ -275,20 +277,17 @@ function Miniversations() {
               >
                 {" "}
                 {messages.map((message) => {
-                  let displayPicture = currentConversation.thread_participants.find(
+                  let senderProfile = currentConversation.thread_participants.find(
                     (participant) => {
                       return participant._id === message.sender;
                     }
                   );
-                  if (displayPicture)
-                    displayPicture = displayPicture.display_picture;
                   return (
-                    <Card style={{ marginTop: "24px" }}>
-                      <CardContent>
-                        <Avatar alt="Remy Sharp" src={displayPicture} />
-                        <Typography>{message.content}</Typography>
-                      </CardContent>
-                    </Card>
+                    <MessageBubble
+                      senderProfile={senderProfile}
+                      displayPicture={senderProfile}
+                      content={message.content}
+                    />
                   );
                 })}
                 <div id="messageEnd"></div>
@@ -297,20 +296,11 @@ function Miniversations() {
           )}
         </CardContent>
       </Card>
-      <div className="compose-container">
-        <Paper component="form" className={classes.root}>
-          <InputBase
-            className={classes.input}
-            placeholder="Type a Message"
-            value={composedMessage}
-            onChange={(event) => updateComposedMessage(event)}
-          />
-          <Divider className={classes.divider} orientation="vertical" />
-          <IconButton className={classes.iconButton} onClick={sendMessage}>
-            <SendIcon />
-          </IconButton>
-        </Paper>
-      </div>
+      <ChatComposer
+        currentValue={composedMessage}
+        updateComposedMessage={updateComposedMessage}
+        sendMessage={sendMessage}
+      />
     </div>
   );
 }
