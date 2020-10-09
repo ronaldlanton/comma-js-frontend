@@ -86,6 +86,7 @@ function Miniversations() {
         setMessages((messages) => [...messages, message]);
         updateSeen(message._id);
         let messagesContainer = document.getElementById("messagesContainer");
+        window.navigator.vibrate(50); // vibrate for 50ms
         //If the user is having the conversation scrolled to almost at the bottom, scroll the div to it's bottom to show the
         //new message.
         if (
@@ -184,6 +185,21 @@ function Miniversations() {
     messageQueue.push(messageObject);
     socket.emit("_messageOut", messageObject);
     setComposedMessage("");
+  };
+
+  const sendImages = (fileNames) => {
+    fileNames.forEach((fileName) => {
+      let messageObject = {
+        id: +new Date(),
+        token: "Bearer " + cookies.get("SSID"),
+        type: "image",
+        tab_id: currentTab._id,
+        file_name: fileName,
+      };
+      messageQueue.push(messageObject);
+      socket.emit("_messageOut", messageObject);
+    });
+    /* return console.log("adding files to chat..."); */
   };
 
   const handleScroll = (e) => {
@@ -286,7 +302,8 @@ function Miniversations() {
                     <MessageBubble
                       senderProfile={senderProfile}
                       displayPicture={senderProfile}
-                      content={message.content}
+                      message={message}
+                      currentTab={currentTab}
                     />
                   );
                 })}
@@ -300,6 +317,8 @@ function Miniversations() {
         currentValue={composedMessage}
         updateComposedMessage={updateComposedMessage}
         sendMessage={sendMessage}
+        sendImages={sendImages}
+        currentTab={currentTab}
       />
     </div>
   );

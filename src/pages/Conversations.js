@@ -16,6 +16,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Fade from "@material-ui/core/Fade";
 import Cookies from "universal-cookie";
 import socket from "../WebSocket";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -104,7 +105,17 @@ function Conversations() {
     //If loading is complete.
     <Fade in={true}>
       <div>
-        hi, {user.name.givenName}. Here are your conversations.
+        <Typography
+          variant="h5"
+          gutterBottom
+          style={{
+            marginLeft: "16px",
+            marginTop: "16px",
+            marginBottom: "16px",
+          }}
+        >
+          <b>Conversations</b>
+        </Typography>
         <List className={classes.root}>
           {/*Render list of threads*/}
           {conversationsList.map((conversation) => {
@@ -139,7 +150,6 @@ function Conversations() {
                     ></Badge>
                   )}
                 </ListItem>
-                <Divider variant="inset" component="li" />
               </div>
             );
           })}
