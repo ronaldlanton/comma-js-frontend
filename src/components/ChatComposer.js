@@ -95,6 +95,13 @@ function ChatComposer({
           placeholder="Type a Message"
           value={currentValue}
           onChange={updateComposedMessage}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              console.log("Enter key pressed");
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
           inputRef={inputRef}
         />
         <Divider className={classes.divider} orientation="vertical" />
