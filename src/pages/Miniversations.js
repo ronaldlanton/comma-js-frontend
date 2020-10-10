@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -37,7 +37,16 @@ function Miniversations() {
   const [composedMessage, setComposedMessage] = useState("");
   const [isTabListLoading, setIsTabListLoading] = useState(true);
   const [isMessageListLoading, setIsMessageListLoading] = useState(true);
+  const IsMessageListLoadingRef = useRef(isMessageListLoading);
+  useEffect(() => {
+    IsMessageListLoadingRef.current = isMessageListLoading;
+  }, [isMessageListLoading]);
+
   const [newContentTabs, setNewContentTabs] = useState([]);
+  const newContentTabsRef = useRef(newContentTabs);
+  useEffect(() => {
+    newContentTabsRef.current = newContentTabs;
+  }, [newContentTabs]);
 
   //Functions.
   const getTabs = () => {
@@ -77,25 +86,17 @@ function Miniversations() {
   };
 
   const addMessageToState = (message) => {
-    console.log(
-      "isTabListLoading",
-      isTabListLoading,
-      "isMessageListLoading",
-      isMessageListLoading
-    );
-    if (isTabListLoading === true) {
+    console.log("isMessageListLoading", IsMessageListLoadingRef);
+    if (IsMessageListLoadingRef.current === true) {
       stateMessageQueue.push(message);
-      console.log("Add to state deferred for " + message._id);
+      console.log(
+        "add to state deferred for " + message._id + " due to message load."
+      );
       return;
     }
+
     if (message.tab_id === currentTab._id) {
-      if (isMessageListLoading === true) {
-        stateMessageQueue.push(message);
-        console.log("Add to state deferred for " + message._id);
-        return;
-      }
       let isAlreadyAdded = messages.find((msg) => {
-        console.log(msg, message);
         return msg._id === message._id;
       });
 
@@ -154,15 +155,16 @@ function Miniversations() {
   };
 
   const changeRenderedTab = (tab) => {
-    setIsMessageListLoading(true);
+    if (isMessageListLoading === false) setIsMessageListLoading(true);
     currentTab = tab;
     tabChanged = true;
     getMessages(tab._id).then((msgs) => {
+
       tabChanged = false;
       msgs = msgs.messages.reverse();
       setMessages(msgs);
       setIsMessageListLoading(false);
-      let changedNewContentTabs = newContentTabs.filter((tabId) => {
+      let changedNewContentTabs = newContentTabsRef.current.slice().filter((tabId) => {
         return tabId !== tab._id;
       });
       setNewContentTabs(changedNewContentTabs);

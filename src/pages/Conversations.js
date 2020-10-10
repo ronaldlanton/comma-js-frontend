@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
@@ -64,6 +64,11 @@ function Conversations() {
     return state.userReducer.user;
   });
   const [conversationsList, setConversationsList] = useState([]);
+  const conversationsListRef = useRef(conversationsList);
+  useEffect(() => {
+    conversationsListRef.current = conversationsList;
+  }, [conversationsList]);
+
   const [isLoading, setIsLoading] = useState(true);
 
   const getThreads = () => {
@@ -106,26 +111,28 @@ function Conversations() {
   };
 
   const markNewConversation = (message) => {
-    console.log("marking new conv", conversationsList);
-    let newConversationList = conversationsList.map((conversationElement) =>
-      conversationElement.thread_id === message.thread_id
-        ? {
-            ...conversationElement,
-            date_created: message.date_created,
-            new_for: [...conversationElement.new_for, user.id],
-          }
-        : {
-            ...conversationElement,
-            new_for: [...conversationElement.new_for],
-          }
+    console.log(
+      "incoming message... current state list:",
+      conversationsListRef.current
     );
-    console.log(newConversationList);
-    let conversationListCopy = newConversationList.splice();
-    conversationListCopy = newConversationList.sortBy(function (o) {
-      return o.date_created;
+    let conversationListCopy = conversationsListRef.current
+      .slice()
+      .map((conversationElement, index) => {
+        if (conversationElement._id === message.thread_id) {
+          conversationElement.date_updated = message.date_created;
+          conversationElement.new_for.push(user._id);
+        }
+        return conversationElement;
+      });
+
+    console.log(conversationListCopy);
+    conversationListCopy = conversationListCopy.sortBy(function (o) {
+      return o.date_updated;
     });
+    conversationListCopy = conversationListCopy.reverse();
     console.log(conversationListCopy);
     setConversationsList(conversationListCopy);
+    window.navigator.vibrate(50); // vibrate for 50ms
   };
 
   useEffect(() => {
@@ -140,7 +147,8 @@ function Conversations() {
         });
       });
       setConversationsList(threads);
-      setIsLoading(false);
+      console.log(conversationsList);
+      return setIsLoading(false);
     });
     // returned function will be called on component unmount
     return () => {
