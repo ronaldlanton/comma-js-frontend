@@ -10,7 +10,11 @@ import Cookies from "universal-cookie";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import socket from "./WebSocket";
+import db from "./database/database";
 
+db.info().then(function (info) {
+  console.log(info);
+});
 const cookies = new Cookies();
 
 //Set defaults for all APIs to send Auth token and content-type.

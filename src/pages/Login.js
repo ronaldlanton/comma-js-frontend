@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -24,6 +24,10 @@ function Login() {
       "https://comma-js.herokuapp.com/api/rest/v1/auth/google";
   };
 
+  const redirectToConversations = () => {
+    history.push("/conversations");
+  };
+
   const loginSuccess = () => {
     console.log(userData, token);
     dispatch(setUser(userData));
@@ -41,29 +45,36 @@ function Login() {
     cookies.set("SSID", token, { path: "/", expires: expiry });
   };
 
-  //If user data is already available, load it up in memory.
-  let storedUserDetails = localStorage.getItem("userData");
-  if (storedUserDetails) {
-    try {
-      storedUserDetails = JSON.parse(storedUserDetails);
-      dispatch(setUser(storedUserDetails));
-    } catch (e) {
-      localStorage.removeItem("userData");
-      cookies.remove("SSID");
-      history.push("/");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    //If user data is already available, load it up in memory.
+    let storedUserDetails = localStorage.getItem("userData");
+    if (storedUserDetails) {
+      try {
+        storedUserDetails = JSON.parse(storedUserDetails);
+        dispatch(setUser(storedUserDetails));
+      } catch (e) {
+        localStorage.removeItem("userData");
+        cookies.remove("SSID");
+        history.push("/");
+      }
     }
-  }
+    if (status === '"SUCCESS"') return loginSuccess();
+    if (cookies.get("SSID") && cookies.get("SSID").length >= 30)
+      //If token stored in cookie is 30 or more characters, take user directly to app.
+      return redirectToConversations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /* If the URL has a success status, it means user has already clicked the Sign In button and backend has
   returned the control to the same page.  */
-  if (status === '"SUCCESS"') return <div>{loginSuccess()}</div>;
+  if (status === '"SUCCESS"') return <div></div>;
   //If there is no status
   else {
-    return cookies.get("SSID") && cookies.get("SSID").length >= 30 ? (
-      //If token stored in cookie is 30 or more characters, take user directly to app.
-      <div>{history.push("/conversations")}</div>
-    ) : (
-      //If there is no token present, it means user is logged out or never logged in.
+    if (cookies.get("SSID") && cookies.get("SSID").length >= 30)
+      return <div></div>;
+    //If there is no token present, it means user is logged out or never logged in.
+    return (
       <div className="login-container">
         <Button variant="contained" onClick={redirectToGoogle}>
           Sign In

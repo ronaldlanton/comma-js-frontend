@@ -51,6 +51,7 @@ function ChatHeader({
             {tabList.map((tab) => {
               return (
                 <ToggleButton
+                  key={tab._id}
                   value={tab._id}
                   aria-label="left aligned"
                   onClick={() => changeRenderedTab(tab)}

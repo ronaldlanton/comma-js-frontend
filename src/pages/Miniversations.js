@@ -14,6 +14,7 @@ import MessageBubble from "../components/MessageBubble";
 
 var currentTab = null;
 var messageQueue = [];
+var stateMessageQueue = [];
 var isScrollRequestActive = false;
 var tabChanged = false;
 var currentTabIds = [];
@@ -76,7 +77,23 @@ function Miniversations() {
   };
 
   const addMessageToState = (message) => {
+    console.log(
+      "isTabListLoading",
+      isTabListLoading,
+      "isMessageListLoading",
+      isMessageListLoading
+    );
+    if (isTabListLoading === true) {
+      stateMessageQueue.push(message);
+      console.log("Add to state deferred for " + message._id);
+      return;
+    }
     if (message.tab_id === currentTab._id) {
+      if (isMessageListLoading === true) {
+        stateMessageQueue.push(message);
+        console.log("Add to state deferred for " + message._id);
+        return;
+      }
       let isAlreadyAdded = messages.find((msg) => {
         console.log(msg, message);
         return msg._id === message._id;
@@ -113,6 +130,18 @@ function Miniversations() {
     }
   };
 
+  const processStateMessageQueue = () => {
+    console.log(
+      "processing message queue...",
+      "message loading has been set to",
+      isMessageListLoading
+    );
+    stateMessageQueue.forEach((queueItem, index) => {
+      stateMessageQueue.splice(index, 1);
+      addMessageToState(queueItem);
+    });
+  };
+
   const updateSeen = (messageId) => {
     console.log("inside update seen");
     let seenStatus = {
@@ -131,10 +160,10 @@ function Miniversations() {
     getMessages(tab._id).then((msgs) => {
       tabChanged = false;
       msgs = msgs.messages.reverse();
-      setIsMessageListLoading(false);
       setMessages(msgs);
+      setIsMessageListLoading(false);
       let changedNewContentTabs = newContentTabs.filter((tabId) => {
-        return tabId != tab._id;
+        return tabId !== tab._id;
       });
       setNewContentTabs(changedNewContentTabs);
       document.getElementById("messageEnd").scrollIntoView();
@@ -232,7 +261,7 @@ function Miniversations() {
   useEffect(() => {
     //If user types the url directly, we would not have any conversation to display tabs and messages for, so redirect them to home.
     if (user._id === null || currentConversation._id === null)
-      history.push("/");
+      return history.push("/");
 
     //Socket callbacks
     socket.on("_messageIn", addMessageToState);
@@ -256,16 +285,23 @@ function Miniversations() {
     });
     // returned function will be called on component unmount
     return () => {
+      console.trace("cleaning up socket callbacks...");
       socket.off("_messageIn", addMessageToState);
       socket.off("_success", successHandler);
       currentTab = null;
       currentTabIds = [];
       messageQueue = [];
+      stateMessageQueue = [];
       isScrollRequestActive = false;
       tabChanged = false;
-      console.log("Cleaning up socket callback...");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isMessageListLoading === false) processStateMessageQueue();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMessageListLoading]);
 
   //Render.
   return (
@@ -300,6 +336,7 @@ function Miniversations() {
                   );
                   return (
                     <MessageBubble
+                      key={message._id}
                       senderProfile={senderProfile}
                       displayPicture={senderProfile}
                       message={message}
@@ -319,6 +356,7 @@ function Miniversations() {
         sendMessage={sendMessage}
         sendImages={sendImages}
         currentTab={currentTab}
+        isMessageListLoading={isMessageListLoading}
       />
     </div>
   );

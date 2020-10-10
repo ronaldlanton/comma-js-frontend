@@ -6,13 +6,10 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import SendIcon from "@material-ui/icons/Send";
 import ImageIcon from "@material-ui/icons/Image";
-import { withStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
 import Dropzone from "react-dropzone";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
@@ -44,6 +41,7 @@ function ChatComposer({
   sendImages,
   inputRef,
   currentTab,
+  isMessageListLoading,
 }) {
   const classes = useStyles();
   const [isImageUploadDialogOpen, setIsImageUploadDialogOpen] = useState(false);
@@ -108,10 +106,15 @@ function ChatComposer({
         <IconButton
           className={classes.iconButton}
           onClick={() => setIsImageUploadDialogOpen(!isImageUploadDialogOpen)}
+          disabled={isMessageListLoading}
         >
           <ImageIcon />
         </IconButton>
-        <IconButton className={classes.iconButton} onClick={sendMessage}>
+        <IconButton
+          className={classes.iconButton}
+          onClick={sendMessage}
+          disabled={isMessageListLoading}
+        >
           <SendIcon />
         </IconButton>
       </Paper>

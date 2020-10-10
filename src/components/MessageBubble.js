@@ -35,7 +35,7 @@ function MessageBubble({ senderProfile, message, currentTab }) {
         {message.type === "text" ? (
           <Typography>{message.content}</Typography>
         ) : (
-          <img src={imageFile}></img>
+          <img alt={message.file_name} src={imageFile}></img>
         )}
       </CardContent>
     </Card>
