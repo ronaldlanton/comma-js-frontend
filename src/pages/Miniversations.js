@@ -287,7 +287,7 @@ function Miniversations() {
     });
     // returned function will be called on component unmount
     return () => {
-      console.trace("cleaning up socket callbacks...");
+      console.log("cleaning up socket callbacks...");
       socket.off("_messageIn", addMessageToState);
       socket.off("_success", successHandler);
       currentTab = null;

@@ -147,7 +147,6 @@ function Conversations() {
         });
       });
       setConversationsList(threads);
-      console.log(conversationsList);
       return setIsLoading(false);
     });
     // returned function will be called on component unmount

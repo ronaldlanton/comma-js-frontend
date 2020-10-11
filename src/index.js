@@ -37,6 +37,25 @@ axios.interceptors.response.use(
   }
 );
 
+//On success of any API request, increase token validity by one day, because that's what the backend does too.
+//This is done so that as long as the user is active, they are never logged out.
+axios.interceptors.response.use(
+  function (response) {
+    if (response.status === 200) {
+      let currentSSID = cookies.get("SSID");
+      let now = new Date();
+      let expiry = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+      cookies.set("SSID", currentSSID, { path: "/", expires: expiry });
+      console.log("token validity extended.");
+    }
+    return response;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
 socket.on("reconnect", function () {
   socket.emit("_connect", {
     token: "Bearer " + cookies.get("SSID"),
