@@ -29,7 +29,7 @@ function MessageBubble({ senderProfile, message, currentTab }) {
       });
   }
   return (
-    <Card style={{ marginTop: "24px" }}>
+    <Card style={{ marginTop: "24px" }} variant="outlined">
       <CardContent>
         <Avatar alt={senderName} src={displayPicture} />
         {message.type === "text" ? (

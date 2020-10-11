@@ -52,3 +52,21 @@ h1 {
   width: 100%;
   text-align: center;
 }
+
+.header-backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+  background-color: rgba(255, 255, 255, 0.50);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .1);  
+  padding: 8px
+}
+
+.messages-container {
+overflow-y: scroll;
+height: auto;
+max-height: calc(100vh - 48px);
+}

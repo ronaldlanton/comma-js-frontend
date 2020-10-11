@@ -105,6 +105,8 @@ function Miniversations() {
         updateSeen(message._id);
         let messagesContainer = document.getElementById("messagesContainer");
         window.navigator.vibrate(50); // vibrate for 50ms
+        let audio = new Audio("./media/pop.mp3");
+        audio.play();
         //If the user is having the conversation scrolled to almost at the bottom, scroll the div to it's bottom to show the
         //new message.
         if (
@@ -159,14 +161,15 @@ function Miniversations() {
     currentTab = tab;
     tabChanged = true;
     getMessages(tab._id).then((msgs) => {
-
       tabChanged = false;
       msgs = msgs.messages.reverse();
       setMessages(msgs);
       setIsMessageListLoading(false);
-      let changedNewContentTabs = newContentTabsRef.current.slice().filter((tabId) => {
-        return tabId !== tab._id;
-      });
+      let changedNewContentTabs = newContentTabsRef.current
+        .slice()
+        .filter((tabId) => {
+          return tabId !== tab._id;
+        });
       setNewContentTabs(changedNewContentTabs);
       document.getElementById("messageEnd").scrollIntoView();
     });
@@ -308,50 +311,42 @@ function Miniversations() {
   //Render.
   return (
     <div>
-      <Card>
-        <CardContent>
-          <ChatHeader
-            isTabListLoading={isTabListLoading}
-            tabList={tabList}
-            newContentTabs={newContentTabs}
-            changeRenderedTab={changeRenderedTab}
-          />
-          {isMessageListLoading === true ? (
-            <CircularProgress />
-          ) : (
-            <Fade in={true}>
-              <div
-                style={{
-                  height: "auto",
-                  maxHeight: "80vh",
-                  overflowY: "scroll",
-                }}
-                onScroll={handleScroll}
-                id="messagesContainer"
-              >
-                {" "}
-                {messages.map((message) => {
-                  let senderProfile = currentConversation.thread_participants.find(
-                    (participant) => {
-                      return participant._id === message.sender;
-                    }
-                  );
-                  return (
-                    <MessageBubble
-                      key={message._id}
-                      senderProfile={senderProfile}
-                      displayPicture={senderProfile}
-                      message={message}
-                      currentTab={currentTab}
-                    />
-                  );
-                })}
-                <div id="messageEnd"></div>
-              </div>
-            </Fade>
-          )}
-        </CardContent>
-      </Card>
+      <ChatHeader
+        isTabListLoading={isTabListLoading}
+        tabList={tabList}
+        newContentTabs={newContentTabs}
+        changeRenderedTab={changeRenderedTab}
+      />
+      {isMessageListLoading === true ? (
+        <CircularProgress />
+      ) : (
+        <Fade in={true}>
+          <div
+            className="messages-container"
+            onScroll={handleScroll}
+            id="messagesContainer"
+          >
+            {" "}
+            {messages.map((message) => {
+              let senderProfile = currentConversation.thread_participants.find(
+                (participant) => {
+                  return participant._id === message.sender;
+                }
+              );
+              return (
+                <MessageBubble
+                  key={message._id}
+                  senderProfile={senderProfile}
+                  displayPicture={senderProfile}
+                  message={message}
+                  currentTab={currentTab}
+                />
+              );
+            })}
+            <div id="messageEnd"></div>
+          </div>
+        </Fade>
+      )}
       <ChatComposer
         currentValue={composedMessage}
         updateComposedMessage={updateComposedMessage}

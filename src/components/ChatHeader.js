@@ -31,7 +31,7 @@ function ChatHeader({
     }
   );
   return (
-    <div>
+    <div className="header-backdrop">
       {isTabListLoading === true ? (
         <CircularProgress />
       ) : (
