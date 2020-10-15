@@ -11,8 +11,6 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import socket from "./WebSocket";
 import db from "./database/database";
-import subscribeUser from "./subscription";
-import NotificationServiceWorkerRegister from "./notificationWorkerRegister";
 
 db.info().then(function (info) {
   console.log(info);
@@ -35,7 +33,7 @@ axios.interceptors.response.use(
       const history = useHistory();
       history.push("/");
     }
-    return error;
+    return Promise.reject(error);
   }
 );
 
@@ -70,7 +68,7 @@ socket.on("reconnect", function () {
 
 const store = createStore(rootReducer);
 
-subscribeUser();
+/* subscribeUser(); */
 
 ReactDOM.render(
   <Provider store={store}>
@@ -83,5 +81,3 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register();
-
-NotificationServiceWorkerRegister();

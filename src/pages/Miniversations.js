@@ -2,8 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import socket from "../WebSocket";
 import Cookies from "universal-cookie";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -34,6 +32,7 @@ function Miniversations() {
   //State variables.
   const [tabList, setTabList] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [lastSeenMessage, setLastSeenMessage] = useState();
   const [composedMessage, setComposedMessage] = useState("");
   const [isTabListLoading, setIsTabListLoading] = useState(true);
   const [isMessageListLoading, setIsMessageListLoading] = useState(true);
@@ -162,7 +161,7 @@ function Miniversations() {
     tabChanged = true;
     getMessages(tab._id).then((msgs) => {
       tabChanged = false;
-      msgs = msgs.messages.reverse();
+      msgs = msgs.reverse();
       setMessages(msgs);
       setIsMessageListLoading(false);
       let changedNewContentTabs = newContentTabsRef.current
@@ -249,8 +248,8 @@ function Miniversations() {
       //Set scroll request to active so that this does not get fired again.
       isScrollRequestActive = true;
       getMessages(currentTab._id).then((msgs) => {
-        if (msgs.messages.length > 0) {
-          msgs = msgs.messages.reverse();
+        if (msgs.length > 0) {
+          msgs = msgs.reverse();
           setMessages((messages) => [...msgs, ...messages]);
           //Restore the div to old scroll position.
           messagesContainer.scrollTop =

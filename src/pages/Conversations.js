@@ -16,6 +16,7 @@ import Fade from "@material-ui/core/Fade";
 import Cookies from "universal-cookie";
 import socket from "../WebSocket";
 import Typography from "@material-ui/core/Typography";
+import subscribeUser from "../subscription";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -151,6 +152,7 @@ function Conversations() {
       setConversationsList(threads);
       return setIsLoading(false);
     });
+    subscribeUser();
     // returned function will be called on component unmount
     return () => {
       socket.off("_messageIn", markNewConversation);
@@ -193,6 +195,7 @@ function Conversations() {
                   <ListItemText
                     primary={
                       conversation.other_user.name.givenName +
+                      " " +
                       conversation.other_user.name.familyName
                     }
                     secondary={

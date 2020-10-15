@@ -36,3 +36,8 @@ self.addEventListener("push", (e) => {
       });
   });
 });
+
+self.addEventListener("notificationclick", function (event) {
+  event.notification.close();
+  self.clients.openWindow("https://comma-messenger-dev.netlify.app/");
+});
