@@ -17,6 +17,8 @@ import Cookies from "universal-cookie";
 import socket from "../WebSocket";
 import Typography from "@material-ui/core/Typography";
 import subscribeUser from "../subscription";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -101,6 +103,7 @@ function Conversations() {
       if (socket.connected !== true) {
         console.log("connecting socket...");
         socket.emit("_connect", {
+          user_id: cookies.get("USR"),
           token: "Bearer " + cookies.get("SSID"),
         });
 
@@ -175,7 +178,10 @@ function Conversations() {
             marginBottom: "16px",
           }}
         >
-          <b>Conversations</b>
+          <b>Conversations</b>{" "}
+          <IconButton style={{ marginBottom: "4px" }} onClick={() => history.push("/new-conversation")}>
+            <AddCircleOutlineIcon></AddCircleOutlineIcon>
+          </IconButton>
         </Typography>
         <List className={classes.root}>
           {/*Render list of threads*/}

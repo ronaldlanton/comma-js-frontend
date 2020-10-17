@@ -32,17 +32,19 @@ function Login() {
     console.log(userData, token);
     dispatch(setUser(userData));
     localStorage.setItem("userData", JSON.stringify(userData));
-    setLoginTokenCookie(token);
+    setLoginTokenCookie(token, userData._id);
     axios.defaults.headers.common["Authorization"] =
       "Bearer " + cookies.get("SSID");
+    axios.defaults.headers.common["x-cm-user-id"] = cookies.get("USR");
     return history.push("/conversations");
   };
 
-  const setLoginTokenCookie = (token) => {
+  const setLoginTokenCookie = (token, userId) => {
     let now = new Date();
     let expiry = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
     cookies.set("SSID", token, { path: "/", expires: expiry });
+    cookies.set("USR", userId, { path: "/", expires: expiry });
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

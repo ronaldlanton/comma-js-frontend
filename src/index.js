@@ -21,6 +21,7 @@ const cookies = new Cookies();
 axios.defaults.baseURL = "https://comma-js.herokuapp.com/api/";
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + cookies.get("SSID");
+axios.defaults.headers.common["x-cm-user-id"] = cookies.get("USR");
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 //At any point of the app, if there is an UNAUTHORIZED error, redirect to login page.
@@ -29,9 +30,10 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 403) {
-      const history = useHistory();
-      history.push("/");
+    if (error.response && error.response.status === 403) {
+      cookies.remove("SSID", { path: "/" });
+      cookies.remove("USR", { path: "/" });
+      window.location.href = "/";
     }
     return Promise.reject(error);
   }
@@ -43,10 +45,12 @@ axios.interceptors.response.use(
   function (response) {
     if (response.status === 200) {
       let currentSSID = cookies.get("SSID");
+      let currentUSR = cookies.get("USR");
       let now = new Date();
       let expiry = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
       cookies.set("SSID", currentSSID, { path: "/", expires: expiry });
+      cookies.set("USR", currentUSR, { path: "/", expires: expiry });
       console.log("token validity extended.");
     }
     return response;

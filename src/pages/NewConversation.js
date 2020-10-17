@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { useDispatch } from "react-redux";
+import { setCurrentConversation } from "../actions";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -25,11 +27,13 @@ const useStyles = makeStyles((theme) => ({
 export default function BasicTextFields() {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const [emailId, setEmailId] = useState();
   const [isError, setIsError] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [snackBarOpen, setSnackBarOpen] = React.useState(false);
+  const [apiResult, setApiResult] = useState();
 
   const updateStateEmail = (e) => {
     setEmailId(e.target.value);
@@ -37,7 +41,7 @@ export default function BasicTextFields() {
 
   const handleClose = (event, reason) => {
     setSnackBarOpen(false);
-    return history.push("/");
+    loadMiniversations(apiResult);
   };
 
   const sendCreateRequest = () => {
@@ -50,6 +54,7 @@ export default function BasicTextFields() {
         console.log(result);
         if (result.data.status === 200) {
           setSnackBarOpen(true);
+          setApiResult(result.data.result);
         }
       })
       .catch(function (error) {
@@ -60,6 +65,11 @@ export default function BasicTextFields() {
           setErrorText("You already have a coversation with this person.");
         }
       });
+  };
+
+  const loadMiniversations = (conversation) => {
+    dispatch(setCurrentConversation(conversation));
+    history.push("/miniversations");
   };
 
   return (
