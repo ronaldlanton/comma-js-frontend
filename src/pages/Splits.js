@@ -5,7 +5,6 @@ import axios from "axios";
 import socket from "../WebSocket";
 import Cookies from "universal-cookie";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Fade from "@material-ui/core/Fade";
 import ChatHeader from "../components/ChatHeader";
 import ChatComposer from "../components/ChatComposer";
 import MessageBubble from "../components/MessageBubble";
@@ -32,7 +31,6 @@ function Splits() {
   //State variables.
   const [tabList, setTabList] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [lastSeenMessage, setLastSeenMessage] = useState();
   const [composedMessage, setComposedMessage] = useState("");
   const [isTabListLoading, setIsTabListLoading] = useState(true);
   const [isMessageListLoading, setIsMessageListLoading] = useState(true);

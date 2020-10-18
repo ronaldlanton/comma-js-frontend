@@ -7,7 +7,6 @@ import rootReducer from "./reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import Cookies from "universal-cookie";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import socket from "./WebSocket";
 import db from "./database/database";

@@ -5,7 +5,7 @@ import Conversations from "./pages/Conversations";
 import Splits from "./pages/Splits";
 import NewConversation from "./pages/NewConversation";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import Container from "@material-ui/core/Container";
+
 import "./App.css";
 
 function App() {

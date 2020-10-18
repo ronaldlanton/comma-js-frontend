@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Badge from "@material-ui/core/Badge";
@@ -33,7 +32,7 @@ function ChatHeader({
   return (
     <div className="header-backdrop">
       {isTabListLoading === true ? (
-        <div>{/* <CircularProgress className="progres-circle"/> */} </div>
+        <div></div>
       ) : (
         <center>
           <div>
