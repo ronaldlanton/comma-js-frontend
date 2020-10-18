@@ -40,6 +40,7 @@
 h1 {
   color: tomato;
 }
+
 .login-container {
   display: flex;
   flex-direction: column;
@@ -63,10 +64,48 @@ h1 {
   backdrop-filter: blur(10px);
   box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
   padding: 8px;
+  min-height: 100px;
 }
 
 .messages-container {
   overflow-y: scroll;
   height: auto;
   max-height: calc(100vh - 48px);
+}
+
+.page {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 200ms, transform 200ms;
+}
+
+.progres-circle {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }

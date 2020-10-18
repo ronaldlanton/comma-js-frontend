@@ -73,35 +73,41 @@ export default function BasicTextFields() {
   };
 
   return (
-    <center>
-      <form className={classes.root} noValidate autoComplete="off">
-        <Typography variant="h5" gutterBottom>
-          New Conversation:
-        </Typography>
-        <TextField
-          error={isError}
-          id="filled-basic"
-          label="Enter Google ID"
-          variant="filled"
-          onChange={updateStateEmail}
-          helperText={errorText}
-        />
-        <FormHelperText id="my-helper-text">
-          This is typically their gmail address.
-        </FormHelperText>
-        <Button variant="contained" color="primary" onClick={sendCreateRequest}>
-          Add
-        </Button>
-      </form>
-      <Snackbar
-        open={snackBarOpen}
-        autoHideDuration={5000}
-        onClose={handleClose}
-      >
-        <Alert onClose={handleClose} severity="success">
-          Friend Added
-        </Alert>
-      </Snackbar>
-    </center>
+    <div>
+      <center>
+        <form className={classes.root} noValidate autoComplete="off">
+          <Typography variant="h5" gutterBottom>
+            New Conversation:
+          </Typography>
+          <TextField
+            error={isError}
+            id="filled-basic"
+            label="Enter Google ID"
+            variant="filled"
+            onChange={updateStateEmail}
+            helperText={errorText}
+          />
+          <FormHelperText id="my-helper-text">
+            This is typically their gmail address.
+          </FormHelperText>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={sendCreateRequest}
+          >
+            Add
+          </Button>
+        </form>
+        <Snackbar
+          open={snackBarOpen}
+          autoHideDuration={5000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity="success">
+            Friend Added
+          </Alert>
+        </Snackbar>
+      </center>
+    </div>
   );
 }

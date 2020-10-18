@@ -62,6 +62,7 @@ axios.interceptors.response.use(
 
 socket.on("reconnect", function () {
   socket.emit("_connect", {
+    user_id: cookies.get("USR"),
     token: "Bearer " + cookies.get("SSID"),
   });
 

@@ -33,15 +33,17 @@ function ChatHeader({
   return (
     <div className="header-backdrop">
       {isTabListLoading === true ? (
-        <CircularProgress />
+        <div>{/* <CircularProgress className="progres-circle"/> */} </div>
       ) : (
         <center>
-          <Typography>{receiverProfile.name.givenName}</Typography>
+          <div>
+            <Typography>{receiverProfile.name.givenName}</Typography>
 
-          <Avatar
-            alt={receiverProfile.name.givenName}
-            src={receiverProfile.display_picture}
-          />
+            <Avatar
+              alt={receiverProfile.name.givenName}
+              src={receiverProfile.display_picture}
+            />
+          </div>
           <ToggleButtonGroup
             value={selectedTab}
             exclusive

@@ -164,66 +164,64 @@ function Conversations() {
   }, []);
 
   return isLoading === true ? (
-    <CircularProgress />
+    <CircularProgress className="progres-circle" />
   ) : (
     //If loading is complete.
-    <Fade in={true}>
-      <div>
-        <Typography
-          variant="h5"
-          gutterBottom
-          style={{
-            marginLeft: "16px",
-            marginTop: "16px",
-            marginBottom: "16px",
-          }}
+    <div>
+      <Typography
+        variant="h5"
+        gutterBottom
+        style={{
+          marginLeft: "16px",
+          marginTop: "16px",
+          marginBottom: "16px",
+        }}
+      >
+        <b>Conversations</b>{" "}
+        <IconButton
+          style={{ marginBottom: "4px" }}
+          onClick={() => history.push("/new-conversation")}
         >
-          <b>Conversations</b>{" "}
-          <IconButton style={{ marginBottom: "4px" }} onClick={() => history.push("/new-conversation")}>
-            <AddCircleOutlineIcon></AddCircleOutlineIcon>
-          </IconButton>
-        </Typography>
-        <List className={classes.root}>
-          {/*Render list of threads*/}
-          {conversationsList.map((conversation) => {
-            return (
-              <div key={conversation._id}>
-                <ListItem
-                  button
-                  onClick={() => loadMiniversations(conversation)}
-                >
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={conversation.other_user.name.givenName}
-                      src={conversation.other_user.display_picture}
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      conversation.other_user.name.givenName +
-                      " " +
-                      conversation.other_user.name.familyName
-                    }
-                    secondary={
-                      conversation.tabs.length > 0
-                        ? conversation.tabs.length + " miniversation(s)."
-                        : "No miniversations"
-                    }
+          <AddCircleOutlineIcon></AddCircleOutlineIcon>
+        </IconButton>
+      </Typography>
+      <List className={classes.root}>
+        {/*Render list of threads*/}
+        {conversationsList.map((conversation) => {
+          return (
+            <div key={conversation._id}>
+              <ListItem button onClick={() => loadMiniversations(conversation)}>
+                <ListItemAvatar>
+                  <Avatar
+                    alt={conversation.other_user.name.givenName}
+                    src={conversation.other_user.display_picture}
                   />
-                  {conversation.new_for.includes(user._id) && (
-                    <Badge
-                      color="secondary"
-                      variant="dot"
-                      invisible={false}
-                    ></Badge>
-                  )}
-                </ListItem>
-              </div>
-            );
-          })}
-        </List>
-      </div>
-    </Fade>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    conversation.other_user.name.givenName +
+                    " " +
+                    conversation.other_user.name.familyName
+                  }
+                  secondary={
+                    conversation.tabs.length > 0
+                      ? conversation.tabs.length + " miniversation(s)."
+                      : "No miniversations"
+                  }
+                />
+                {conversation.new_for.includes(user._id) && (
+                  <Badge
+                    color="secondary"
+                    variant="dot"
+                    invisible={false}
+                  ></Badge>
+                )}
+              </ListItem>
+            </div>
+          );
+        })}
+      </List>
+    </div>
   );
 }
 

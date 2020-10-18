@@ -171,7 +171,8 @@ function Miniversations() {
           return tabId !== tab._id;
         });
       setNewContentTabs(changedNewContentTabs);
-      document.getElementById("messageEnd").scrollIntoView();
+      let bottomElement = document.getElementById("messageEnd");
+      if (bottomElement) document.getElementById("messageEnd").scrollIntoView();
     });
   };
 
@@ -320,34 +321,32 @@ function Miniversations() {
         changeRenderedTab={changeRenderedTab}
       />
       {isMessageListLoading === true ? (
-        <CircularProgress />
+        <CircularProgress className="progres-circle fixed" />
       ) : (
-        <Fade in={true}>
-          <div
-            className="messages-container"
-            onScroll={handleScroll}
-            id="messagesContainer"
-          >
-            {" "}
-            {messages.map((message) => {
-              let senderProfile = currentConversation.thread_participants.find(
-                (participant) => {
-                  return participant._id === message.sender;
-                }
-              );
-              return (
-                <MessageBubble
-                  key={message._id}
-                  senderProfile={senderProfile}
-                  displayPicture={senderProfile}
-                  message={message}
-                  currentTab={currentTab}
-                />
-              );
-            })}
-            <div id="messageEnd"></div>
-          </div>
-        </Fade>
+        <div
+          className="messages-container"
+          onScroll={handleScroll}
+          id="messagesContainer"
+        >
+          {" "}
+          {messages.map((message) => {
+            let senderProfile = currentConversation.thread_participants.find(
+              (participant) => {
+                return participant._id === message.sender;
+              }
+            );
+            return (
+              <MessageBubble
+                key={message._id}
+                senderProfile={senderProfile}
+                displayPicture={senderProfile}
+                message={message}
+                currentTab={currentTab}
+              />
+            );
+          })}
+          <div id="messageEnd"></div>
+        </div>
       )}
       <ChatComposer
         currentValue={composedMessage}
