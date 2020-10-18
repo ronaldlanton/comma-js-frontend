@@ -74,20 +74,21 @@ h1 {
 }
 
 .container {
-  position: relative;
-}
-
-.page {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
+  overflow: hidden;
+}
+
+.page {
+  position: relative;
 }
 
 .page-enter {
   opacity: 0;
-  transform: scale(1.1);
+  transform: scale(0.9);
 }
 
 .page-enter-active {
