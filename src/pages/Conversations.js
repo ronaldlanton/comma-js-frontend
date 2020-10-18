@@ -92,9 +92,9 @@ function Conversations() {
     });
   };
 
-  const loadMiniversations = (conversation) => {
+  const loadSplits = (conversation) => {
     dispatch(setCurrentConversation(conversation));
-    history.push("/miniversations");
+    history.push("/splits");
   };
 
   const connectSocket = (token) => {
@@ -188,9 +188,13 @@ function Conversations() {
       <List className={classes.root}>
         {/*Render list of threads*/}
         {conversationsList.map((conversation) => {
+          let splitsText;
+          conversation.tabs.length > 1
+            ? (splitsText = "splits")
+            : (splitsText = "split");
           return (
             <div key={conversation._id}>
-              <ListItem button onClick={() => loadMiniversations(conversation)}>
+              <ListItem button onClick={() => loadSplits(conversation)}>
                 <ListItemAvatar>
                   <Avatar
                     alt={conversation.other_user.name.givenName}
@@ -204,9 +208,12 @@ function Conversations() {
                     conversation.other_user.name.familyName
                   }
                   secondary={
-                    conversation.tabs.length > 0
-                      ? conversation.tabs.length + " miniversation(s)."
-                      : "No miniversations"
+                    (conversation.tabs.length > 0
+                      ? conversation.tabs.length + " " + splitsText
+                      : "No Splits") +
+                    (conversation.new_for.includes(user._id)
+                      ? ", unread messages"
+                      : "")
                   }
                 />
                 {conversation.new_for.includes(user._id) && (

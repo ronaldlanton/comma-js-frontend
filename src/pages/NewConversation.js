@@ -41,7 +41,7 @@ export default function BasicTextFields() {
 
   const handleClose = (event, reason) => {
     setSnackBarOpen(false);
-    loadMiniversations(apiResult);
+    loadSplits(apiResult);
   };
 
   const sendCreateRequest = () => {
@@ -67,9 +67,9 @@ export default function BasicTextFields() {
       });
   };
 
-  const loadMiniversations = (conversation) => {
+  const loadSplits = (conversation) => {
     dispatch(setCurrentConversation(conversation));
-    history.push("/miniversations");
+    history.push("/splits");
   };
 
   return (

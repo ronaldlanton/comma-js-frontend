@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Conversations from "./pages/Conversations";
-import Miniversations from "./pages/Miniversations";
+import Splits from "./pages/Splits";
 import NewConversation from "./pages/NewConversation";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Container from "@material-ui/core/Container";
@@ -27,11 +27,7 @@ function App() {
                     exact
                     component={Conversations}
                   />
-                  <Route
-                    path="/miniversations"
-                    exact
-                    component={Miniversations}
-                  />
+                  <Route path="/splits" exact component={Splits} />
                   <Route
                     path="/new-conversation"
                     exact

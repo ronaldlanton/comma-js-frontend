@@ -17,7 +17,7 @@ var isScrollRequestActive = false;
 var tabChanged = false;
 var currentTabIds = [];
 
-function Miniversations() {
+function Splits() {
   const cookies = new Cookies();
   const history = useHistory();
 
@@ -360,4 +360,4 @@ function Miniversations() {
   );
 }
 
-export default Miniversations;
+export default Splits;
