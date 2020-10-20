@@ -31,7 +31,7 @@ self.addEventListener("push", (e) => {
     console.log("is client visible?", isClientVisible);
     if (isClientVisible === false)
       switch (data.event) {
-        case "message":
+        case "message_in":
           let title = "New Message on " + data.payload.tab_name;
           let notificationObject = {
             body: data.payload.content,
