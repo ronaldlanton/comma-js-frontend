@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import { useDispatch } from "react-redux";
-import { setCurrentConversation } from "../actions";
+import { useSelector } from "react-redux";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -27,28 +25,33 @@ const useStyles = makeStyles((theme) => ({
 export default function BasicTextFields() {
   const classes = useStyles();
   const history = useHistory();
-  const dispatch = useDispatch();
 
-  const [emailId, setEmailId] = useState();
+  const [tabName, setTabName] = useState();
   const [isError, setIsError] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [snackBarOpen, setSnackBarOpen] = React.useState(false);
   const [apiResult, setApiResult] = useState();
 
-  const updateStateEmail = (e) => {
-    setEmailId(e.target.value);
+  const currentConversation = useSelector((state) => {
+    return state.conversationReducer.conversation;
+  });
+  console.log(currentConversation);
+  const updateStateTabName = (e) => {
+    setTabName(e.target.value);
   };
 
   const handleClose = (event, reason) => {
     setSnackBarOpen(false);
-    loadSplits(apiResult);
+    loadConversation();
   };
 
   const sendCreateRequest = () => {
     console.log("creating conversation...");
     axios
-      .get("/rest/v1/threads/newThread", {
-        params: { email: emailId },
+      .post("/rest/v1/tabs/newTab", {
+        thread_id: currentConversation._id,
+        tab_name: tabName,
+        require_authentication: false,
       })
       .then(function (result) {
         console.log(result);
@@ -67,8 +70,7 @@ export default function BasicTextFields() {
       });
   };
 
-  const loadSplits = (conversation) => {
-    dispatch(setCurrentConversation(conversation));
+  const loadConversation = () => {
     history.push("/splits");
   };
 
@@ -77,19 +79,17 @@ export default function BasicTextFields() {
       <center>
         <form className={classes.root} noValidate autoComplete="off">
           <Typography variant="h5" gutterBottom>
-            Add Friend
+            Create Split
           </Typography>
           <TextField
             error={isError}
             id="filled-basic"
-            label="Enter Google ID"
+            label="Name Your Split"
             variant="filled"
-            onChange={updateStateEmail}
+            onChange={updateStateTabName}
             helperText={errorText}
           />
-          <FormHelperText id="my-helper-text">
-            This is typically their gmail address.
-          </FormHelperText>
+          <br></br>
           <Button
             variant="contained"
             color="primary"
@@ -104,7 +104,7 @@ export default function BasicTextFields() {
           onClose={handleClose}
         >
           <Alert onClose={handleClose} severity="success">
-            Friend Added
+            Split Created
           </Alert>
         </Snackbar>
       </center>

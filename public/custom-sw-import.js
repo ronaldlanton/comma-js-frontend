@@ -30,10 +30,21 @@ self.addEventListener("push", (e) => {
   checkAppVisibility().then((isClientVisible) => {
     console.log("is client visible?", isClientVisible);
     if (isClientVisible === false)
-      self.registration.showNotification(data.title, {
-        body: data.description,
-        icon: data.icon,
-      });
+      switch (data.event) {
+        case "message":
+          let title = "New Message on " + data.payload.tab_name;
+          let notificationObject = {
+            body: data.payload.content,
+            icon: data.payload.icon,
+            tag: data.payload.sender,
+            renotify: true
+          };
+          self.registration.showNotification(title, notificationObject);
+          break;
+
+        default:
+          break;
+      }
   });
 });
 

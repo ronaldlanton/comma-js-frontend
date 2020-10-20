@@ -1,10 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Badge from "@material-ui/core/Badge";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import IconButton from "@material-ui/core/IconButton";
 
 function ChatHeader({
   isTabListLoading,
@@ -12,6 +15,8 @@ function ChatHeader({
   newContentTabs,
   changeRenderedTab,
 }) {
+  const history = useHistory();
+
   const [selectedTab, setSelectedTab] = React.useState();
 
   const user = useSelector((state) => {
@@ -68,6 +73,11 @@ function ChatHeader({
               );
             })}
           </ToggleButtonGroup>
+          <IconButton
+            onClick={() => history.push("/new-split")}
+          >
+            <AddCircleOutlineIcon></AddCircleOutlineIcon>
+          </IconButton>
         </center>
       )}
     </div>
