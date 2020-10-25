@@ -11,6 +11,7 @@ import PauseIcon from "@material-ui/icons/Pause";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    maxWidth: "315px",
   },
   details: {
     display: "flex",
@@ -64,30 +65,32 @@ export default function SpotifyMiniPlayer(trackInfo) {
     return !audelem.paused;
   };
   return (
-    <Card className={classes.root}>
-      <div className={classes.details}>
-        <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5">
-            {trackInfo.trackInfo.name}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            {trackInfo.trackInfo.artists[0].name}
-          </Typography>
-        </CardContent>
-        <div className={classes.controls}>
-          <IconButton aria-label="play/pause" onClick={playPauseAudio}>
-            {isPlaying === true ? (
-              <PauseIcon className={classes.pauseIcon} />
-            ) : (
-              <PlayArrowIcon className={classes.playIcon} />
-            )}
-          </IconButton>
+    <center>
+      <Card className={classes.root}>
+        <div className={classes.details}>
+          <CardContent className={classes.content}>
+            <Typography component="h5" variant="h5">
+              {trackInfo.trackInfo.name}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              {trackInfo.trackInfo.artists[0].name}
+            </Typography>
+          </CardContent>
+          <div className={classes.controls}>
+            <IconButton aria-label="play/pause" onClick={playPauseAudio}>
+              {isPlaying === true ? (
+                <PauseIcon className={classes.pauseIcon} />
+              ) : (
+                <PlayArrowIcon className={classes.playIcon} />
+              )}
+            </IconButton>
+          </div>
         </div>
-      </div>
-      <CardMedia
-        className={classes.cover}
-        image={trackInfo.trackInfo.album.images[1].url}
-      />
-    </Card>
+        <CardMedia
+          className={classes.cover}
+          image={trackInfo.trackInfo.album.images[1].url}
+        />
+      </Card>
+    </center>
   );
 }

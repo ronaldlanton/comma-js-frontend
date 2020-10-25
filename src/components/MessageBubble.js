@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -11,6 +12,10 @@ function MessageBubble({ senderProfile, message, currentTab }) {
   let senderName = senderProfile
     ? senderProfile.name.givenName + " " + senderProfile.name.familyName
     : "";
+
+  const user = useSelector((state) => {
+    return state.userReducer.user;
+  });
 
   const [imageFile, setImageFile] = useState("");
   const [spotifyMeta, setSpotifyMeta] = useState();
@@ -49,30 +54,28 @@ function MessageBubble({ senderProfile, message, currentTab }) {
           if (result.data.status === 200) {
             setSpotifyMeta(result.data.result);
             console.log(result.data.result.preview_url);
-            
           }
         });
     }
     // eslint-disable-next-line
   }, []);
   return (
-    <Card style={{ marginTop: "24px" }} variant="outlined">
-      <CardContent>
-        <Avatar alt={senderName} src={displayPicture} />
+    <div className="bubblewrap">
+      {/* <Avatar alt={senderName} src={displayPicture} /> */}
+      <span className={message.sender === user._id ? "send-bubble" : "receive-bubble"}>
         {message.type === "text" ? (
           <Typography>{message.content}</Typography>
         ) : (
           <img alt={message.file_name} src={imageFile}></img>
         )}
-      </CardContent>
-      {message.content.includes("https://open.spotify.com/track/") &&
-        spotifyMeta &&
-        spotifyMeta.preview_url && (
-          <SpotifyMiniPlayer
-            trackInfo={spotifyMeta}
-          />
-        )}
-    </Card>
+
+        {message.content.includes("https://open.spotify.com/track/") &&
+          spotifyMeta &&
+          spotifyMeta.preview_url && (
+            <SpotifyMiniPlayer trackInfo={spotifyMeta} />
+          )}
+      </span>
+    </div>
   );
 }
 

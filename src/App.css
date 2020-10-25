@@ -116,3 +116,83 @@ h1 {
   right: 0;
   margin: auto;
 }
+
+:root {
+  /*colors*/
+  --background_color: rgb(255, 255, 255);
+  --primary_color: rgb(0, 153, 255);
+  --text_primary: rgb(255, 255, 255);
+  --secondary_color: rgb(255, 230, 0);
+  --text_secondary: rgb(14, 190, 243);
+  --accent_color: rgb(0, 120, 255);
+  --surface_color: rgb(255, 255, 255);
+  --error_color: rgb(14, 190, 243);
+  --textbox: rgb(214, 214, 214);
+  --textbox_text: rgb(78, 78, 78);
+  --send_bubble_color: rgb(0, 153, 255);
+  --send_text_color: rgb(255, 255, 255);
+  --receive_bubble_color: rgb(214, 214, 214);
+  --receive_text_color: rgb(78, 78, 78);
+  /*sizes*/
+  --bar_height: 50px;
+  --conversation_font_size: 14px;
+}
+
+.send-bubble {
+  padding: 14px;
+  margin: 10px;
+  border-radius: 15px;
+  position: relative;
+  box-sizing: border-box;
+  max-width: 600px;
+  display: block;
+  float: right;
+  background-color: var(--send_bubble_color);
+  color: var(--send_text_color);
+}
+
+.send-bubble:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-left-color: var(--send_bubble_color);
+  border-right: 0;
+  margin-top: -8px;
+  margin-right: -8px;
+}
+
+.receive-bubble {
+  padding: 14px;
+  margin: 10px;
+  border-radius: 15px;
+  position: relative;
+  box-sizing: border-box;
+  max-width: 600px;
+  display: block;
+  float: left;
+  background-color: var(--receive_bubble_color);
+  color: var(--receive_text_color);
+}
+
+.receive-bubble:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: var(--receive_bubble_color);
+  border-left: 0;
+  margin-top: -8px;
+  margin-left: -8px;
+}
+.bubblewrap {
+  display: block;
+  float: right;
+  width: 100%;
+}
