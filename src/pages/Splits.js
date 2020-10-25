@@ -241,7 +241,7 @@ function Splits() {
     const top = e.target.scrollTop <= 50;
 
     //Because top scroll threshold is set to 50px, every scroll event fired after reaching gets counted.
-    //So once the threshold is reached, we disable making requests for next 2 seconds.
+    //So once the threshold is reached, we disable making requests for next 1 seconds.
     if (top && isScrollRequestActive === false) {
       console.log("reached top");
       let messagesContainer = document.getElementById("messagesContainer");
@@ -260,7 +260,7 @@ function Splits() {
       });
       setTimeout(() => {
         isScrollRequestActive = false;
-      }, 2000);
+      }, 1000);
     }
   };
 
