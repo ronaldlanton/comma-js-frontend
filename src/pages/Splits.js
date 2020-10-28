@@ -198,7 +198,7 @@ function Splits() {
         let sentMessage = messageQueue.find((queueItem) => {
           return queueItem.id === successMessage.message_id;
         });
-        stateMessage.content = sentMessage.content;
+        stateMessage.content = sentMessage.payload.content;
         messageQueue = messageQueue.filter((queueItem) => {
           return queueItem.id !== successMessage.message_id;
         });

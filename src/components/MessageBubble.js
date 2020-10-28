@@ -59,6 +59,7 @@ function MessageBubble({ senderProfile, message, currentTab }) {
     }
     // eslint-disable-next-line
   }, []);
+  console.log(message);
   return (
     <div className="bubblewrap">
       {/* <Avatar alt={senderName} src={displayPicture} /> */}
