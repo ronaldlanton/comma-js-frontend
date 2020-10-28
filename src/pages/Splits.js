@@ -69,7 +69,7 @@ function Splits() {
         .get("/rest/v1/messages/getMessages", {
           params: {
             tab_id: tabId,
-            limit: 10,
+            limit: 15,
             offset: tabChanged === true ? 0 : messages.length,
           },
         })
@@ -145,11 +145,15 @@ function Splits() {
   const updateSeen = (messageId) => {
     console.log("inside update seen");
     let seenStatus = {
-      user_id: cookies.get("USR"),
-      token: "Bearer " + cookies.get("SSID"),
-      tab_id: currentTab._id,
-      thread_id: currentConversation._id,
-      last_read_message_id: messageId,
+      headers: {
+        user_id: cookies.get("USR"),
+        token: "Bearer " + cookies.get("SSID"),
+      },
+      payload: {
+        tab_id: currentTab._id,
+        thread_id: currentConversation._id,
+        last_read_message_id: messageId,
+      },
     };
     socket.emit("_updateMessageSeen", seenStatus);
   };
@@ -209,12 +213,16 @@ function Splits() {
 
   const sendMessage = () => {
     let messageObject = {
-      id: +new Date(),
-      user_id: cookies.get("USR"),
-      token: "Bearer " + cookies.get("SSID"),
-      type: "text",
-      tab_id: currentTab._id,
-      content: composedMessage,
+      headers: {
+        user_id: cookies.get("USR"),
+        token: "Bearer " + cookies.get("SSID"),
+      },
+      payload: {
+        id: +new Date(),
+        type: "text",
+        tab_id: currentTab._id,
+        content: composedMessage,
+      },
     };
     messageQueue.push(messageObject);
     socket.emit("_messageOut", messageObject);
@@ -224,12 +232,16 @@ function Splits() {
   const sendImages = (fileNames) => {
     fileNames.forEach((fileName) => {
       let messageObject = {
-        id: +new Date(),
-        user_id: cookies.get("USR"),
-        token: "Bearer " + cookies.get("SSID"),
-        type: "image",
-        tab_id: currentTab._id,
-        file_name: fileName,
+        headers: {
+          user_id: cookies.get("USR"),
+          token: "Bearer " + cookies.get("SSID"),
+        },
+        payload: {
+          id: +new Date(),
+          type: "image",
+          tab_id: currentTab._id,
+          file_name: fileName,
+        },
       };
       messageQueue.push(messageObject);
       socket.emit("_messageOut", messageObject);
@@ -343,7 +355,7 @@ function Splits() {
               />
             );
           })}
-          <div id="messageEnd"></div>
+          <div id="messageEnd" class="bubblewrap"></div>
         </div>
       )}
       <ChatComposer

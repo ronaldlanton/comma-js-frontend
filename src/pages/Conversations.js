@@ -102,8 +102,10 @@ function Conversations() {
       if (socket.connected !== true) {
         console.log("connecting socket...");
         socket.emit("_connect", {
-          user_id: cookies.get("USR"),
-          token: "Bearer " + cookies.get("SSID"),
+          headers: {
+            user_id: cookies.get("USR"),
+            token: "Bearer " + cookies.get("SSID"),
+          },
         });
 
         socket.on("_connect", () => {
