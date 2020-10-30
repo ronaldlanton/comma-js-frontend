@@ -31,6 +31,7 @@ function Splits() {
   //State variables.
   const [tabList, setTabList] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [lastSeenMessage, setLastSeenMessage] = useState();
   const [composedMessage, setComposedMessage] = useState("");
   const [isTabListLoading, setIsTabListLoading] = useState(true);
   const [isMessageListLoading, setIsMessageListLoading] = useState(true);
@@ -162,6 +163,9 @@ function Splits() {
     if (isMessageListLoading === false) setIsMessageListLoading(true);
     currentTab = tab;
     tabChanged = true;
+
+    setLastSeenMessage(getLastSeenMessageFromTabObject(tab));
+
     getMessages(tab._id).then((msgs) => {
       tabChanged = false;
       msgs = msgs.reverse();
@@ -177,6 +181,20 @@ function Splits() {
       if (bottomElement) document.getElementById("messageEnd").scrollIntoView();
     });
   };
+
+  const getLastSeenMessageFromTabObject = (tabObject) => {
+    let seenStatusArray = tabObject.seen_status;
+
+    let seenStatus = seenStatusArray.find((status) => {
+      return status.user_id !== user._id;
+    });
+
+    return seenStatus.last_read_message_id;
+  };
+
+  const setOtherUserMessageSeen = (payload) => {
+    setLastSeenMessage(payload.last_read_message_id)
+  }
 
   const updateComposedMessage = (event) => {
     let composed = event.target.value;
@@ -283,6 +301,7 @@ function Splits() {
 
     //Socket callbacks
     socket.on("_messageIn", addMessageToState);
+    socket.on("_messageSeen", setOtherUserMessageSeen);
     socket.on("_success", successHandler);
 
     //When component loads, get all tabs and then render the messages for first tab in list.
@@ -305,6 +324,7 @@ function Splits() {
     return () => {
       console.log("cleaning up socket callbacks...");
       socket.off("_messageIn", addMessageToState);
+      socket.off("_messageSeen", setOtherUserMessageSeen);
       socket.off("_success", successHandler);
       currentTab = null;
       currentTabIds = [];
@@ -352,6 +372,7 @@ function Splits() {
                 displayPicture={senderProfile}
                 message={message}
                 currentTab={currentTab}
+                lastSeenMessage={lastSeenMessage}
               />
             );
           })}
@@ -363,7 +384,6 @@ function Splits() {
         updateComposedMessage={updateComposedMessage}
         sendMessage={sendMessage}
         sendImages={sendImages}
-        currentTab={currentTab}
         isMessageListLoading={isMessageListLoading}
       />
     </div>

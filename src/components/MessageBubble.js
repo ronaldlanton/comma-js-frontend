@@ -7,12 +7,18 @@ import Avatar from "@material-ui/core/Avatar";
 import axios from "axios";
 import SpotifyMiniPlayer from "./SpotifyMiniPlayer";
 
-function MessageBubble({ senderProfile, message, currentTab }) {
+function MessageBubble({
+  senderProfile,
+  message,
+  currentTab,
+  lastSeenMessage,
+}) {
   let displayPicture = senderProfile ? senderProfile.display_picture : null;
   let senderName = senderProfile
     ? senderProfile.name.givenName + " " + senderProfile.name.familyName
     : "";
 
+  console.log(lastSeenMessage);
   const user = useSelector((state) => {
     return state.userReducer.user;
   });
@@ -63,7 +69,11 @@ function MessageBubble({ senderProfile, message, currentTab }) {
   return (
     <div className="bubblewrap">
       {/* <Avatar alt={senderName} src={displayPicture} /> */}
-      <span className={message.sender === user._id ? "send-bubble" : "receive-bubble"}>
+      <span
+        className={
+          message.sender === user._id ? "send-bubble" : "receive-bubble"
+        }
+      >
         {message.type === "text" ? (
           <Typography>{message.content}</Typography>
         ) : (
@@ -75,6 +85,12 @@ function MessageBubble({ senderProfile, message, currentTab }) {
           spotifyMeta.preview_url && (
             <SpotifyMiniPlayer trackInfo={spotifyMeta} />
           )}
+        {lastSeenMessage === message._id && (
+          <div>
+            <br></br>
+            👁 Seen
+          </div>
+        )}
       </span>
     </div>
   );

@@ -1,18 +1,19 @@
 # comma-js-frontend
 ![Comma JS Logo](/branding-assets/logo.png)
 
-Open source messenger based on Express, MongoDB, Socket.IO and React.
+An open source messenger based on Node.js and React
+
+**Is this another 'chat' application built based on YouTube examples? NO**
+
+**Ok it's not that, so how does it standout?**
+* Integrated Google Single Sign On for one-click user creation and login.💻
+* Splits - This means users have the ability have sub conversations inside threads. Think of a conversation like a browser window with multiple tabs open! 💭
+* Lock parts of conversations instead of locking the whole application! Each tab in a thread are renamable and password-protectable! 🔐
+* Notifications support. 🔔
+* Spotify integration to preview song links sent in chat. 🎧
 
 **How to Run?**
 
-**Backend:**
 * Install all the dependencies by running `npm install`.
 * Execute command `npm start`.
 * Open http://localhost:3000.
-
-### Dependencies
-
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
