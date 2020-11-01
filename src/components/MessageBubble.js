@@ -18,7 +18,6 @@ function MessageBubble({
     ? senderProfile.name.givenName + " " + senderProfile.name.familyName
     : "";
 
-  console.log(lastSeenMessage);
   const user = useSelector((state) => {
     return state.userReducer.user;
   });
@@ -65,7 +64,6 @@ function MessageBubble({
     }
     // eslint-disable-next-line
   }, []);
-  console.log(message);
   return (
     <div className="bubblewrap">
       {/* <Avatar alt={senderName} src={displayPicture} /> */}

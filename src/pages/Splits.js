@@ -211,7 +211,6 @@ function Splits() {
 
   const updateComposedMessage = (event) => {
     let composed = event.target.value;
-    console.log(composed);
     setComposedMessage(composed);
   };
 
