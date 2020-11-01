@@ -31,6 +31,11 @@ function Splits() {
   //State variables.
   const [tabList, setTabList] = useState([]);
   const [messages, setMessages] = useState([]);
+  const messagesRef = useRef(messages);
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
   const [lastSeenMessage, setLastSeenMessage] = useState();
   const [composedMessage, setComposedMessage] = useState("");
   const [isTabListLoading, setIsTabListLoading] = useState(true);
@@ -144,6 +149,14 @@ function Splits() {
   };
 
   const updateSeen = (messageId) => {
+    //If user is in some other tab or is not currently focussed on the messenger.
+    if (document.visibilityState === "hidden") return;
+
+    if (!messageId || typeof messageId === "object")
+      messageId =
+        messagesRef.current[messagesRef.current.length - 1]
+          ._id; /* Assuming messages array is not empty. */
+
     console.log("inside update seen");
     let seenStatus = {
       headers: {
@@ -193,8 +206,8 @@ function Splits() {
   };
 
   const setOtherUserMessageSeen = (payload) => {
-    setLastSeenMessage(payload.last_read_message_id)
-  }
+    setLastSeenMessage(payload.last_read_message_id);
+  };
 
   const updateComposedMessage = (event) => {
     let composed = event.target.value;
@@ -221,6 +234,7 @@ function Splits() {
           return queueItem.id !== successMessage.message_id;
         });
         setMessages((messages) => [...messages, stateMessage]);
+        updateSeen(stateMessage._id);
         document.getElementById("messageEnd").scrollIntoView();
         break;
 
@@ -303,6 +317,7 @@ function Splits() {
     socket.on("_messageIn", addMessageToState);
     socket.on("_messageSeen", setOtherUserMessageSeen);
     socket.on("_success", successHandler);
+    document.addEventListener("visibilitychange", updateSeen);
 
     //When component loads, get all tabs and then render the messages for first tab in list.
     getTabs().then((tabs) => {
@@ -326,6 +341,7 @@ function Splits() {
       socket.off("_messageIn", addMessageToState);
       socket.off("_messageSeen", setOtherUserMessageSeen);
       socket.off("_success", successHandler);
+      document.removeEventListener("visibilitychange", updateSeen);
       currentTab = null;
       currentTabIds = [];
       messageQueue = [];
