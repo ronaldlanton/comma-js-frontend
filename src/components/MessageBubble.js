@@ -40,7 +40,7 @@ function MessageBubble({
 
   let seenIconProfile = currentConversation.thread_participants.find(
     (participant) => {
-      return participant._id === user._id;
+      return participant._id !== user._id;
     }
   );
 
@@ -112,7 +112,7 @@ function MessageBubble({
         <div className="bubblewrap">
           <Avatar
             alt={senderName}
-            src={displayPicture}
+            src={seenIcon}
             style={{ display: "block", marginLeft: "12px" }}
             className={classes.small}
           />
