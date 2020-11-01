@@ -401,6 +401,7 @@ function Splits() {
         sendMessage={sendMessage}
         sendImages={sendImages}
         isMessageListLoading={isMessageListLoading}
+        currentTab={currentTab}
       />
     </div>
   );

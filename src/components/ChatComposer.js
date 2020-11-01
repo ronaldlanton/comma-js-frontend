@@ -48,7 +48,7 @@ function ChatComposer({
   const [files, setFiles] = useState([]);
 
   const uploadFiles = () => {
-    console.log(files, "uploading..");
+    console.log(files, "uploading to tab", currentTab);
     if (files.length > 0) {
       let promises = [];
       files.forEach((file) => {

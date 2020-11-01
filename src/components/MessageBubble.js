@@ -65,7 +65,10 @@ function MessageBubble({
           }
         });
     }
-    if (message.content.includes("https://open.spotify.com/track/")) {
+    if (
+      message.content &&
+      message.content.includes("https://open.spotify.com/track/")
+    ) {
       var spotifyUrl = getUrlFromText(message.content);
       if (Array.isArray(spotifyUrl)) spotifyUrl = spotifyUrl[0]; //Incase there are multiple urls in the message, take the 1st one.
 
@@ -99,10 +102,15 @@ function MessageBubble({
         {message.type === "text" ? (
           <Typography>{message.content}</Typography>
         ) : (
-          <img alt={message.file_name} src={imageFile}></img>
+          <img
+            alt={message.file_name}
+            src={imageFile}
+            style={{ width: "100%", height: "auto", borderRadius:"25px" }}
+          ></img>
         )}
 
-        {message.content.includes("https://open.spotify.com/track/") &&
+        {message.content &&
+          message.content.includes("https://open.spotify.com/track/") &&
           spotifyMeta &&
           spotifyMeta.preview_url && (
             <SpotifyMiniPlayer trackInfo={spotifyMeta} />
