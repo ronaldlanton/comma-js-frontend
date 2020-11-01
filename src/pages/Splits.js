@@ -152,10 +152,10 @@ function Splits() {
     //If user is in some other tab or is not currently focussed on the messenger.
     if (document.visibilityState === "hidden") return;
 
+    if (!messageId && messagesRef.current.length === 0) return;
+
     if (!messageId || typeof messageId === "object")
-      messageId =
-        messagesRef.current[messagesRef.current.length - 1]
-          ._id; /* Assuming messages array is not empty. */
+      messageId = messagesRef.current[messagesRef.current.length - 1]._id;
 
     console.log("inside update seen");
     let seenStatus = {
