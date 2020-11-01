@@ -214,27 +214,54 @@ function Splits() {
     setComposedMessage(composed);
   };
 
-  const successHandler = (successMessage) => {
-    console.log("success message", successMessage);
-    switch (successMessage.event) {
-      case "_messageOut":
-        let stateMessage = {
+  const processMessageOutSuccess = (successMessage) => {
+    let stateMessage, sentMessage;
+
+    switch (successMessage.type) {
+      case "text":
+        stateMessage = {
           content: "",
           date_created: new Date(successMessage.message_id * 1000),
           sender: user._id,
           type: "text",
           _id: successMessage.inserted_id,
         };
-        let sentMessage = messageQueue.find((queueItem) => {
+        sentMessage = messageQueue.find((queueItem) => {
           return queueItem.id === successMessage.message_id;
         });
         stateMessage.content = sentMessage.payload.content;
-        messageQueue = messageQueue.filter((queueItem) => {
-          return queueItem.id !== successMessage.message_id;
+        break;
+
+      case "image":
+        stateMessage = {
+          date_created: new Date(successMessage.message_id * 1000),
+          sender: user._id,
+          type: "image",
+          file_name: "",
+          _id: successMessage.inserted_id,
+        };
+        sentMessage = messageQueue.find((queueItem) => {
+          return queueItem.id === successMessage.message_id;
         });
-        setMessages((messages) => [...messages, stateMessage]);
-        updateSeen(stateMessage._id);
-        document.getElementById("messageEnd").scrollIntoView();
+        stateMessage.file_name = sentMessage.payload.file_name;
+        break;
+
+      default:
+        break;
+    }
+    messageQueue = messageQueue.filter((queueItem) => {
+      return queueItem.id !== successMessage.message_id;
+    });
+    setMessages((messages) => [...messages, stateMessage]);
+    updateSeen(stateMessage._id);
+    document.getElementById("messageEnd").scrollIntoView();
+  };
+
+  const successHandler = (successMessage) => {
+    console.log("success message", successMessage);
+    switch (successMessage.event) {
+      case "_messageOut":
+        processMessageOutSuccess(successMessage);
         break;
 
       default:

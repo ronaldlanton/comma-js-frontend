@@ -105,7 +105,7 @@ function MessageBubble({
           <img
             alt={message.file_name}
             src={imageFile}
-            style={{ width: "100%", height: "auto", borderRadius:"25px" }}
+            style={{ width: "100%", height: "auto", borderRadius: "25px" }}
           ></img>
         )}
 
