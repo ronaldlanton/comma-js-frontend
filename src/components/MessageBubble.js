@@ -6,13 +6,29 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import axios from "axios";
 import SpotifyMiniPlayer from "./SpotifyMiniPlayer";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
+}));
 
 function MessageBubble({
   senderProfile,
   message,
   currentTab,
   lastSeenMessage,
+  currentConversation,
 }) {
+  const classes = useStyles();
   let displayPicture = senderProfile ? senderProfile.display_picture : null;
   let senderName = senderProfile
     ? senderProfile.name.givenName + " " + senderProfile.name.familyName
@@ -21,6 +37,14 @@ function MessageBubble({
   const user = useSelector((state) => {
     return state.userReducer.user;
   });
+
+  let seenIconProfile = currentConversation.thread_participants.find(
+    (participant) => {
+      return participant._id === user._id;
+    }
+  );
+
+  let seenIcon = seenIconProfile.display_picture;
 
   const [imageFile, setImageFile] = useState("");
   const [spotifyMeta, setSpotifyMeta] = useState();
@@ -83,13 +107,17 @@ function MessageBubble({
           spotifyMeta.preview_url && (
             <SpotifyMiniPlayer trackInfo={spotifyMeta} />
           )}
-        {lastSeenMessage === message._id && (
-          <div>
-            <br></br>
-            👁 Seen
-          </div>
-        )}
       </span>
+      {lastSeenMessage === message._id && (
+        <div className="bubblewrap">
+          <Avatar
+            alt={senderName}
+            src={displayPicture}
+            style={{ display: "block", marginLeft: "12px" }}
+            className={classes.small}
+          />
+        </div>
+      )}
     </div>
   );
 }

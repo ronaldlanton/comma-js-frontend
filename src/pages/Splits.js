@@ -388,6 +388,7 @@ function Splits() {
                 message={message}
                 currentTab={currentTab}
                 lastSeenMessage={lastSeenMessage}
+                currentConversation={currentConversation}
               />
             );
           })}
