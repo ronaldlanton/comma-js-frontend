@@ -19,18 +19,27 @@ const useStyles = makeStyles((theme) => ({
     padding: "2px 4px",
     display: "flex",
     alignItems: "center",
-    width: "100%",
+    width: "calc(100%-24px)",
+    margin: "12px",
+    marginBottom:"4px",
+    marginTop: "0",
+    backgroundColor: "#212121",
+    borderRadius: "35px"
   },
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
+    color: "var(--text_primary)",
+    fontSize: "var(--conversation_font_size)"
   },
   iconButton: {
     padding: 10,
+    color: "var(--text_primary)"
   },
   divider: {
     height: 28,
     margin: 4,
+    color: "var(--text_primary)"
   },
 }));
 

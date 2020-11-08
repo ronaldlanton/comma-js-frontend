@@ -63,9 +63,12 @@ export default function BasicTextFields() {
       .catch(function (error) {
         console.log(error.response);
         let apiError = error.response.data;
-        if (apiError.status === 400 && apiError.error === "DUPLICATE_ENTITY") {
+        if (
+          apiError.status === 400 &&
+          apiError.error === "MAXIMUM_TAB_LIMIT_REACHED"
+        ) {
           setIsError(true);
-          setErrorText("You already have a coversation with this person.");
+          setErrorText("You already have the maximum number of tabs created on this conversation.");
         }
       });
   };

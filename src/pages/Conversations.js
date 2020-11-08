@@ -22,7 +22,8 @@ import IconButton from "@material-ui/core/IconButton";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "var(--background_color)",
+    color: "var(--text_primary) !important",
   },
 }));
 
@@ -176,6 +177,7 @@ function Conversations() {
           marginLeft: "16px",
           marginTop: "16px",
           marginBottom: "16px",
+          color: "var(--text_primary)",
         }}
       >
         <b>Conversations</b>{" "}
@@ -203,6 +205,9 @@ function Conversations() {
                   />
                 </ListItemAvatar>
                 <ListItemText
+                  style={{
+                    color: "var(--text_primary)",
+                  }}
                   primary={
                     conversation.other_user.name.givenName +
                     " " +

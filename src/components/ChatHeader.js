@@ -35,7 +35,7 @@ function ChatHeader({
     }
   );
   return (
-    <div className="header-backdrop">
+    <div className="header-backdrop" style={{ color: "white" }}>
       {isTabListLoading === true ? (
         <div></div>
       ) : (
@@ -73,9 +73,7 @@ function ChatHeader({
               );
             })}
           </ToggleButtonGroup>
-          <IconButton
-            onClick={() => history.push("/new-split")}
-          >
+          <IconButton onClick={() => history.push("/new-split")}>
             <AddCircleOutlineIcon></AddCircleOutlineIcon>
           </IconButton>
         </center>

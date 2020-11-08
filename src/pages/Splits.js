@@ -330,7 +330,7 @@ function Splits() {
       });
       setTimeout(() => {
         isScrollRequestActive = false;
-      }, 1000);
+      }, 800);
     }
   };
 
