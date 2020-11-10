@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
@@ -21,25 +21,25 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     width: "calc(100%-24px)",
     margin: "12px",
-    marginBottom:"4px",
+    marginBottom: "4px",
     marginTop: "0",
     backgroundColor: "#212121",
-    borderRadius: "35px"
+    borderRadius: "35px",
   },
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
     color: "var(--text_primary)",
-    fontSize: "var(--conversation_font_size)"
+    fontSize: "var(--conversation_font_size)",
   },
   iconButton: {
     padding: 10,
-    color: "var(--text_primary)"
+    color: "var(--text_primary)",
   },
   divider: {
     height: 28,
     margin: 4,
-    color: "var(--text_primary)"
+    color: "var(--text_primary)",
   },
 }));
 
@@ -48,13 +48,13 @@ function ChatComposer({
   updateComposedMessage,
   sendMessage,
   sendImages,
-  inputRef,
   currentTab,
   isMessageListLoading,
 }) {
   const classes = useStyles();
   const [isImageUploadDialogOpen, setIsImageUploadDialogOpen] = useState(false);
   const [files, setFiles] = useState([]);
+  const inputRef = useRef();
 
   const uploadFiles = () => {
     console.log(files, "uploading to tab", currentTab);
@@ -107,6 +107,7 @@ function ChatComposer({
               console.log("Enter key pressed");
               e.preventDefault();
               sendMessage();
+              inputRef.current.focus();
             }
           }}
           inputRef={inputRef}
@@ -121,7 +122,10 @@ function ChatComposer({
         </IconButton>
         <IconButton
           className={classes.iconButton}
-          onClick={sendMessage}
+          onClick={() => {
+            sendMessage();
+            inputRef.current.focus();
+          }}
           disabled={isMessageListLoading}
         >
           <SendIcon />

@@ -96,7 +96,8 @@ function MessageBubble({
       {/* <Avatar alt={senderName} src={displayPicture} /> */}
       <span
         className={
-          message.sender === user._id ? "send-bubble" : "receive-bubble"
+          (message.sender === user._id ? "send-bubble" : "receive-bubble") +
+          (!message._id ? " bubble-dim" : "")
         }
       >
         {message.type === "text" ? (

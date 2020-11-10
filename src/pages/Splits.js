@@ -216,20 +216,21 @@ function Splits() {
 
   const processMessageOutSuccess = (successMessage) => {
     let stateMessage, sentMessage;
+    let refArray = messagesRef.current;
 
     switch (successMessage.type) {
       case "text":
-        stateMessage = {
-          content: "",
-          date_created: new Date(successMessage.message_id * 1000),
-          sender: user._id,
-          type: "text",
-          _id: successMessage.inserted_id,
-        };
-        sentMessage = messageQueue.find((queueItem) => {
-          return queueItem.id === successMessage.message_id;
-        });
-        stateMessage.content = sentMessage.payload.content;
+        let messagesCopy = [...refArray];
+
+        for (let index = 0; index < messagesCopy.length; index++) {
+          const currentMessage = messagesCopy[index];
+          if (currentMessage.id === successMessage.message_id) {
+            currentMessage._id = successMessage.inserted_id;
+            break;
+          }
+        }
+        setMessages(messagesCopy);
+        updateSeen(successMessage.inserted_id);
         break;
 
       case "image":
@@ -241,20 +242,24 @@ function Splits() {
           _id: successMessage.inserted_id,
         };
         sentMessage = messageQueue.find((queueItem) => {
-          return queueItem.id === successMessage.message_id;
+          console.log(queueItem);
+          return queueItem.payload.id === successMessage.message_id;
         });
+        console.log(sentMessage);
         stateMessage.file_name = sentMessage.payload.file_name;
+
+        setMessages((messages) => [...messages, stateMessage]);
+        updateSeen(stateMessage._id);
         break;
 
       default:
         break;
     }
+    document.getElementById("messageEnd").scrollIntoView();
+
     messageQueue = messageQueue.filter((queueItem) => {
       return queueItem.id !== successMessage.message_id;
     });
-    setMessages((messages) => [...messages, stateMessage]);
-    updateSeen(stateMessage._id);
-    document.getElementById("messageEnd").scrollIntoView();
   };
 
   const successHandler = (successMessage) => {
@@ -278,13 +283,19 @@ function Splits() {
       payload: {
         id: +new Date(),
         type: "text",
+        date_created: new Date(),
         tab_id: currentTab._id,
         content: composedMessage,
       },
     };
     messageQueue.push(messageObject);
     socket.emit("_messageOut", messageObject);
+    messageObject.payload.sender = user._id;
+    setMessages((messages) => [...messages, messageObject.payload]);
     setComposedMessage("");
+    setTimeout(() => {
+      document.getElementById("messageEnd").scrollIntoView();
+    }, 1);
   };
 
   const sendImages = (fileNames) => {
