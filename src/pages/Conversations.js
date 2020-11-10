@@ -166,10 +166,12 @@ function Conversations() {
   }, []);
 
   return isLoading === true ? (
-    <CircularProgress className="progres-circle" />
+    <div className="page-container">
+      <CircularProgress className="progres-circle" />
+    </div>
   ) : (
     //If loading is complete.
-    <div>
+    <div className="page-container">
       <Typography
         variant="h5"
         gutterBottom

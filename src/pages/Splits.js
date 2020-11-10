@@ -385,7 +385,7 @@ function Splits() {
 
   //Render.
   return (
-    <div>
+    <div className="page-container">
       <ChatHeader
         isTabListLoading={isTabListLoading}
         tabList={tabList}

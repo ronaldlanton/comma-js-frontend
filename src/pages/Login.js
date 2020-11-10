@@ -74,10 +74,10 @@ function Login() {
   //If there is no status
   else {
     if (cookies.get("SSID") && cookies.get("SSID").length >= 30)
-      return <div></div>;
+      return <div className="page-container"></div>;
     //If there is no token present, it means user is logged out or never logged in.
     return (
-      <div className="login-container">
+      <div className="page-container">
         <Button variant="contained" onClick={redirectToGoogle}>
           Sign In
         </Button>

@@ -14,13 +14,12 @@ function App() {
     <Router>
       <Route
         render={({ location }) => (
-          <TransitionGroup>
-            <CSSTransition
-              key={location.key}
-              classNames="page"
-              timeout={{ enter: 300, exit: 200 }}
-            >
-              <div className="container">
+            <TransitionGroup>
+              <CSSTransition
+                key={location.key}
+                classNames="page"
+                timeout={{ enter: 300, exit: 300 }}
+              >
                 <Switch location={location}>
                   <Route path="/" exact component={Login} />
                   <Route
@@ -36,9 +35,8 @@ function App() {
                   />
                   <Route path="/new-split" exact component={NewSplit} />
                 </Switch>
-              </div>
-            </CSSTransition>
-          </TransitionGroup>
+              </CSSTransition>
+            </TransitionGroup>
         )}
       />
     </Router>
