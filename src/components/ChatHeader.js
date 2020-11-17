@@ -42,7 +42,7 @@ function ChatHeader({
       ) : (
         <>
           <div className="receiver-details">
-            <IconButton className="back-button" onClick={() => history.push("/new-split")}>
+            <IconButton className="back-button" onClick={() => history.push("/conversations")}>
               <ArrowBackIosIcon style={{fill: "var(--primary_color)"}}></ArrowBackIosIcon>
             </IconButton>
             <div className="receiver-name">{receiverProfile.name.givenName}</div>
