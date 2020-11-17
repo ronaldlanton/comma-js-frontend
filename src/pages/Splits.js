@@ -75,7 +75,7 @@ function Splits() {
         .get("/rest/v1/messages/getMessages", {
           params: {
             tab_id: tabId,
-            limit: 15,
+            limit: 25,
             offset: tabChanged === true ? 0 : messages.length,
           },
         })

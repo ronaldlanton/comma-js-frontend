@@ -1,8 +1,9 @@
 :root {
   /*colors*/
-  --background_color: #181818;
-  --background-glass: #181818;
-  --primary_color: rgb(0, 153, 255);
+  --background_color: rgb(24, 24, 24);
+  --background_alpha: 24,24,24;
+  --background-glass: rgb(24, 24, 24);
+  --primary_color: rgb(0, 140, 201);
   --text_primary: rgb(240, 240, 240);
   --secondary_color: rgb(255, 230, 0);
   --text_secondary: rgb(14, 190, 243);
@@ -21,8 +22,11 @@
   --conversation_font_size: 14px;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap');
+
 body {
   background-color: var(--background_color);
+  font-family: 'Open Sans', sans-serif;
 }
 
 .messages-container {
@@ -78,11 +82,32 @@ h1 {
   top: 0;
   width: 100%;
   z-index: 5;
-  background-color: var(--background-glass);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
-  padding: 8px;
+  background: linear-gradient(180deg, var(--background_color) 80%, rgba(var(--background_alpha), 0) 100%);
+  padding: 12px 0px 6%;
   min-height: 100px;
+}
+
+.receiver-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  color: var(--primary_color) !important;
+}
+
+.back-button{
+  margin-left: 20px !important;
+  
+}
+
+.receiver-name{
+  font-size: x-large;
+}
+
+.receiver-avatar {
+  align-self: flex-end;
+  margin-right: 20px;
 }
 
 .compose-container {

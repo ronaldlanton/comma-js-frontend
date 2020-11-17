@@ -8,6 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import IconButton from "@material-ui/core/IconButton";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 function ChatHeader({
   isTabListLoading,
@@ -37,17 +38,23 @@ function ChatHeader({
   return (
     <div className="header-backdrop" style={{ color: "white" }}>
       {isTabListLoading === true ? (
-        <div></div>
+        <div></div> 
       ) : (
-        <center>
-          <div>
-            <Typography>{receiverProfile.name.givenName}</Typography>
+        <>
+          <div className="receiver-details">
+            <IconButton className="back-button" onClick={() => history.push("/new-split")}>
+              <ArrowBackIosIcon style={{fill: "var(--primary_color)"}}></ArrowBackIosIcon>
+            </IconButton>
+            <div className="receiver-name">{receiverProfile.name.givenName}</div>
 
-            <Avatar
+            <Avatar 
+              className="receiver-avatar"
               alt={receiverProfile.name.givenName}
               src={receiverProfile.display_picture}
             />
           </div>
+
+          <center>
           <ToggleButtonGroup
             value={selectedTab}
             exclusive
@@ -74,10 +81,13 @@ function ChatHeader({
               );
             })}
           </ToggleButtonGroup>
+          
           <IconButton onClick={() => history.push("/new-split")}>
             <AddCircleOutlineIcon></AddCircleOutlineIcon>
           </IconButton>
-        </center>
+          </center>
+        
+      </>
       )}
     </div>
   );
