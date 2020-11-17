@@ -61,6 +61,7 @@ function ChatHeader({
                   value={tab._id}
                   aria-label="left aligned"
                   onClick={() => changeRenderedTab(tab)}
+                  style={{ color: "var(--text_primary)" }}
                 >
                   <Badge
                     color="secondary"

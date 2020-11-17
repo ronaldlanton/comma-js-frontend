@@ -404,7 +404,10 @@ function Splits() {
         changeRenderedTab={changeRenderedTab}
       />
       {isMessageListLoading === true ? (
-        <CircularProgress className="progres-circle fixed" />
+        <CircularProgress
+          className="progres-circle fixed"
+          style={{ color: "var(--loader_color)" }}
+        />
       ) : (
         <div
           className="messages-container"

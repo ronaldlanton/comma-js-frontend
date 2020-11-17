@@ -1,7 +1,7 @@
 :root {
   /*colors*/
   --background_color: #181818;
-  --background-glass: rgba(24, 24, 24, 0.5);
+  --background-glass: #181818;
   --primary_color: rgb(0, 153, 255);
   --text_primary: rgb(240, 240, 240);
   --secondary_color: rgb(255, 230, 0);
@@ -14,6 +14,7 @@
   --send_bubble_color: #00b2ff;
   --send_text_color: rgb(255, 255, 255);
   --receive_bubble_color: #404040;
+  --loader_color: #404040;
   --receive_text_color: rgb(240, 240, 240);
   /*sizes*/
   --bar_height: 50px;
@@ -43,7 +44,7 @@ body {
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: var(--background-glass);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -221,6 +222,17 @@ h1 {
 }
 /* End of Message Bubbles */
 
-.MuiTypography-colorTextSecondary {
+.MuiTypography-colorTextSecondary, .MuiSvgIcon-root {
   color: var(--text_primary) !important;
+}
+
+.MuiToggleButton-root {
+  border: none !important;
+  background-color: var(--primary_color) !important;
+  border-radius: 25px !important;
+  padding: 6px !important;
+  padding-right: 12px !important;
+  font-size: var(--conversation_font_size) !important;
+  margin-right: 8px !important;
+  text-transform: unset !important;
 }

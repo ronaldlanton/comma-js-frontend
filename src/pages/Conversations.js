@@ -167,7 +167,10 @@ function Conversations() {
 
   return isLoading === true ? (
     <div className="page-container">
-      <CircularProgress className="progres-circle" />
+      <CircularProgress
+        className="progres-circle"
+        style={{ color: "var(--loader_color)" }}
+      />
     </div>
   ) : (
     //If loading is complete.
