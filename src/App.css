@@ -98,16 +98,10 @@ h1 {
 
 .back-button{
   margin-left: 20px !important;
-  
 }
 
 .receiver-name{
-  font-size: x-large;
-}
-
-.receiver-avatar {
-  align-self: flex-end;
-  margin-right: 20px;
+  font-size: larger;
 }
 
 .compose-container {

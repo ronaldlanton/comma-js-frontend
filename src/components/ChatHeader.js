@@ -5,10 +5,18 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Badge from "@material-ui/core/Badge";
 import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import IconButton from "@material-ui/core/IconButton";
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+
+const useStyles = makeStyles((theme) => ({
+  avatarSmall: {
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+    marginRight: "20px",
+  },
+}));
 
 function ChatHeader({
   isTabListLoading,
@@ -16,6 +24,8 @@ function ChatHeader({
   newContentTabs,
   changeRenderedTab,
 }) {
+  const classes = useStyles();
+
   const history = useHistory();
 
   const [selectedTab, setSelectedTab] = React.useState();
@@ -30,6 +40,7 @@ function ChatHeader({
   const handleTabSelect = (event, tabId) => {
     setSelectedTab(tabId);
   };
+
   let receiverProfile = currentConversation.thread_participants.find(
     (participant) => {
       return participant._id !== user._id;
@@ -38,56 +49,62 @@ function ChatHeader({
   return (
     <div className="header-backdrop" style={{ color: "white" }}>
       {isTabListLoading === true ? (
-        <div></div> 
+        <div></div>
       ) : (
         <>
           <div className="receiver-details">
-            <IconButton className="back-button" onClick={() => history.push("/conversations")}>
-              <ArrowBackIosIcon style={{fill: "var(--primary_color)"}}></ArrowBackIosIcon>
+            <IconButton
+              className="back-button"
+              onClick={() => history.push("/conversations")}
+            >
+              <ArrowBackIosIcon
+                style={{ fill: "var(--primary_color)" }}
+              ></ArrowBackIosIcon>
             </IconButton>
-            <div className="receiver-name">{receiverProfile.name.givenName}</div>
+            <div className="receiver-name">
+              {receiverProfile.name.givenName}
+            </div>
 
-            <Avatar 
-              className="receiver-avatar"
+            <Avatar
+              className={classes.avatarSmall}
               alt={receiverProfile.name.givenName}
               src={receiverProfile.display_picture}
             />
           </div>
 
           <center>
-          <ToggleButtonGroup
-            value={selectedTab}
-            exclusive
-            aria-label="text alignment"
-            onChange={handleTabSelect}
-          >
-            {tabList.map((tab) => {
-              return (
-                <ToggleButton
-                  key={tab._id}
-                  value={tab._id}
-                  aria-label="left aligned"
-                  onClick={() => changeRenderedTab(tab)}
-                  style={{ color: "var(--text_primary)" }}
-                >
-                  <Badge
-                    color="secondary"
-                    variant="dot"
-                    invisible={!newContentTabs.includes(tab._id)}
-                    style={{ marginRight: "8px" }}
-                  ></Badge>
-                  {tab.tab_name}
-                </ToggleButton>
-              );
-            })}
-          </ToggleButtonGroup>
-          
-          <IconButton onClick={() => history.push("/new-split")}>
-            <AddCircleOutlineIcon></AddCircleOutlineIcon>
-          </IconButton>
+            <ToggleButtonGroup
+              value={selectedTab}
+              exclusive
+              aria-label="text alignment"
+              onChange={handleTabSelect}
+            >
+              {tabList.map((tab) => {
+                return (
+                  <ToggleButton
+                    key={tab._id}
+                    value={tab._id}
+                    aria-label="left aligned"
+                    onClick={() => changeRenderedTab(tab)}
+                    style={{ color: "var(--text_primary)" }}
+                  >
+                    <Badge
+                      color="secondary"
+                      variant="dot"
+                      invisible={!newContentTabs.includes(tab._id)}
+                      style={{ marginRight: "8px" }}
+                    ></Badge>
+                    {tab.tab_name}
+                  </ToggleButton>
+                );
+              })}
+            </ToggleButtonGroup>
+
+            <IconButton onClick={() => history.push("/new-split")}>
+              <AddCircleOutlineIcon></AddCircleOutlineIcon>
+            </IconButton>
           </center>
-        
-      </>
+        </>
       )}
     </div>
   );
