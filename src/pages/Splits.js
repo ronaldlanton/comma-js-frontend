@@ -82,8 +82,14 @@ function Splits() {
         .then((result) => {
           if (result.data.status === 200) {
             let messages = result.data.result;
-            resolve(messages);
+            return resolve(messages);
           }
+        })
+        .catch((e) => {
+          console.error("Error loading messages:", e);
+        })
+        .finally(() => {
+          isScrollRequestActive = false;
         });
     });
   };
@@ -339,9 +345,6 @@ function Splits() {
             messagesContainer.scrollHeight - oldScrollHeight;
         }
       });
-      setTimeout(() => {
-        isScrollRequestActive = false;
-      }, 800);
     }
   };
 
