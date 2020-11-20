@@ -9,11 +9,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   avatarSmall: {
     width: theme.spacing(4),
     height: theme.spacing(4),
+    margin: "12px",
     marginRight: "20px",
   },
 }));
@@ -23,6 +25,7 @@ function ChatHeader({
   tabList,
   newContentTabs,
   changeRenderedTab,
+  isMessageLoading,
 }) {
   const classes = useStyles();
 
@@ -47,66 +50,79 @@ function ChatHeader({
     }
   );
   return (
-    <div className="header-backdrop" style={{ color: "white" }}>
-      {isTabListLoading === true ? (
-        <div></div>
-      ) : (
-        <>
-          <div className="receiver-details">
-            <IconButton
-              className="back-button"
-              onClick={() => history.push("/conversations")}
-            >
-              <ArrowBackIosIcon
-                style={{ fill: "var(--primary_color)" }}
-              ></ArrowBackIosIcon>
-            </IconButton>
-            <div className="receiver-name">
-              {receiverProfile.name.givenName}
+    <>
+      <div className="header-backdrop" style={{ color: "white" }}>
+        {isTabListLoading === true ? (
+          <div></div>
+        ) : (
+          <>
+            <div className="receiver-details">
+              <IconButton
+                className="back-button"
+                onClick={() => history.push("/conversations")}
+              >
+                <ArrowBackIosIcon
+                  style={{ fill: "var(--primary_color)" }}
+                ></ArrowBackIosIcon>
+              </IconButton>
+              <div className="receiver-name">
+                {receiverProfile.name.givenName}
+              </div>
+
+              <Avatar
+                className={classes.avatarSmall}
+                alt={receiverProfile.name.givenName}
+                src={receiverProfile.display_picture}
+              />
             </div>
 
-            <Avatar
-              className={classes.avatarSmall}
-              alt={receiverProfile.name.givenName}
-              src={receiverProfile.display_picture}
-            />
-          </div>
+            <center>
+              <ToggleButtonGroup
+                value={selectedTab}
+                exclusive
+                aria-label="text alignment"
+                onChange={handleTabSelect}
+              >
+                {tabList.map((tab) => {
+                  return (
+                    <ToggleButton
+                      key={tab._id}
+                      value={tab._id}
+                      aria-label="left aligned"
+                      onClick={() => changeRenderedTab(tab)}
+                      style={{ color: "var(--text_primary)" }}
+                    >
+                      <Badge
+                        color="secondary"
+                        variant="dot"
+                        invisible={!newContentTabs.includes(tab._id)}
+                        style={{ marginRight: "8px" }}
+                      ></Badge>
+                      {tab.tab_name}
+                    </ToggleButton>
+                  );
+                })}
+              </ToggleButtonGroup>
 
-          <center>
-            <ToggleButtonGroup
-              value={selectedTab}
-              exclusive
-              aria-label="text alignment"
-              onChange={handleTabSelect}
-            >
-              {tabList.map((tab) => {
-                return (
-                  <ToggleButton
-                    key={tab._id}
-                    value={tab._id}
-                    aria-label="left aligned"
-                    onClick={() => changeRenderedTab(tab)}
-                    style={{ color: "var(--text_primary)" }}
-                  >
-                    <Badge
-                      color="secondary"
-                      variant="dot"
-                      invisible={!newContentTabs.includes(tab._id)}
-                      style={{ marginRight: "8px" }}
-                    ></Badge>
-                    {tab.tab_name}
-                  </ToggleButton>
-                );
-              })}
-            </ToggleButtonGroup>
-
-            <IconButton onClick={() => history.push("/new-split")}>
-              <AddCircleOutlineIcon></AddCircleOutlineIcon>
-            </IconButton>
-          </center>
-        </>
+              <IconButton onClick={() => history.push("/new-split")}>
+                <AddCircleOutlineIcon></AddCircleOutlineIcon>
+              </IconButton>
+            </center>
+          </>
+        )}
+      </div>
+      {isMessageLoading === true && (
+        <span className="more-messages-circle">
+          <CircularProgress
+            style={{
+              color: "var(--loader_color)",
+              width: "28px",
+              height: "28px",
+            }}
+          />
+        </span>
       )}
-    </div>
+    </>
   );
 }
 /* <Chip

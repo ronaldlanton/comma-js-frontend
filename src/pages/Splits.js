@@ -31,6 +31,7 @@ function Splits() {
   //State variables.
   const [tabList, setTabList] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [historyTopReached, setHistoryTopReached] = useState(false);
   const messagesRef = useRef(messages);
   useEffect(() => {
     messagesRef.current = messages;
@@ -70,6 +71,7 @@ function Splits() {
   };
 
   const getMessages = (tabId) => {
+    setIsMessageListLoading(true);
     return new Promise((resolve, reject) => {
       axios
         .get("/rest/v1/messages/getMessages", {
@@ -82,6 +84,7 @@ function Splits() {
         .then((result) => {
           if (result.data.status === 200) {
             let messages = result.data.result;
+            if (messages.length < 25) setHistoryTopReached(true);
             return resolve(messages);
           }
         })
@@ -90,6 +93,7 @@ function Splits() {
         })
         .finally(() => {
           isScrollRequestActive = false;
+          setIsMessageListLoading(false);
         });
     });
   };
@@ -405,40 +409,36 @@ function Splits() {
         tabList={tabList}
         newContentTabs={newContentTabs}
         changeRenderedTab={changeRenderedTab}
+        isMessageLoading={isMessageListLoading}
       />
-      {isMessageListLoading === true ? (
-        <CircularProgress
-          className="progres-circle fixed"
-          style={{ color: "var(--loader_color)" }}
-        />
-      ) : (
-        <div
-          className="messages-container"
-          onScroll={handleScroll}
-          id="messagesContainer"
-        >
-          {" "}
-          {messages.map((message) => {
-            let senderProfile = currentConversation.thread_participants.find(
-              (participant) => {
-                return participant._id === message.sender;
-              }
-            );
-            return (
-              <MessageBubble
-                key={message._id}
-                senderProfile={senderProfile}
-                displayPicture={senderProfile}
-                message={message}
-                currentTab={currentTab}
-                lastSeenMessage={lastSeenMessage}
-                currentConversation={currentConversation}
-              />
-            );
-          })}
-          <div id="messageEnd" class="bubblewrap"></div>
-        </div>
-      )}
+
+      <div
+        className="messages-container"
+        onScroll={handleScroll}
+        id="messagesContainer"
+      >
+        {historyTopReached && <div class="bubblewrap first-message"></div>}
+        {messages.map((message) => {
+          let senderProfile = currentConversation.thread_participants.find(
+            (participant) => {
+              return participant._id === message.sender;
+            }
+          );
+          return (
+            <MessageBubble
+              key={message._id}
+              senderProfile={senderProfile}
+              displayPicture={senderProfile}
+              message={message}
+              currentTab={currentTab}
+              lastSeenMessage={lastSeenMessage}
+              currentConversation={currentConversation}
+            />
+          );
+        })}
+        <div id="messageEnd" class="bubblewrap"></div>
+      </div>
+
       <ChatComposer
         currentValue={composedMessage}
         updateComposedMessage={updateComposedMessage}
