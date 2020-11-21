@@ -208,7 +208,7 @@ h1 {
   border-radius: 25px;
   position: relative;
   box-sizing: border-box;
-  max-width: 90%;
+  max-width: 350px;
   display: block;
   float: right;
   background-color: var(--send_bubble_color);
@@ -223,7 +223,7 @@ h1 {
   border-radius: 25px;
   position: relative;
   box-sizing: border-box;
-  max-width: 90%;
+  max-width: 350px;
   display: block;
   float: left;
   background-color: var(--receive_bubble_color);
@@ -341,3 +341,9 @@ h1 {
 }
 
 /* End of Animations */
+
+.spotify-player {
+  margin-top: 24px;
+  width: 100%;
+  display: flex;
+}

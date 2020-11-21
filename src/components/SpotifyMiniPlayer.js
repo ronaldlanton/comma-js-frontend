@@ -19,13 +19,16 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flex: "1 0 auto",
+    justifyContent: "center",
   },
   cover: {
     width: 151,
+    borderRadius: "15px",
   },
   controls: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "center",
     paddingLeft: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
@@ -42,13 +45,13 @@ const useStyles = makeStyles((theme) => ({
 export default function SpotifyMiniPlayer(trackInfo) {
   const classes = useStyles();
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audioElem, setAudioElem] = useState(
-    new Audio(trackInfo.trackInfo.preview_url)
-  );
+  const [audioElem] = useState(new Audio(trackInfo.trackInfo.preview_url));
   useEffect(() => {
+    audioElem.onended = setIsPlaying(false);
+
     return () => {
       audioElem.pause();
-      audioElem.onended = setIsPlaying(false);
+      audioElem.onended = null;
     };
   }, []);
   const playPauseAudio = () => {
@@ -66,16 +69,14 @@ export default function SpotifyMiniPlayer(trackInfo) {
   };
   return (
     <center>
-      <Card className={classes.root}>
-        <div className={classes.details}>
-          <CardContent className={classes.content}>
-            <Typography component="h5" variant="h5">
-              {trackInfo.trackInfo.name}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              {trackInfo.trackInfo.artists[0].name}
-            </Typography>
-          </CardContent>
+      <div className="spotify-player">
+        <CardContent className={classes.content}>
+          <Typography component="h5" variant="h5">
+            {trackInfo.trackInfo.name}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            {trackInfo.trackInfo.artists[0].name}
+          </Typography>
           <div className={classes.controls}>
             <IconButton aria-label="play/pause" onClick={playPauseAudio}>
               {isPlaying === true ? (
@@ -85,12 +86,13 @@ export default function SpotifyMiniPlayer(trackInfo) {
               )}
             </IconButton>
           </div>
-        </div>
-        <CardMedia
+        </CardContent>
+        <img
           className={classes.cover}
-          image={trackInfo.trackInfo.album.images[1].url}
+          src={trackInfo.trackInfo.album.images[1].url}
+          alt={trackInfo.trackInfo.name}
         />
-      </Card>
+      </div>
     </center>
   );
 }
