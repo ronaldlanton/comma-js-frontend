@@ -6,10 +6,11 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Badge from "@material-ui/core/Badge";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import AddIcon from '@material-ui/icons/Add';
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import CircularProgress from "@material-ui/core/CircularProgress";
+
 
 const useStyles = makeStyles((theme) => ({
   avatarSmall: {
@@ -32,6 +33,7 @@ function ChatHeader({
   const history = useHistory();
 
   const [selectedTab, setSelectedTab] = React.useState();
+  const [currentTab, setCurrentTab] = React.useState(0);
 
   const user = useSelector((state) => {
     return state.userReducer.user;
@@ -55,28 +57,28 @@ function ChatHeader({
         {isTabListLoading === true ? (
           <div></div>
         ) : (
-          <>
-            <div className="receiver-details">
-              <IconButton
-                className="back-button"
-                onClick={() => history.push("/conversations")}
-              >
-                <ArrowBackIosIcon
-                  style={{ fill: "var(--primary_color)" }}
-                ></ArrowBackIosIcon>
-              </IconButton>
-              <div className="receiver-name">
-                {receiverProfile.name.givenName}
+            <>
+              <div className="receiver-details">
+                <IconButton
+                  className="back-button"
+                  onClick={() => history.push("/conversations")}
+                >
+                  <ArrowBackIosIcon
+                    style={{ fill: "var(--primary_color)" }}
+                  ></ArrowBackIosIcon>
+                </IconButton>
+                <div className="receiver-name">
+                  {receiverProfile.name.givenName}
+                </div>
+
+                <Avatar
+                  className={classes.avatarSmall}
+                  alt={receiverProfile.name.givenName}
+                  src={receiverProfile.display_picture}
+                />
               </div>
 
-              <Avatar
-                className={classes.avatarSmall}
-                alt={receiverProfile.name.givenName}
-                src={receiverProfile.display_picture}
-              />
-            </div>
-
-            <center>
+              {/* <center>
               <ToggleButtonGroup
                 value={selectedTab}
                 exclusive
@@ -107,9 +109,27 @@ function ChatHeader({
               <IconButton onClick={() => history.push("/new-split")}>
                 <AddCircleOutlineIcon></AddCircleOutlineIcon>
               </IconButton>
-            </center>
-          </>
-        )}
+            </center> */}
+
+              <div className="splits">
+                {tabList.map((tab, index) => {
+                  return (
+                    <div className={currentTab === index ? "activeSplit" : "inactiveSplit"} onClick={() => { changeRenderedTab(tab); setCurrentTab(index) }} >
+                      <span style={{ verticalAlign: "baseline" }}>{tab.tab_name}
+                      </span>
+                      { newContentTabs.includes(tab._id) && <span className="ndot"></span>}
+                    </div>
+                  );
+                })}
+
+                <IconButton size="small" onClick={() => history.push("/new-split")}>
+                  <AddIcon fontSize="small"></AddIcon>
+                </IconButton>
+
+              </div>
+
+            </>
+          )}
       </div>
       {isMessageLoading === true && (
         <span className="more-messages-circle">
