@@ -111,28 +111,32 @@ h1 {
   font-size: larger;
 }
 
-.splits{
-  display:flex;
+.splits {
+  display: flex;
+  /* width: 100%; */
+  overflow: scroll;
   padding: 8px 32px 10px;
 }
 
-.activeSplit{
+.activeSplit,
+.inactiveSplit {
+  padding: 10px 16px;
+  border-radius: 25px;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.activeSplit {
   color: var(--text_primary);
   background-color: var(--primary_color);
-  padding: 10px 16px;
-  border-radius: 25px;
-  margin-right: 10px;
-  transition:all .4s linear;
+  transition: all 0.4s linear;
 }
 
-.inactiveSplit{
-  color:var(--primary_color);
-  padding: 10px 16px;
-  border-radius: 25px;
-  margin-right: 10px;
+.inactiveSplit {
+  color: var(--primary_color);
 }
 
-.ndot{
+.ndot {
   display: inline-block;
   position: absolute;
   content: " ";
@@ -173,10 +177,10 @@ h1 {
   text-align: center;
 }
 
-.send-button{
-   font-size: small;
-   color: var(--primary_color);
-   font-weight: 800;
+.send-button {
+  font-size: small;
+  color: var(--primary_color);
+  font-weight: 800;
 }
 
 .messages-container {
