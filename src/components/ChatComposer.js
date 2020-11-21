@@ -5,7 +5,7 @@ import InputBase from "@material-ui/core/InputBase";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import SendIcon from "@material-ui/icons/Send";
-import ImageIcon from "@material-ui/icons/Image";
+import CameraIcon from '@material-ui/icons/Camera';
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   iconButton: {
     padding: 10,
-    color: "var(--text_primary)",
+    color: "var(--receive_bubble_color) !important",
   },
   divider: {
     height: 28,
@@ -97,6 +97,13 @@ function ChatComposer({
   return (
     <div className="compose-container">
       <Paper component="form" className={classes.root}>
+      <IconButton
+          className={classes.iconButton}
+          onClick={() => setIsImageUploadDialogOpen(!isImageUploadDialogOpen)}
+          disabled={isMessageListLoading}
+        >
+          <CameraIcon />
+        </IconButton>
         <InputBase
           className={classes.input}
           placeholder="Type a Message"
@@ -112,14 +119,7 @@ function ChatComposer({
           }}
           inputRef={inputRef}
         />
-        <Divider className={classes.divider} orientation="vertical" />
-        <IconButton
-          className={classes.iconButton}
-          onClick={() => setIsImageUploadDialogOpen(!isImageUploadDialogOpen)}
-          disabled={isMessageListLoading}
-        >
-          <ImageIcon />
-        </IconButton>
+        
         <IconButton
           className={classes.iconButton}
           onClick={() => {
@@ -128,7 +128,7 @@ function ChatComposer({
           }}
           disabled={isMessageListLoading}
         >
-          <SendIcon />
+          <span className="send-button">SEND</span>
         </IconButton>
       </Paper>
       <Dialog

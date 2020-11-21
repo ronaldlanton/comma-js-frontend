@@ -173,6 +173,12 @@ h1 {
   text-align: center;
 }
 
+.send-button{
+   font-size: small;
+   color: var(--primary_color);
+   font-weight: 800;
+}
+
 .messages-container {
   height: calc(100% - 56px);
   width: 100%;
