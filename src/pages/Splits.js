@@ -45,6 +45,10 @@ function Splits() {
   useEffect(() => {
     IsMessageListLoadingRef.current = isMessageListLoading;
   }, [isMessageListLoading]);
+  const [
+    isMessageListAfterTabChangeLoading,
+    setisMessageListAfterTabChangeLoading,
+  ] = useState(true);
 
   const [newContentTabs, setNewContentTabs] = useState([]);
   const newContentTabsRef = useRef(newContentTabs);
@@ -184,6 +188,8 @@ function Splits() {
 
   const changeRenderedTab = (tab) => {
     if (isMessageListLoading === false) setIsMessageListLoading(true);
+    setHistoryTopReached(false);
+    setisMessageListAfterTabChangeLoading(true);
     currentTab = tab;
     tabChanged = true;
 
@@ -200,6 +206,7 @@ function Splits() {
           return tabId !== tab._id;
         });
       setNewContentTabs(changedNewContentTabs);
+      setisMessageListAfterTabChangeLoading(false);
       let bottomElement = document.getElementById("messageEnd");
       if (bottomElement) document.getElementById("messageEnd").scrollIntoView();
     });
@@ -406,38 +413,46 @@ function Splits() {
     <div className="page-container">
       <ChatHeader
         isTabListLoading={isTabListLoading}
+        isMessageListAfterTabChangeLoading={isMessageListAfterTabChangeLoading}
         tabList={tabList}
         newContentTabs={newContentTabs}
         changeRenderedTab={changeRenderedTab}
         isMessageLoading={isMessageListLoading}
       />
 
-      <div
-        className="messages-container"
-        onScroll={handleScroll}
-        id="messagesContainer"
-      >
-        {historyTopReached && <div class="bubblewrap first-message"></div>}
-        {messages.map((message) => {
-          let senderProfile = currentConversation.thread_participants.find(
-            (participant) => {
-              return participant._id === message.sender;
-            }
-          );
-          return (
-            <MessageBubble
-              key={message._id}
-              senderProfile={senderProfile}
-              displayPicture={senderProfile}
-              message={message}
-              currentTab={currentTab}
-              lastSeenMessage={lastSeenMessage}
-              currentConversation={currentConversation}
-            />
-          );
-        })}
-        <div id="messageEnd" class="bubblewrap"></div>
-      </div>
+      {isMessageListAfterTabChangeLoading === true ? (
+        <CircularProgress
+          className="progres-circle fixed"
+          style={{ color: "var(--loader_color)" }}
+        />
+      ) : (
+        <div
+          className="messages-container"
+          onScroll={handleScroll}
+          id="messagesContainer"
+        >
+          {historyTopReached && <div class="bubblewrap first-message"></div>}
+          {messages.map((message) => {
+            let senderProfile = currentConversation.thread_participants.find(
+              (participant) => {
+                return participant._id === message.sender;
+              }
+            );
+            return (
+              <MessageBubble
+                key={message._id}
+                senderProfile={senderProfile}
+                displayPicture={senderProfile}
+                message={message}
+                currentTab={currentTab}
+                lastSeenMessage={lastSeenMessage}
+                currentConversation={currentConversation}
+              />
+            );
+          })}
+          <div id="messageEnd" class="bubblewrap"></div>
+        </div>
+      )}
 
       <ChatComposer
         currentValue={composedMessage}

@@ -6,11 +6,10 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Badge from "@material-ui/core/Badge";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
 
 const useStyles = makeStyles((theme) => ({
   avatarSmall: {
@@ -27,6 +26,7 @@ function ChatHeader({
   newContentTabs,
   changeRenderedTab,
   isMessageLoading,
+  isMessageListAfterTabChangeLoading,
 }) {
   const classes = useStyles();
 
@@ -57,28 +57,28 @@ function ChatHeader({
         {isTabListLoading === true ? (
           <div></div>
         ) : (
-            <>
-              <div className="receiver-details">
-                <IconButton
-                  className="back-button"
-                  onClick={() => history.push("/conversations")}
-                >
-                  <ArrowBackIosIcon
-                    style={{ fill: "var(--primary_color)" }}
-                  ></ArrowBackIosIcon>
-                </IconButton>
-                <div className="receiver-name">
-                  {receiverProfile.name.givenName}
-                </div>
-
-                <Avatar
-                  className={classes.avatarSmall}
-                  alt={receiverProfile.name.givenName}
-                  src={receiverProfile.display_picture}
-                />
+          <>
+            <div className="receiver-details">
+              <IconButton
+                className="back-button"
+                onClick={() => history.push("/conversations")}
+              >
+                <ArrowBackIosIcon
+                  style={{ fill: "var(--primary_color)" }}
+                ></ArrowBackIosIcon>
+              </IconButton>
+              <div className="receiver-name">
+                {receiverProfile.name.givenName}
               </div>
 
-              {/* <center>
+              <Avatar
+                className={classes.avatarSmall}
+                alt={receiverProfile.name.givenName}
+                src={receiverProfile.display_picture}
+              />
+            </div>
+
+            {/* <center>
               <ToggleButtonGroup
                 value={selectedTab}
                 exclusive
@@ -111,37 +111,50 @@ function ChatHeader({
               </IconButton>
             </center> */}
 
-              <div className="splits">
-                {tabList.map((tab, index) => {
-                  return (
-                    <div className={currentTab === index ? "activeSplit" : "inactiveSplit"} onClick={() => { changeRenderedTab(tab); setCurrentTab(index) }} >
-                      <span style={{ verticalAlign: "baseline" }}>{tab.tab_name}
-                      </span>
-                      { newContentTabs.includes(tab._id) && <span className="ndot"></span>}
-                    </div>
-                  );
-                })}
+            <div className="splits">
+              {tabList.map((tab, index) => {
+                return (
+                  <div
+                    className={
+                      currentTab === index ? "activeSplit" : "inactiveSplit"
+                    }
+                    onClick={() => {
+                      changeRenderedTab(tab);
+                      setCurrentTab(index);
+                    }}
+                  >
+                    <span style={{ verticalAlign: "baseline" }}>
+                      {tab.tab_name}
+                    </span>
+                    {newContentTabs.includes(tab._id) && (
+                      <span className="ndot"></span>
+                    )}
+                  </div>
+                );
+              })}
 
-                <IconButton size="small" onClick={() => history.push("/new-split")}>
-                  <AddIcon fontSize="small"></AddIcon>
-                </IconButton>
-
-              </div>
-
-            </>
-          )}
+              <IconButton
+                size="small"
+                onClick={() => history.push("/new-split")}
+              >
+                <AddIcon fontSize="small"></AddIcon>
+              </IconButton>
+            </div>
+          </>
+        )}
       </div>
-      {isMessageLoading === true && (
-        <span className="more-messages-circle">
-          <CircularProgress
-            style={{
-              color: "var(--loader_color)",
-              width: "28px",
-              height: "28px",
-            }}
-          />
-        </span>
-      )}
+      {isMessageLoading === true &&
+        isMessageListAfterTabChangeLoading === false && (
+          <span className="more-messages-circle">
+            <CircularProgress
+              style={{
+                color: "var(--loader_color)",
+                width: "28px",
+                height: "28px",
+              }}
+            />
+          </span>
+        )}
     </>
   );
 }
