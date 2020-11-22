@@ -27,6 +27,7 @@ function MessageBubble({
   currentTab,
   lastSeenMessage,
   currentConversation,
+  isTyping,
 }) {
   const classes = useStyles();
   let displayPicture = senderProfile ? senderProfile.display_picture : null;
@@ -122,9 +123,18 @@ function MessageBubble({
           <Avatar
             alt={senderName}
             src={seenIcon}
-            style={{ display: "block", marginLeft: "12px" }}
+            style={{ display: "inline-block", marginLeft: "12px" }}
             className={classes.small}
           />
+          {isTyping && (
+            <div className="typing-container">
+              <div class="tiblock">
+                <div class="tidot"></div>
+                <div class="tidot"></div>
+                <div class="tidot"></div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

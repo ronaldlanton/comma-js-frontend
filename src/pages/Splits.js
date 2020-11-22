@@ -55,6 +55,7 @@ function Splits() {
   useEffect(() => {
     newContentTabsRef.current = newContentTabs;
   }, [newContentTabs]);
+  const [isTyping, setIsTyping] = useState(false);
 
   //Functions.
   const getTabs = () => {
@@ -232,6 +233,10 @@ function Splits() {
       setLastSeenMessage(payload.last_read_message_id);
   };
 
+  const setTypingStatus = (payload) => {
+    if (payload.tab_id === currentTab._id) setIsTyping(payload.status);
+  };
+
   const updateComposedMessage = (event) => {
     let composed = event.target.value;
     setComposedMessage(composed);
@@ -391,6 +396,7 @@ function Splits() {
     //Socket callbacks
     socket.on("_messageIn", addMessageToState);
     socket.on("_messageSeen", setOtherUserMessageSeen);
+    socket.on("_typingStatus", setTypingStatus);
     socket.on("_success", successHandler);
     document.addEventListener("visibilitychange", updateSeen);
 
@@ -415,6 +421,7 @@ function Splits() {
       console.log("cleaning up socket callbacks...");
       socket.off("_messageIn", addMessageToState);
       socket.off("_messageSeen", setOtherUserMessageSeen);
+      socket.off("_typingStatus", setTypingStatus);
       socket.off("_success", successHandler);
       document.removeEventListener("visibilitychange", updateSeen);
       currentTab = null;
@@ -471,6 +478,7 @@ function Splits() {
                 currentTab={currentTab}
                 lastSeenMessage={lastSeenMessage}
                 currentConversation={currentConversation}
+                isTyping={isTyping}
               />
             );
           })}
@@ -485,6 +493,7 @@ function Splits() {
         sendImages={sendImages}
         isMessageListLoading={isMessageListLoading}
         currentTab={currentTab}
+        setIsTyping={setIsTyping}
       />
     </div>
   );

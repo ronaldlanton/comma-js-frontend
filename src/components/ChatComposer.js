@@ -13,6 +13,8 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import Dropzone from "react-dropzone";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import socket from "../WebSocket";
+import Cookies from "universal-cookie";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +45,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+var timeout = undefined;
+
 function ChatComposer({
   currentValue,
   updateComposedMessage,
@@ -50,11 +54,46 @@ function ChatComposer({
   sendImages,
   currentTab,
   isMessageListLoading,
+  setIsTyping,
 }) {
   const classes = useStyles();
   const [isImageUploadDialogOpen, setIsImageUploadDialogOpen] = useState(false);
   const [files, setFiles] = useState([]);
   const inputRef = useRef();
+  const [typing, setTyping] = useState(false);
+  const cookies = new Cookies();
+
+  const emitTyping = (boolean) => {
+    let typingObject = {
+      headers: {
+        user_id: cookies.get("USR"),
+        token: "Bearer " + cookies.get("SSID"),
+      },
+      payload: {
+        tab_id: currentTab._id,
+        status: boolean,
+      },
+    };
+    socket.emit("_updateTypingStatus", typingObject);
+  };
+
+  function timeoutFunction() {
+    setTyping(false);
+    emitTyping(false);
+    console.log("stopped typing.");
+  }
+
+  function onKeyDownNotEnter() {
+    if (typing === false) {
+      setTyping(true);
+      emitTyping(true);
+      console.log("typing...");
+      timeout = setTimeout(timeoutFunction, 2000);
+    } else {
+      clearTimeout(timeout);
+      timeout = setTimeout(timeoutFunction, 2000);
+    }
+  }
 
   const uploadFiles = () => {
     console.log(files, "uploading to tab", currentTab);
@@ -109,7 +148,9 @@ function ChatComposer({
           className={classes.input}
           placeholder="Type a Message"
           value={currentValue}
+          id="chat-composer-input"
           onChange={updateComposedMessage}
+          onKeyDown={onKeyDownNotEnter}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               console.log("Enter key pressed");
