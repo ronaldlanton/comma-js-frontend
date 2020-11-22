@@ -92,9 +92,12 @@ h1 {
 }
 
 .theme-select-text {
+  color: var(--text_primary);
+  font-weight: bold;
+  font-size: 12px;
   display: inline-block;
   float: right;
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 .page-title {

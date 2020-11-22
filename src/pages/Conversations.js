@@ -267,7 +267,6 @@ function Conversations() {
         >
           <AddIcon fontSize="small"></AddIcon>
         </IconButton>
-        <div className="theme-select-text">🌞</div>
         <Switch
           checked={darkThemeState}
           onChange={handleChange}
@@ -276,7 +275,8 @@ function Conversations() {
           color="default"
           inputProps={{ "aria-label": "secondary checkbox" }}
         />
-        <div className="theme-select-text">🌙</div>
+        <div className="theme-select-text">Theme:</div>
+        {/* <div className="theme-select-text">D</div> */}
       </Typography>
       <List className={classes.root}>
         {/*Render list of threads*/}
