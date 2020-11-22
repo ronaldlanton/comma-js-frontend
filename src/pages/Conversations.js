@@ -90,33 +90,71 @@ function Conversations() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [darkThemeState, setDarkThemeState] = React.useState(true);
-  
 
   useEffect(() => {
-    var darkThemePreference = cookies.get("darkThemePreference");
-    if (darkThemePreference)
-      setDarkThemeState(darkThemePreference);
+    var darkThemePreference =
+      cookies.get("darkThemePreference") === "true" ? true : false;
+
+    setDarkThemeState(darkThemePreference);
+    setTheme(darkThemePreference ? "dark" : "light");
   }, []);
+
+  const setThemeVariables = (variables) => {
+    variables.forEach((variable) => {
+      let varName = variable.split(":")[0];
+      let varValue = variable.split(":")[1];
+      document.documentElement.style.setProperty(varName, varValue);
+    });
+  };
+
+  const setTheme = (themeName) => {
+    switch (themeName) {
+      case "light":
+        //Light theme variables
+        setThemeVariables([
+          "--background_color:#ebedf0",
+          "--dark_element_background:rgb(255, 255, 255)",
+          "--background_alpha:255, 255, 255",
+          "--split_button_background_color:rgb(255, 255, 255)",
+          "--text_primary:rgb(24, 24, 24)",
+          "--receive_bubble_color:rgb(255, 255, 255)",
+          "--receive_text_color:rgb(24, 24, 24)",
+          "--sender_bubble_gradient:linear-gradient(to bottom,rgb(0, 140, 201) 15%,rgb(0, 75, 107) 90%)",
+        ]);
+        break;
+      case "dark":
+        setThemeVariables([
+          "--background_color:rgb(24, 24, 24)",
+          "--dark_element_background:#212121",
+          "--background_alpha:24, 24, 24",
+          "--split_button_background_color:rgb(0, 140, 201)",
+          "--text_primary:rgb(240, 240, 240)",
+          "--receive_bubble_color:#404040",
+          "--receive_text_color:rgb(240, 240, 240)",
+          "--sender_bubble_gradient:linear-gradient(to bottom,rgb(0, 140, 201) 15%,rgb(0, 75, 107) 90%)",
+        ]);
+        break;
+      default:
+      // code block
+    }
+  };
 
   const handleChange = (event) => {
     setDarkThemeState(event.target.checked);
-    cookies.set("darkThemePreference", event.target.checked)
-    if(event.target.checked === false) {
-      document.documentElement.style.setProperty('--background_color', 'rgb(255, 255, 255)');
-      document.documentElement.style.setProperty('--dark_element_background', 'rgb(255, 255, 255)');
-      document.documentElement.style.setProperty('--background_alpha', '255, 255, 255');
-      document.documentElement.style.setProperty('--split_button_background_color', '#cccccc');
-      document.documentElement.style.setProperty('--text_primary', 'rgb(24, 24, 24)');
-      document.documentElement.style.setProperty('--receive_bubble_color', '#cccccc');
-      document.documentElement.style.setProperty('--receive_text_color', 'rgb(24, 24, 24)');
+    const current = new Date();
+    const nextYear = new Date();
+
+    nextYear.setFullYear(current.getFullYear() + 1);
+
+    cookies.set("darkThemePreference", event.target.checked, {
+      path: "/",
+      expires: nextYear,
+    });
+
+    if (event.target.checked === false) {
+      setTheme("light");
     } else {
-      document.documentElement.style.setProperty('--background_color', ' rgb(24, 24, 24)');
-      document.documentElement.style.setProperty('--dark_element_background', '#212121');
-      document.documentElement.style.setProperty('--background_alpha', '24, 24, 24');
-      document.documentElement.style.setProperty('--split_button_background_color', 'rgb(0, 140, 201)');
-      document.documentElement.style.setProperty('--text_primary', 'rgb(240, 240, 240)');
-      document.documentElement.style.setProperty('--receive_bubble_color', '#404040');
-      document.documentElement.style.setProperty('--receive_text_color', 'rgb(240, 240, 240)');
+      setTheme("dark");
     }
   };
 
