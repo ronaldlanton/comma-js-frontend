@@ -3,16 +3,9 @@
   --background_color: rgb(24, 24, 24);
   --dark_element_background: #212121;
   --background_alpha: 24, 24, 24;
-  --background-glass: rgb(24, 24, 24);
+  --split_button_background_color: rgb(0, 140, 201);
   --primary_color: rgb(0, 140, 201);
   --text_primary: rgb(240, 240, 240);
-  --secondary_color: rgb(255, 230, 0);
-  --text_secondary: rgb(14, 190, 243);
-  --accent_color: rgb(0, 120, 255);
-  --surface_color: rgb(255, 255, 255);
-  --error_color: rgb(14, 190, 243);
-  --textbox: rgb(214, 214, 214);
-  --textbox_text: rgb(78, 78, 78);
   --send_bubble_color: #00b2ff;
   --send_text_color: rgb(255, 255, 255);
   --receive_bubble_color: #404040;
@@ -20,7 +13,6 @@
   --receive_text_color: rgb(240, 240, 240);
   --alert_color: rgb(255, 0, 102);
   /*sizes*/
-  --bar_height: 50px;
   --conversation_font_size: 13px;
   --conversation_font_weight: 600;
 }
@@ -51,7 +43,7 @@ body {
 }
 
 .App-header {
-  background-color: var(--background-glass);
+  background-color: var(--background_color);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -176,7 +168,7 @@ h1 {
 
 .activeSplit {
   color: var(--text_primary);
-  background-color: var(--primary_color);
+  background-color: var(--split_button_background_color);
   transition: all 0.3s ease-in-out;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.4);
 }
