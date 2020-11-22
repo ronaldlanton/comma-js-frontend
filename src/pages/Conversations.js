@@ -18,6 +18,7 @@ import Typography from "@material-ui/core/Typography";
 import subscribeUser from "../subscription";
 import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
+import Switch from "@material-ui/core/Switch";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,11 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     marginTop: "12px",
+  },
+  darkThemeSwitch: {
+    float: "right",
+    color: "var(--primary_color)",
+    marginTop: "4px",
   },
 }));
 
@@ -82,6 +88,37 @@ function Conversations() {
   }, [conversationsList]);
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const [darkThemeState, setDarkThemeState] = React.useState(true);
+  
+
+  useEffect(() => {
+    var darkThemePreference = cookies.get("darkThemePreference");
+    if (darkThemePreference)
+      setDarkThemeState(darkThemePreference);
+  }, []);
+
+  const handleChange = (event) => {
+    setDarkThemeState(event.target.checked);
+    cookies.set("darkThemePreference", event.target.checked)
+    if(event.target.checked === false) {
+      document.documentElement.style.setProperty('--background_color', 'rgb(255, 255, 255)');
+      document.documentElement.style.setProperty('--dark_element_background', 'rgb(255, 255, 255)');
+      document.documentElement.style.setProperty('--background_alpha', '255, 255, 255');
+      document.documentElement.style.setProperty('--split_button_background_color', '#cccccc');
+      document.documentElement.style.setProperty('--text_primary', 'rgb(24, 24, 24)');
+      document.documentElement.style.setProperty('--receive_bubble_color', '#cccccc');
+      document.documentElement.style.setProperty('--receive_text_color', 'rgb(24, 24, 24)');
+    } else {
+      document.documentElement.style.setProperty('--background_color', ' rgb(24, 24, 24)');
+      document.documentElement.style.setProperty('--dark_element_background', '#212121');
+      document.documentElement.style.setProperty('--background_alpha', '24, 24, 24');
+      document.documentElement.style.setProperty('--split_button_background_color', 'rgb(0, 140, 201)');
+      document.documentElement.style.setProperty('--text_primary', 'rgb(240, 240, 240)');
+      document.documentElement.style.setProperty('--receive_bubble_color', '#404040');
+      document.documentElement.style.setProperty('--receive_text_color', 'rgb(240, 240, 240)');
+    }
+  };
 
   const getThreads = () => {
     return new Promise((resolve, reject) => {
@@ -192,6 +229,14 @@ function Conversations() {
         >
           <AddIcon fontSize="small"></AddIcon>
         </IconButton>
+        <Switch
+          checked={darkThemeState}
+          onChange={handleChange}
+          name="checkedA"
+          className={classes.darkThemeSwitch}
+          color="default"
+          inputProps={{ "aria-label": "secondary checkbox" }}
+        />
       </Typography>
       <List className={classes.root}>
         {/*Render list of threads*/}
