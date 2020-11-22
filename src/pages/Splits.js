@@ -343,12 +343,15 @@ function Splits() {
 
   const handleScroll = (e) => {
     const top = e.target.scrollTop <= 50;
+    const messagesContainer = document.getElementById("messagesContainer");
+    const messagesContainerShadow = document.getElementById(
+      "message-container-shadow"
+    );
 
     //Because top scroll threshold is set to 50px, every scroll event fired after reaching gets counted.
     //So once the threshold is reached, we disable making requests for next 1 seconds.
     if (top && isScrollRequestActive === false) {
       console.log("reached top");
-      let messagesContainer = document.getElementById("messagesContainer");
       //Store the original height of the div.
       let oldScrollHeight = messagesContainer.scrollHeight;
       //Set scroll request to active so that this does not get fired again.
@@ -362,6 +365,21 @@ function Splits() {
             messagesContainer.scrollHeight - oldScrollHeight;
         }
       });
+    }
+
+    if (
+      !(
+        messagesContainer.scrollHeight -
+          messagesContainer.offsetHeight -
+          messagesContainer.scrollTop <=
+        5
+      )
+    ) {
+      if (messagesContainerShadow)
+        messagesContainerShadow.classList.add("scrolled");
+    } else {
+      if (messagesContainerShadow)
+        messagesContainerShadow.classList.remove("scrolled");
     }
   };
 
