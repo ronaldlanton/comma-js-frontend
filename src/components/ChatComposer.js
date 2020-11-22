@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     width: "calc(100%-24px)",
     margin: "12px",
-    marginBottom: "6px",
+    marginBottom: "10px",
     marginTop: "0",
     backgroundColor: "#212121",
     borderRadius: "35px",
