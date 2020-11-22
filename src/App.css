@@ -140,6 +140,8 @@ h1 {
   font-size: small;
   font-weight: 600;
   cursor: pointer;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* .activeSplit:hover,

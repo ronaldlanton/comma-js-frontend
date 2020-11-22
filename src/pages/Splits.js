@@ -228,7 +228,7 @@ function Splits() {
   };
 
   const setOtherUserMessageSeen = (payload) => {
-    if (payload.tab_id !== currentTab._id)
+    if (payload.tab_id === currentTab._id)
       setLastSeenMessage(payload.last_read_message_id);
   };
 
