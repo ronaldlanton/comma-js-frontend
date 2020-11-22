@@ -119,7 +119,7 @@ function Conversations() {
           "--text_primary:rgb(24, 24, 24)",
           "--receive_bubble_color:rgb(255, 255, 255)",
           "--receive_text_color:rgb(24, 24, 24)",
-          "--sender_bubble_gradient:linear-gradient(to bottom,rgb(0, 140, 201) 15%,rgb(0, 75, 107) 90%)",
+          "--sender_bubble_gradient:linear-gradient(to bottom,#00D0EA 15%,rgb(0, 140, 201) 90%)",
         ]);
         break;
       case "dark":
