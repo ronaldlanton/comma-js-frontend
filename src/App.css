@@ -91,6 +91,12 @@ h1 {
   margin: 10px 0px;
 }
 
+.theme-select-text {
+  display: inline-block;
+  float: right;
+  margin-top: 12px;
+}
+
 .page-title {
   margin-top: 16px;
   font-size: large;
