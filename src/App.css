@@ -78,6 +78,23 @@ h1 {
   color: tomato;
 }
 
+.login-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%; 
+}
+
+.appname {
+  color: var(--primary_color);
+  font-weight: 800;
+  font-size: 36px;
+  margin: 10px 0px;
+}
+
+
 /* Chat Screen divisions */
 .header-backdrop {
   position: absolute;
