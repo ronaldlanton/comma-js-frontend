@@ -343,8 +343,8 @@ h1 {
   margin-left: 25%;
   background: linear-gradient(
     to bottom,
-    rgb(0, 140, 201) 0%,
-    rgb(0, 75, 107) 100%
+    rgb(0, 140, 201) 15%,
+    rgb(0, 75, 107) 90%
   );
   background-attachment: fixed;
   position: relative;
