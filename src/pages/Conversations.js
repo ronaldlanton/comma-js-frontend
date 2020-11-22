@@ -16,7 +16,7 @@ import Cookies from "universal-cookie";
 import socket from "../WebSocket";
 import Typography from "@material-ui/core/Typography";
 import subscribeUser from "../subscription";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,6 +24,15 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: "var(--background_color)",
     color: "var(--text_primary) !important",
+  },
+  pageTitle: {
+    fontSize: "large",
+    fontWeight: "700",
+    color: "var(--primary_color)",
+    margin: "28px 18px 0px",
+  },
+  listItem: {
+    marginTop: "12px",
   },
 }));
 
@@ -175,22 +184,13 @@ function Conversations() {
   ) : (
     //If loading is complete.
     <div className="page-container">
-      <Typography
-        variant="h5"
-        gutterBottom
-        style={{
-          marginLeft: "16px",
-          marginTop: "16px",
-          marginBottom: "16px",
-          color: "var(--text_primary)",
-        }}
-      >
+      <Typography variant="h5" gutterBottom className={classes.pageTitle}>
         <b>Conversations</b>{" "}
         <IconButton
           style={{ marginBottom: "4px" }}
           onClick={() => history.push("/new-conversation")}
         >
-          <AddCircleOutlineIcon></AddCircleOutlineIcon>
+          <AddIcon fontSize="small"></AddIcon>
         </IconButton>
       </Typography>
       <List className={classes.root}>
@@ -202,7 +202,11 @@ function Conversations() {
             : (splitsText = "split");
           return (
             <div key={conversation._id}>
-              <ListItem button onClick={() => loadSplits(conversation)}>
+              <ListItem
+                button
+                onClick={() => loadSplits(conversation)}
+                className={classes.listItem}
+              >
                 <ListItemAvatar>
                   <Avatar
                     alt={conversation.other_user.name.givenName}
@@ -219,12 +223,12 @@ function Conversations() {
                     conversation.other_user.name.familyName
                   }
                   secondary={
-                    (conversation.tabs.length > 0
+                    /* (conversation.tabs.length > 0
                       ? conversation.tabs.length + " " + splitsText
-                      : "No Splits") +
-                    (conversation.new_for.includes(user._id)
-                      ? ", unread messages"
-                      : "")
+                      : "No Splits") + */
+                    conversation.new_for.includes(user._id)
+                      ? "unread messages"
+                      : ""
                   }
                 />
                 {conversation.new_for.includes(user._id) && (
