@@ -120,10 +120,15 @@ function Splits() {
       if (!isAlreadyAdded) {
         setMessages((messages) => [...messages, message]);
         updateSeen(message._id);
+
+        if (message.sender !== user._id) setLastSeenMessage(message._id);
+
         let messagesContainer = document.getElementById("messagesContainer");
         window.navigator.vibrate(50); // vibrate for 50ms
-        let audio = new Audio("./media/pop.mp3");
-        audio.play();
+
+        /* let audio = new Audio("./media/pop.mp3");
+        audio.play(); */
+
         //If the user is having the conversation scrolled to almost at the bottom, scroll the div to it's bottom to show the
         //new message.
         if (
@@ -223,7 +228,8 @@ function Splits() {
   };
 
   const setOtherUserMessageSeen = (payload) => {
-    setLastSeenMessage(payload.last_read_message_id);
+    if (payload.tab_id !== currentTab._id)
+      setLastSeenMessage(payload.last_read_message_id);
   };
 
   const updateComposedMessage = (event) => {

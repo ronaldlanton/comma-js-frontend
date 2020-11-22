@@ -21,14 +21,15 @@
   --alert_color: rgb(255, 0, 102);
   /*sizes*/
   --bar_height: 50px;
-  --conversation_font_size: 14px;
+  --conversation_font_size: 13px;
+  --conversation_font_weight: 600;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 
 body {
   background-color: var(--background_color);
-  font-family: "Open Sans", sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 .messages-container {
@@ -107,8 +108,9 @@ h1 {
 }
 
 .receiver-name {
-  margin-top: 12px;
-  font-size: larger;
+  margin-top: 16px;
+  font-size: large;
+  font-weight: 700;
 }
 
 .splits {
@@ -118,18 +120,41 @@ h1 {
   padding: 8px 32px 10px;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.splits::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.splits {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .activeSplit,
 .inactiveSplit {
-  padding: 10px 16px;
+  padding: 6px 16px;
   border-radius: 25px;
   margin-right: 10px;
   white-space: nowrap;
+  font-size: small;
+  font-weight: 600;
+  cursor: pointer;
 }
+
+/* .activeSplit:hover,
+.inactiveSplit:hover {
+  color: var(--text_primary);
+  background-color: var(--text_primary);
+  color: var(--background_color);
+  transition: all 0.3s ease-in-out;
+} */
 
 .activeSplit {
   color: var(--text_primary);
   background-color: var(--primary_color);
-  transition: all 0.4s linear;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.4);
 }
 
 .inactiveSplit {
@@ -180,7 +205,7 @@ h1 {
 .send-button {
   font-size: small;
   color: var(--primary_color);
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .messages-container {
@@ -258,6 +283,7 @@ h1 {
   background-color: var(--send_bubble_color);
   color: var(--send_text_color);
   font-size: var(--conversation_font_size);
+  font-weight: var(--conversation_font_weight);
 }
 
 .receive-bubble {
@@ -273,6 +299,7 @@ h1 {
   background-color: var(--receive_bubble_color);
   color: var(--receive_text_color);
   font-size: var(--conversation_font_size);
+  font-weight: var(--conversation_font_weight);
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);

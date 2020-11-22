@@ -10,6 +10,7 @@ import Cookies from "universal-cookie";
 import axios from "axios";
 import socket from "./WebSocket";
 import db from "./database/database";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
 db.info().then(function (info) {
   console.log(info);
@@ -74,11 +75,19 @@ socket.on("reconnect", function () {
 
 const store = createStore(rootReducer);
 
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: ["DM Sans"].join(","),
+  },
+});
+
 /* subscribeUser(); */
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </Provider>,
   document.getElementById("root")
 );
