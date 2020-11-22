@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -6,8 +7,24 @@ import { setUser } from "../actions";
 import Cookies from "universal-cookie";
 import axios from "axios";
 
+const useStyles = makeStyles((theme) => ({
+  loginButton: {
+    borderRadius: "25px",
+    backgroundColor: "var(--receive_bubble_color)",
+    color: "var(--text_primary)",
+    textTransform: "none",
+    padding: "10px 20px",
+    fontSize: "large",
+    height: "48px",
+    width: "max-content",
+    marginTop: "32px",
+    "&:hover" : {backgroundColor: "#212121", boxShadow: "none"}
+  },
+}));
+
 function Login() {
   //Hooks definitions
+  const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
   const cookies = new Cookies();
@@ -78,9 +95,14 @@ function Login() {
     //If there is no token present, it means user is logged out or never logged in.
     return (
       <div className="page-container">
-        <Button variant="contained" onClick={redirectToGoogle}>
-          Sign In
+        <div className="login-container">
+          <img width="210px" height="auto" src="/assets/login_bg.svg"/>
+          <span className="appname">Comma</span>
+          <Button className={classes.loginButton} variant="contained" onClick={redirectToGoogle}>
+            <img style={{ marginRight: "10px" }} width="24px" height="auto" src="/assets/G_icon.svg" />
+            Sign in with Google
         </Button>
+        </div>
       </div>
     );
   }
