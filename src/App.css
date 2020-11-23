@@ -246,7 +246,7 @@ h1 {
   overflow-y: scroll;
 }
 
-.message-container-shadow {
+.message-container {
   position: absolute;
   top: 0;
   left: 0;
@@ -387,11 +387,6 @@ h1 {
 }
 
 /* End of Message Bubbles */
-
-.MuiTypography-colorTextSecondary,
-.MuiSvgIcon-root {
-  color: var(--text_primary) !important;
-}
 
 .MuiToggleButton-root {
   border: none !important;
