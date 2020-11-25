@@ -22,11 +22,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     width: "calc(100%-24px)",
-    margin: "12px",
-    marginBottom: "10px",
+    margin: "8px",
+    marginBottom: "5px",
     marginTop: "0",
-    backgroundColor: "var(--dark_element_foreground)",
+    backgroundColor: "var(--receive_bubble_color)",
     borderRadius: "35px",
+    boxShadow: "none"
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   iconButton: {
     padding: 10,
-    color: "var(--receive_bubble_color) !important",
+    color: "var(--text_primary)",
   },
   divider: {
     height: 28,
@@ -135,14 +136,13 @@ function ChatComposer({
   };
   return (
     <div className="compose-container">
-      <div class="message-container-shadow" id="message-container-shadow"></div>
+      <div class="message-container" id="message-container"></div>
       <Paper component="form" className={classes.root}>
         <IconButton
           className={classes.iconButton}
           onClick={() => setIsImageUploadDialogOpen(!isImageUploadDialogOpen)}
-          disabled={isMessageListLoading}
-        >
-          <CameraIcon />
+          disabled={isMessageListLoading} >
+          <CameraIcon style={{opacity: "0.5"}}/>
         </IconButton>
         <InputBase
           className={classes.input}

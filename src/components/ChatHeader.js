@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "12px",
     marginRight: "20px",
   },
+  iconButton: {
+    color: "var(--text_primary)",
+  },
 }));
 
 function ChatHeader({
@@ -137,7 +140,10 @@ function ChatHeader({
                 size="small"
                 onClick={() => history.push("/new-split")}
               >
-                <AddIcon fontSize="small"></AddIcon>
+                <AddIcon
+                  fontSize="small"
+                  className={classes.iconButton}
+                ></AddIcon>
               </IconButton>
             </div>
           </>

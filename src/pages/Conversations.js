@@ -40,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
     color: "var(--primary_color)",
     marginTop: "4px",
   },
+  iconButton: {
+    padding: 10,
+    color: "var(--text_primary)",
+  },
 }));
 
 //For sorting conversations array efficiently.
@@ -265,7 +269,7 @@ function Conversations() {
           style={{ marginBottom: "4px" }}
           onClick={() => history.push("/new-conversation")}
         >
-          <AddIcon fontSize="small"></AddIcon>
+          <AddIcon fontSize="small" className={classes.iconButton}></AddIcon>
         </IconButton>
         <Switch
           checked={darkThemeState}
