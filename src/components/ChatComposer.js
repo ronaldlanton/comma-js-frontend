@@ -144,6 +144,7 @@ function ChatComposer({
           <CameraIcon style={{ opacity: "0.5" }} />
         </IconButton>
         <InputBase
+          autoComplete="off"
           className={classes.input}
           placeholder="Type a Message"
           value={currentValue}
