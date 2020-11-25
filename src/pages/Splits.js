@@ -491,7 +491,7 @@ function Splits() {
         updateComposedMessage={updateComposedMessage}
         sendMessage={sendMessage}
         sendImages={sendImages}
-        isMessageListLoading={isMessageListLoading}
+        isMessageListAfterTabChangeLoading={isMessageListAfterTabChangeLoading}
         currentTab={currentTab}
         setIsTyping={setIsTyping}
       />

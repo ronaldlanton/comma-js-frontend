@@ -19,6 +19,7 @@ import subscribeUser from "../subscription";
 import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
 import Switch from "@material-ui/core/Switch";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,19 +31,25 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "large",
     fontWeight: "700",
     color: "var(--primary_color)",
-    margin: "28px 18px 0px",
+    margin: "22px 18px 0px",
   },
   listItem: {
-    marginTop: "12px",
+    paddingTop: "16px",
+    paddingBottom: "16px",
   },
   darkThemeSwitch: {
     float: "right",
     color: "var(--primary_color)",
-    marginTop: "4px",
+    marginTop: "12px",
   },
   iconButton: {
     padding: 10,
     color: "var(--text_primary)",
+  },
+  large: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+    marginRight: "24px",
   },
 }));
 
@@ -117,7 +124,7 @@ function Conversations() {
         //Light theme variables
         setThemeVariables([
           "--background_color:#ebedf0",
-          "--dark_element_background:rgb(255, 255, 255)",
+          "--foreground_element_color:rgb(110, 110, 110)",
           "--background_alpha:255, 255, 255",
           "--split_button_background_color:rgb(255, 255, 255)",
           "--text_primary:rgb(24, 24, 24)",
@@ -128,8 +135,8 @@ function Conversations() {
         break;
       case "dark":
         setThemeVariables([
-          "--background_color:rgba(32,33,36,1)",
-          "--dark_element_background:#212121",
+          "--background_color:#212121",
+          "--foreground_element_color:rgb(60, 64, 67)",
           "--background_alpha:24, 24, 24",
           "--split_button_background_color:rgb(0, 140, 201)",
           "--text_primary:rgb(240, 240, 240)",
@@ -280,15 +287,10 @@ function Conversations() {
           inputProps={{ "aria-label": "secondary checkbox" }}
         />
         <div className="theme-select-text">Dark Theme:</div>
-        {/* <div className="theme-select-text">D</div> */}
       </Typography>
       <List className={classes.root}>
         {/*Render list of threads*/}
         {conversationsList.map((conversation) => {
-          let splitsText;
-          conversation.tabs.length > 1
-            ? (splitsText = "splits")
-            : (splitsText = "split");
           return (
             <div key={conversation._id}>
               <ListItem
@@ -298,13 +300,14 @@ function Conversations() {
               >
                 <ListItemAvatar>
                   <Avatar
+                    className={classes.large}
                     alt={conversation.other_user.name.givenName}
                     src={conversation.other_user.display_picture}
                   />
                 </ListItemAvatar>
                 <ListItemText
                   style={{
-                    color: "var(--text_primary)",
+                    color: "var(--text_primary) !important",
                   }}
                   primary={
                     conversation.other_user.name.givenName +
@@ -312,12 +315,12 @@ function Conversations() {
                     conversation.other_user.name.familyName
                   }
                   secondary={
-                    /* (conversation.tabs.length > 0
-                      ? conversation.tabs.length + " " + splitsText
-                      : "No Splits") + */
-                    conversation.new_for.includes(user._id)
-                      ? "unread messages"
-                      : ""
+                    (conversation.new_for.includes(user._id)
+                      ? "New Messages . "
+                      : "") +
+                    "Texted " +
+                    moment(conversation.date_updated).fromNow() +
+                    " "
                   }
                 />
                 {conversation.new_for.includes(user._id) && (

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "0",
     backgroundColor: "var(--receive_bubble_color)",
     borderRadius: "35px",
-    boxShadow: "none"
+    boxShadow: "none",
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -54,7 +54,7 @@ function ChatComposer({
   sendMessage,
   sendImages,
   currentTab,
-  isMessageListLoading,
+  isMessageListAfterTabChangeLoading,
   setIsTyping,
 }) {
   const classes = useStyles();
@@ -141,8 +141,9 @@ function ChatComposer({
         <IconButton
           className={classes.iconButton}
           onClick={() => setIsImageUploadDialogOpen(!isImageUploadDialogOpen)}
-          disabled={isMessageListLoading} >
-          <CameraIcon style={{opacity: "0.5"}}/>
+          disabled={isMessageListAfterTabChangeLoading}
+        >
+          <CameraIcon style={{ opacity: "0.5" }} />
         </IconButton>
         <InputBase
           className={classes.input}
@@ -168,7 +169,7 @@ function ChatComposer({
             sendMessage();
             inputRef.current.focus();
           }}
-          disabled={isMessageListLoading}
+          disabled={isMessageListAfterTabChangeLoading}
         >
           <span className="send-button">SEND</span>
         </IconButton>

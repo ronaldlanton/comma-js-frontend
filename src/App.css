@@ -1,8 +1,8 @@
 :root {
   /*colors*/
-  --background_color: rgba(32, 33, 36, 1);
-  --dark_element_background: rgba(32, 33, 36, 0.96);
-  --dark_element_foreground: rgb(60, 64, 67);
+  --background_color: #212121;
+  --foreground_element_color: rgb(60, 64, 67);
+  --secondary_text_color: rgb(112, 112, 112);
   --background_alpha: 24, 24, 24;
   --split_button_background_color: rgb(0, 140, 201);
   --primary_color: rgb(0, 140, 201);
@@ -98,13 +98,17 @@ h1 {
   font-size: 12px;
   display: inline-block;
   float: right;
-  margin-top: 16px;
+  margin-top: 24px;
 }
 
 .page-title {
   margin-top: 16px;
   font-size: large;
   font-weight: 700;
+}
+
+.MuiListItemText-secondary {
+  color: var(--secondary_text_color) !important;
 }
 
 /* Chat Screen divisions */
@@ -204,7 +208,7 @@ h1 {
 }
 
 .more-messages-circle {
-  background-color: var(--dark_element_background);
+  background-color: var(--background_color);
   padding: 6px;
   border-radius: 100%;
   position: fixed;
