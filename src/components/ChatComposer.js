@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "12px",
     marginBottom: "10px",
     marginTop: "0",
-    backgroundColor: "var(--background_color)",
+    backgroundColor: "var(--dark_element_foreground)",
     borderRadius: "35px",
   },
   input: {
