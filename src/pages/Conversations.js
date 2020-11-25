@@ -20,6 +20,7 @@ import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
 import Switch from "@material-ui/core/Switch";
 import moment from "moment";
+import Fade from "@material-ui/core/Fade";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -289,53 +290,55 @@ function Conversations() {
         />
         <div className="theme-select-text">Dark Theme:</div>
       </Typography>
-      <List className={classes.root}>
-        {/*Render list of threads*/}
-        {conversationsList.map((conversation) => {
-          return (
-            <div key={conversation._id}>
-              <ListItem
-                button
-                onClick={() => loadSplits(conversation)}
-                className={classes.listItem}
-              >
-                <ListItemAvatar>
-                  <Avatar
-                    className={classes.large}
-                    alt={conversation.other_user.name.givenName}
-                    src={conversation.other_user.display_picture}
+      <Fade in={true}>
+        <List className={classes.root}>
+          {/*Render list of threads*/}
+          {conversationsList.map((conversation) => {
+            return (
+              <div key={conversation._id}>
+                <ListItem
+                  button
+                  onClick={() => loadSplits(conversation)}
+                  className={classes.listItem}
+                >
+                  <ListItemAvatar>
+                    <Avatar
+                      className={classes.large}
+                      alt={conversation.other_user.name.givenName}
+                      src={conversation.other_user.display_picture}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    style={{
+                      color: "var(--text_primary) !important",
+                    }}
+                    primary={
+                      conversation.other_user.name.givenName +
+                      " " +
+                      conversation.other_user.name.familyName
+                    }
+                    secondary={
+                      (conversation.new_for.includes(user._id)
+                        ? "New Messages . "
+                        : "") +
+                      "Texted " +
+                      moment(conversation.date_updated).fromNow() +
+                      " "
+                    }
                   />
-                </ListItemAvatar>
-                <ListItemText
-                  style={{
-                    color: "var(--text_primary) !important",
-                  }}
-                  primary={
-                    conversation.other_user.name.givenName +
-                    " " +
-                    conversation.other_user.name.familyName
-                  }
-                  secondary={
-                    (conversation.new_for.includes(user._id)
-                      ? "New Messages . "
-                      : "") +
-                    "Texted " +
-                    moment(conversation.date_updated).fromNow() +
-                    " "
-                  }
-                />
-                {conversation.new_for.includes(user._id) && (
-                  <Badge
-                    color="secondary"
-                    variant="dot"
-                    invisible={false}
-                  ></Badge>
-                )}
-              </ListItem>
-            </div>
-          );
-        })}
-      </List>
+                  {conversation.new_for.includes(user._id) && (
+                    <Badge
+                      color="secondary"
+                      variant="dot"
+                      invisible={false}
+                    ></Badge>
+                  )}
+                </ListItem>
+              </div>
+            );
+          })}
+        </List>
+      </Fade>
     </div>
   );
 }

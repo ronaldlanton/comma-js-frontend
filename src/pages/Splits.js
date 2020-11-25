@@ -8,6 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import ChatHeader from "../components/ChatHeader";
 import ChatComposer from "../components/ChatComposer";
 import MessageBubble from "../components/MessageBubble";
+import Fade from "@material-ui/core/Fade";
 
 var currentTab = null;
 var messageQueue = [];
@@ -457,33 +458,35 @@ function Splits() {
           style={{ color: "var(--loader_color)" }}
         />
       ) : (
-        <div
-          className="messages-container"
-          onScroll={handleScroll}
-          id="messagesContainer"
-        >
-          {historyTopReached && <div class="bubblewrap first-message"></div>}
-          {messages.map((message) => {
-            let senderProfile = currentConversation.thread_participants.find(
-              (participant) => {
-                return participant._id === message.sender;
-              }
-            );
-            return (
-              <MessageBubble
-                key={message._id}
-                senderProfile={senderProfile}
-                displayPicture={senderProfile}
-                message={message}
-                currentTab={currentTab}
-                lastSeenMessage={lastSeenMessage}
-                currentConversation={currentConversation}
-                isTyping={isTyping}
-              />
-            );
-          })}
-          <div id="messageEnd" className="bubblewrap"></div>
-        </div>
+        <Fade in={true}>
+          <div
+            className="messages-container"
+            onScroll={handleScroll}
+            id="messagesContainer"
+          >
+            {historyTopReached && <div class="bubblewrap first-message"></div>}
+            {messages.map((message) => {
+              let senderProfile = currentConversation.thread_participants.find(
+                (participant) => {
+                  return participant._id === message.sender;
+                }
+              );
+              return (
+                <MessageBubble
+                  key={message._id}
+                  senderProfile={senderProfile}
+                  displayPicture={senderProfile}
+                  message={message}
+                  currentTab={currentTab}
+                  lastSeenMessage={lastSeenMessage}
+                  currentConversation={currentConversation}
+                  isTyping={isTyping}
+                />
+              );
+            })}
+            <div id="messageEnd" className="bubblewrap"></div>
+          </div>
+        </Fade>
       )}
 
       <ChatComposer

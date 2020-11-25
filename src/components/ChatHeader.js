@@ -7,6 +7,7 @@ import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Fade from "@material-ui/core/Fade";
 
 const useStyles = makeStyles((theme) => ({
   avatarSmall: {
@@ -53,25 +54,27 @@ function ChatHeader({
           <div></div>
         ) : (
           <>
-            <div className="receiver-details">
-              <IconButton
-                className="back-button"
-                onClick={() => history.push("/conversations")}
-              >
-                <ArrowBackIosIcon
-                  style={{ fill: "var(--primary_color)" }}
-                ></ArrowBackIosIcon>
-              </IconButton>
-              <div className="receiver-name">
-                {receiverProfile.name.givenName}
-              </div>
+            <Fade in={true}>
+              <div className="receiver-details">
+                <IconButton
+                  className="back-button"
+                  onClick={() => history.push("/conversations")}
+                >
+                  <ArrowBackIosIcon
+                    style={{ fill: "var(--primary_color)" }}
+                  ></ArrowBackIosIcon>
+                </IconButton>
+                <div className="receiver-name">
+                  {receiverProfile.name.givenName}
+                </div>
 
-              <Avatar
-                className={classes.avatarSmall}
-                alt={receiverProfile.name.givenName}
-                src={receiverProfile.display_picture}
-              />
-            </div>
+                <Avatar
+                  className={classes.avatarSmall}
+                  alt={receiverProfile.name.givenName}
+                  src={receiverProfile.display_picture}
+                />
+              </div>
+            </Fade>
 
             {/* <center>
               <ToggleButtonGroup
@@ -105,40 +108,41 @@ function ChatHeader({
                 <AddCircleOutlineIcon></AddCircleOutlineIcon>
               </IconButton>
             </center> */}
+            <Fade in={true}>
+              <div className="splits">
+                {tabList.map((tab, index) => {
+                  return (
+                    <div
+                      className={
+                        currentTab === index ? "activeSplit" : "inactiveSplit"
+                      }
+                      key={"split_" + index}
+                      onClick={() => {
+                        changeRenderedTab(tab);
+                        setCurrentTab(index);
+                      }}
+                    >
+                      <span style={{ verticalAlign: "baseline" }}>
+                        {tab.tab_name}
+                      </span>
+                      {newContentTabs.includes(tab._id) && (
+                        <span className="ndot"></span>
+                      )}
+                    </div>
+                  );
+                })}
 
-            <div className="splits">
-              {tabList.map((tab, index) => {
-                return (
-                  <div
-                    className={
-                      currentTab === index ? "activeSplit" : "inactiveSplit"
-                    }
-                    key={"split_" + index}
-                    onClick={() => {
-                      changeRenderedTab(tab);
-                      setCurrentTab(index);
-                    }}
-                  >
-                    <span style={{ verticalAlign: "baseline" }}>
-                      {tab.tab_name}
-                    </span>
-                    {newContentTabs.includes(tab._id) && (
-                      <span className="ndot"></span>
-                    )}
-                  </div>
-                );
-              })}
-
-              <IconButton
-                size="small"
-                onClick={() => history.push("/new-split")}
-              >
-                <AddIcon
-                  fontSize="small"
-                  className={classes.iconButton}
-                ></AddIcon>
-              </IconButton>
-            </div>
+                <IconButton
+                  size="small"
+                  onClick={() => history.push("/new-split")}
+                >
+                  <AddIcon
+                    fontSize="small"
+                    className={classes.iconButton}
+                  ></AddIcon>
+                </IconButton>
+              </div>
+            </Fade>
           </>
         )}
       </div>
