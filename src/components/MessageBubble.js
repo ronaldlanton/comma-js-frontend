@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import axios from "axios";
@@ -30,7 +28,6 @@ function MessageBubble({
   isTyping,
 }) {
   const classes = useStyles();
-  let displayPicture = senderProfile ? senderProfile.display_picture : null;
   let senderName = senderProfile
     ? senderProfile.name.givenName + " " + senderProfile.name.familyName
     : "";
@@ -142,6 +139,7 @@ function MessageBubble({
 }
 
 function getUrlFromText(text) {
+  // eslint-disable-next-line
   var url = text.match(/(https?\:\/\/)?([^\.\s]+)?[^\.\s]+\.[^\s]+/gi);
   return url;
 }

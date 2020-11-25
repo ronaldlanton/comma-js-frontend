@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     height: "48px",
     width: "max-content",
     marginTop: "32px",
-    "&:hover" : {backgroundColor: "#212121", boxShadow: "none"}
+    "&:hover": { backgroundColor: "#212121", boxShadow: "none" },
   },
 }));
 
@@ -96,12 +96,27 @@ function Login() {
     return (
       <div className="page-container">
         <div className="login-container">
-          <img width="210px" height="auto" src="/assets/login_bg.svg"/>
+          <img
+            width="210px"
+            height="auto"
+            alt="Comma Messenger"
+            src="/assets/login_bg.svg"
+          />
           <span className="appname">Comma</span>
-          <Button className={classes.loginButton} variant="contained" onClick={redirectToGoogle}>
-            <img style={{ marginRight: "10px" }} width="24px" height="auto" src="/assets/G_icon.svg" />
+          <Button
+            className={classes.loginButton}
+            variant="contained"
+            onClick={redirectToGoogle}
+          >
+            <img
+              style={{ marginRight: "10px" }}
+              width="24px"
+              height="auto"
+              alt="Sign in with Google"
+              src="/assets/G_icon.svg"
+            />
             Sign in with Google
-        </Button>
+          </Button>
         </div>
       </div>
     );

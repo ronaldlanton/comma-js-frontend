@@ -2,9 +2,7 @@ import React, { useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import SendIcon from "@material-ui/icons/Send";
 import CameraIcon from "@material-ui/icons/Camera";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -136,7 +134,7 @@ function ChatComposer({
   };
   return (
     <div className="compose-container">
-      <div class="message-container" id="message-container"></div>
+      <div className="message-container" id="message-container"></div>
       <Paper component="form" className={classes.root}>
         <IconButton
           className={classes.iconButton}

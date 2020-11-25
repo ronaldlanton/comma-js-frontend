@@ -1,9 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import Badge from "@material-ui/core/Badge";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
@@ -35,7 +32,6 @@ function ChatHeader({
 
   const history = useHistory();
 
-  const [selectedTab, setSelectedTab] = React.useState();
   const [currentTab, setCurrentTab] = React.useState(0);
 
   const user = useSelector((state) => {
@@ -44,10 +40,6 @@ function ChatHeader({
   const currentConversation = useSelector((state) => {
     return state.conversationReducer.conversation;
   });
-
-  const handleTabSelect = (event, tabId) => {
-    setSelectedTab(tabId);
-  };
 
   let receiverProfile = currentConversation.thread_participants.find(
     (participant) => {
@@ -121,6 +113,7 @@ function ChatHeader({
                     className={
                       currentTab === index ? "activeSplit" : "inactiveSplit"
                     }
+                    key={"split_" + index}
                     onClick={() => {
                       changeRenderedTab(tab);
                       setCurrentTab(index);

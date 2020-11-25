@@ -30,7 +30,6 @@ export default function BasicTextFields() {
   const [isError, setIsError] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [snackBarOpen, setSnackBarOpen] = React.useState(false);
-  const [apiResult, setApiResult] = useState();
 
   const currentConversation = useSelector((state) => {
     return state.conversationReducer.conversation;
@@ -57,7 +56,6 @@ export default function BasicTextFields() {
         console.log(result);
         if (result.data.status === 200) {
           setSnackBarOpen(true);
-          setApiResult(result.data.result);
         }
       })
       .catch(function (error) {

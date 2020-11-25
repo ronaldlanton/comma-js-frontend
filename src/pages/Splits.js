@@ -482,7 +482,7 @@ function Splits() {
               />
             );
           })}
-          <div id="messageEnd" class="bubblewrap"></div>
+          <div id="messageEnd" className="bubblewrap"></div>
         </div>
       )}
 

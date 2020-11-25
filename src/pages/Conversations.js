@@ -108,6 +108,7 @@ function Conversations() {
 
     setDarkThemeState(darkThemePreference);
     setTheme(darkThemePreference ? "dark" : "light");
+    // eslint-disable-next-line
   }, []);
 
   const setThemeVariables = (variables) => {
