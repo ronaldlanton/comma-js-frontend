@@ -97,7 +97,6 @@ h1 {
   font-weight: bold;
   font-size: 12px;
   display: inline-block;
-  float: right;
   margin-top: 24px;
 }
 
@@ -506,4 +505,15 @@ h1 {
 }
 .tidot:nth-child(3) {
   animation-delay: 400ms;
+}
+
+@keyframes grow {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

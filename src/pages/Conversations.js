@@ -236,8 +236,6 @@ function Conversations() {
     console.log(conversationListCopy);
     setConversationsList(conversationListCopy);
     window.navigator.vibrate(50); // vibrate for 50ms
-    let audio = new Audio("../media/pop.mp3");
-    audio.play();
   };
 
   useEffect(() => {
