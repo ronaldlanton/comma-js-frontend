@@ -8,6 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Fade from "@material-ui/core/Fade";
+import useLongPress from "../helpers/useLongPress";
+import TabActions from "./TabActions";
 
 const useStyles = makeStyles((theme) => ({
   avatarSmall: {
@@ -33,7 +35,13 @@ function ChatHeader({
 
   const history = useHistory();
 
+  const backspaceLongPress = useLongPress(() => {
+    console.log("long pressed");
+    setShowTabActions(true);
+  }, 500);
+
   const [currentTab, setCurrentTab] = React.useState(0);
+  const [showTabActions, setShowTabActions] = React.useState(0);
 
   const user = useSelector((state) => {
     return state.userReducer.user;
@@ -121,6 +129,7 @@ function ChatHeader({
                         changeRenderedTab(tab);
                         setCurrentTab(index);
                       }}
+                      {...backspaceLongPress}
                     >
                       <span style={{ verticalAlign: "baseline" }}>
                         {tab.tab_name}
@@ -141,6 +150,10 @@ function ChatHeader({
                     className={classes.iconButton}
                   ></AddIcon>
                 </IconButton>
+                <TabActions
+                  showTabActions={showTabActions}
+                  setShowTabActions={setShowTabActions}
+                ></TabActions>
               </div>
             </Fade>
           </>
