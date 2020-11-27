@@ -31,6 +31,10 @@ function Splits() {
 
   //State variables.
   const [tabList, setTabList] = useState([]);
+  const tabListRef = useRef(tabList);
+  useEffect(() => {
+    tabListRef.current = tabList;
+  }, [tabList]);
   const [messages, setMessages] = useState([]);
   const [historyTopReached, setHistoryTopReached] = useState(false);
   const messagesRef = useRef(messages);
@@ -234,10 +238,11 @@ function Splits() {
     if (payload.tab_id === currentTab._id)
       setLastSeenMessage(payload.last_read_message_id);
     else {
-      let tabListCopy = [...tabList];
+      let tabListCopy = [...tabListRef.current];
       let indexToUpdate = tabListCopy.findIndex(
         (tab) => tab._id === payload.tab_id
       );
+      console.log(indexToUpdate, tabListCopy[indexToUpdate]);
       tabListCopy[indexToUpdate].seen_status.forEach((seenObject, index) => {
         if (seenObject.user_id !== user._id) {
           tabListCopy[indexToUpdate].seen_status[index].last_read_message_id =
