@@ -153,6 +153,7 @@ function ChatHeader({
                 <TabActions
                   showTabActions={showTabActions}
                   setShowTabActions={setShowTabActions}
+                  currentTab={tabList[currentTab]}
                 ></TabActions>
               </div>
             </Fade>

@@ -202,6 +202,11 @@ function Splits() {
     currentTab = tab;
     tabChanged = true;
 
+    console.log(
+      "getting last seen message",
+      getLastSeenMessageFromTabObject(tab),
+      tab
+    );
     setLastSeenMessage(getLastSeenMessageFromTabObject(tab));
 
     getMessages(tab._id).then((msgs) => {
@@ -234,20 +239,19 @@ function Splits() {
   const setOtherUserMessageSeen = (payload) => {
     if (payload.tab_id === currentTab._id)
       setLastSeenMessage(payload.last_read_message_id);
-    else {
-      let tabListCopy = [...tabListRef.current];
-      let indexToUpdate = tabListCopy.findIndex(
-        (tab) => tab._id === payload.tab_id
-      );
-      console.log(indexToUpdate, tabListCopy[indexToUpdate]);
-      tabListCopy[indexToUpdate].seen_status.forEach((seenObject, index) => {
-        if (seenObject.user_id !== user._id) {
-          tabListCopy[indexToUpdate].seen_status[index].last_read_message_id =
-            payload.last_read_message_id;
-        }
-      });
-      setTabList(tabListCopy);
-    }
+
+    let tabListCopy = [...tabListRef.current];
+    let indexToUpdate = tabListCopy.findIndex(
+      (tab) => tab._id === payload.tab_id
+    );
+
+    tabListCopy[indexToUpdate].seen_status.forEach((seenObject, index) => {
+      if (seenObject.user_id !== user._id) {
+        tabListCopy[indexToUpdate].seen_status[index].last_read_message_id =
+          payload.last_read_message_id;
+      }
+    });
+    setTabList(tabListCopy);
   };
 
   const setTypingStatus = (payload) => {

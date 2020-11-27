@@ -110,6 +110,10 @@ h1 {
   color: var(--secondary_text_color) !important;
 }
 
+.MuiPaper-root {
+  color: var(--background_color) !important;
+}
+
 /* Chat Screen divisions */
 .header-backdrop {
   position: absolute;
