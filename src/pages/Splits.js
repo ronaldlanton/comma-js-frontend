@@ -197,6 +197,7 @@ function Splits() {
     if (isMessageListLoading === false) setIsMessageListLoading(true);
     setHistoryTopReached(false);
     setisMessageListAfterTabChangeLoading(true);
+    setIsTyping(false);
     currentTab = tab;
     tabChanged = true;
 
@@ -232,6 +233,19 @@ function Splits() {
   const setOtherUserMessageSeen = (payload) => {
     if (payload.tab_id === currentTab._id)
       setLastSeenMessage(payload.last_read_message_id);
+    else {
+      let tabListCopy = [...tabList];
+      let indexToUpdate = tabListCopy.findIndex(
+        (tab) => tab._id === payload.tab_id
+      );
+      tabListCopy[indexToUpdate].seen_status.forEach((seenObject, index) => {
+        if (seenObject.user_id !== user._id) {
+          tabListCopy[indexToUpdate].seen_status[index].last_read_message_id =
+            payload.last_read_message_id;
+        }
+      });
+      setTabList(tabListCopy);
+    }
   };
 
   const setTypingStatus = (payload) => {
