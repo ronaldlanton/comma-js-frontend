@@ -20,6 +20,13 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(1),
       width: "25ch",
+      color: "var(--text_primary)",
+    },
+    input: {
+      "&::placeholder": {
+        color: "var(--text_primary)",
+        backgroundColor: "white"
+      },
     },
   },
 }));
@@ -60,9 +67,27 @@ export default function BasicTextFields() {
       .catch(function (error) {
         console.log(error.response);
         let apiError = error.response.data;
-        if (apiError.status === 400 && apiError.error === "DUPLICATE_ENTITY") {
+        if (apiError.status === 400) {
+          console.log("400", apiError.error);
+          switch (apiError.error) {
+            case "DUPLICATE_ENTITY":
+              setIsError(true);
+              setErrorText("You already have a coversation with this person.");
+              break;
+            case "SELF_ADD":
+              setIsError(true);
+              setErrorText(
+                "There are better apps to take notes. :) Get Google Keep."
+              );
+              break;
+            default:
+            // code block
+          }
+        } else if (apiError.status === 404) {
           setIsError(true);
-          setErrorText("You already have a coversation with this person.");
+          setErrorText(
+            "We couldn't find the person you tried to add. Can you double check the email address?"
+          );
         }
       });
   };
@@ -86,6 +111,7 @@ export default function BasicTextFields() {
             variant="filled"
             onChange={updateStateEmail}
             helperText={errorText}
+            InputProps={{ classes: { input: classes.input } }}
           />
           <FormHelperText id="my-helper-text">
             This is typically their gmail address.
