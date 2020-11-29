@@ -92,12 +92,67 @@ h1 {
   margin: 10px 0px;
 }
 
-.theme-select-text {
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  margin: 22px 18px 0;
+}
+
+.settings-block {
+  display: flex;
+}
+.settings-title,
+.settings-sub-title {
   color: var(--text_primary);
   font-weight: bold;
+  display: block;
+}
+
+.settings-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  margin: 20px 0;
+}
+.settings-sub-title {
   font-size: 12px;
-  display: inline-block;
-  margin-top: 24px;
+  vertical-align: middle;
+}
+
+.vertical-align {
+  vertical-align: baseline;
+}
+
+.column-flex {
+  flex-direction: column;
+}
+
+.accent-colors-container {
+  display: flex;
+  margin: 14px 0;
+}
+
+.theme-accent-icon {
+  height: 24px;
+  width: 24px;
+  border-radius: 100%;
+  background-color: var(--text_primary);
+  margin: 0 12px;
+}
+
+.accent-default {
+  background: linear-gradient(
+    to bottom,
+    rgb(0, 140, 201) 15%,
+    rgb(0, 75, 107) 90%
+  );
+}
+
+.accent-red {
+  background: linear-gradient(
+    to bottom,
+    rgb(201, 0, 0) 15%,
+    rgb(107, 0, 0) 90%
+  );
 }
 
 .page-title {
@@ -251,6 +306,17 @@ h1 {
   font-size: small;
   color: var(--primary_color);
   font-weight: 600;
+}
+
+.messages-info-top {
+  display: inline-block;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--receive_bubble_color);
+  font-size: x-small;
+  font-weight: bold;
+  margin-bottom: 32px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .messages-container {

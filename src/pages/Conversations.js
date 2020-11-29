@@ -17,8 +17,8 @@ import socket from "../WebSocket";
 import Typography from "@material-ui/core/Typography";
 import subscribeUser from "../subscription";
 import AddIcon from "@material-ui/icons/Add";
+import SettingsIcon from "@material-ui/icons/Settings";
 import IconButton from "@material-ui/core/IconButton";
-import Switch from "@material-ui/core/Switch";
 import moment from "moment";
 import Fade from "@material-ui/core/Fade";
 
@@ -278,15 +278,15 @@ function Conversations() {
         >
           <AddIcon fontSize="small" className={classes.iconButton}></AddIcon>
         </IconButton>
-        <Switch
-          checked={darkThemeState}
-          onChange={handleChange}
-          name="checkedA"
-          className={classes.darkThemeSwitch}
-          color="default"
-          inputProps={{ "aria-label": "secondary checkbox" }}
-        />
-        <div className="theme-select-text">Dark Theme:</div>
+        <IconButton
+          style={{ marginBottom: "4px" }}
+          onClick={() => history.push("/settings")}
+        >
+          <SettingsIcon
+            fontSize="small"
+            className={classes.iconButton}
+          ></SettingsIcon>
+        </IconButton>
       </Typography>
       <Fade in={true}>
         <List className={classes.root}>

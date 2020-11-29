@@ -485,6 +485,9 @@ function Splits() {
             id="messagesContainer"
           >
             {historyTopReached && <div class="bubblewrap first-message"></div>}
+            <div className="bubblewrap messages-info-top">
+              Upto 30 days of message history is stored
+            </div>
             {messages.map((message) => {
               let senderProfile = currentConversation.thread_participants.find(
                 (participant) => {
