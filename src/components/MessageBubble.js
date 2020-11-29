@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   small: {
     width: theme.spacing(3),
     height: theme.spacing(3),
-    animation: "grow 0.2s ease-in-out;"
+    animation: "grow 0.2s ease-in-out;",
   },
 }));
 
@@ -91,31 +91,43 @@ function MessageBubble({
     // eslint-disable-next-line
   }, []);
   return (
-    <div className="bubblewrap">
-      {/* <Avatar alt={senderName} src={displayPicture} /> */}
-      <span
-        className={
-          (message.sender === user._id ? "send-bubble" : "receive-bubble") +
-          (!message._id ? " bubble-dim" : "")
-        }
-      >
-        {message.type === "text" ? (
-          <Typography>{message.content}</Typography>
-        ) : (
-          <img
-            alt={message.file_name}
-            src={imageFile}
-            style={{ width: "100%", height: "auto", borderRadius: "25px" }}
-          ></img>
+    <>
+      <div className="bubblewrap">
+        {/* <Avatar alt={senderName} src={displayPicture} /> */}
+        <span
+          className={
+            (message.sender === user._id ? "send-bubble" : "receive-bubble") +
+            (!message._id ? " bubble-dim" : "")
+          }
+        >
+          {message.type === "text" ? (
+            <Typography>{message.content}</Typography>
+          ) : (
+            <img
+              alt={message.file_name}
+              src={imageFile}
+              style={{ width: "100%", height: "auto", borderRadius: "25px" }}
+            ></img>
+          )}
+        </span>
+      </div>
+      {message.content &&
+        message.content.includes("https://open.spotify.com/track/") &&
+        spotifyMeta &&
+        spotifyMeta.preview_url && (
+          <span
+            className={
+              (message.sender === user._id ? "send-bubble" : "receive-bubble") +
+              (!message._id ? " bubble-dim" : "")
+            }
+          >
+            <SpotifyMiniPlayer
+              trackInfo={spotifyMeta}
+              content={message.content}
+            />
+          </span>
         )}
 
-        {message.content &&
-          message.content.includes("https://open.spotify.com/track/") &&
-          spotifyMeta &&
-          spotifyMeta.preview_url && (
-            <SpotifyMiniPlayer trackInfo={spotifyMeta} />
-          )}
-      </span>
       {lastSeenMessage === message._id && (
         <div className="bubblewrap">
           <Avatar
@@ -135,7 +147,7 @@ function MessageBubble({
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }
 
