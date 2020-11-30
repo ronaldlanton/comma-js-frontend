@@ -5,6 +5,7 @@ import Conversations from "./pages/Conversations";
 import Splits from "./pages/Splits";
 import NewConversation from "./pages/NewConversation";
 import NewSplit from "./pages/NewSplit";
+import CreateNew from "./pages/CreateNew";
 import Settings from "./pages/Settings";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
@@ -35,6 +36,7 @@ function App() {
                     component={NewConversation}
                   />
                   <Route path="/new-split" exact component={NewSplit} />
+                  <Route path="/create" exact component={CreateNew} />
                   <Route path="/settings" exact component={Settings} />
                 </Switch>
               </CSSTransition>
