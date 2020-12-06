@@ -6,6 +6,7 @@ import axios from "axios";
 import SpotifyMiniPlayer from "./SpotifyMiniPlayer";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ImageLightbox from "./ImageLightbox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,8 +58,9 @@ function MessageBubble({
   let seenIcon = seenIconProfile.display_picture;
 
   const [imageFile, setImageFile] = useState("");
-  const [spotifyMeta, setSpotifyMeta] = useState();
   const [imageLoading, setImageLoading] = useState(true);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [spotifyMeta, setSpotifyMeta] = useState();
 
   useEffect(() => {
     if (message.type === "image" && imageFile === "") {
@@ -158,6 +160,7 @@ function MessageBubble({
             onLoad={imageOnload}
             className={classes.imagePreview}
             id={message.file_name}
+            onClick={() => setLightboxOpen(true)}
           ></img>
         </span>
       </div>
@@ -203,6 +206,14 @@ function MessageBubble({
       {hasSpotifyLink && getSpotifyPlayer()}
 
       {lastSeenMessage === message._id && getSeenAvatar()}
+
+      {lightboxOpen && (
+        <ImageLightbox
+          image={imageFile}
+          title={"Image From " + senderName}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
     </>
   );
 }
