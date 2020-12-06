@@ -105,11 +105,12 @@ function MessageBubble({
 
   const imageOnload = () => {
     let messagesContainer = document.getElementById("messagesContainer");
-    let imageElem = document.getElementById(message.file_name);
 
     let isAlreadyAtBottom =
-      messagesContainer.scrollTop ===
-      messagesContainer.scrollHeight - messagesContainer.offsetHeight;
+      messagesContainer.scrollHeight -
+        messagesContainer.offsetHeight -
+        messagesContainer.scrollTop <=
+      50;
 
     setTimeout(() => {
       if (isAlreadyAtBottom) {
