@@ -447,6 +447,10 @@ h1 {
   width: 100%;
 }
 
+.minimum-padding-bubble {
+  padding: 4px;
+}
+
 .send-bubble {
   color: white;
   margin-left: 25%;

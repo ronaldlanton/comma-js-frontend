@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "auto",
     objectFit: "cover",
-    borderRadius: "18px",
+    borderRadius: "22px",
   },
   imageLoaderWrapper: {
     height: "72px",
@@ -141,7 +141,7 @@ function MessageBubble({
   const getImageBubble = () => {
     return (
       <div className="bubblewrap">
-        <span className={bubbleClassName}>
+        <span className={bubbleClassName + " minimum-padding-bubble"}>
           <div
             className={classes.imageLoaderWrapper}
             style={{ display: imageLoading ? "block" : "none" }}
@@ -154,7 +154,11 @@ function MessageBubble({
             />
           </div>
           <img
-            style={{ display: imageLoading ? "none" : "block" }}
+            style={{
+              display: imageLoading ? "none" : "block",
+              cursor: "pointer",
+              "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)",
+            }}
             alt={"Image from " + senderProfile.name.givenName}
             src={imageFile}
             onLoad={imageOnload}
