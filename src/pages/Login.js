@@ -73,8 +73,9 @@ function Login() {
         storedUserDetails = JSON.parse(storedUserDetails);
         dispatch(setUser(storedUserDetails));
       } catch (e) {
-        localStorage.removeItem("userData");
+        localStorage.clear();
         cookies.remove("SSID");
+        cookies.remove("USR");
         history.push("/");
       }
     }

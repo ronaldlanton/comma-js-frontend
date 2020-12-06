@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -8,6 +9,7 @@ import Cookies from "universal-cookie";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import Fade from "@material-ui/core/Fade";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Conversations() {
   const cookies = new Cookies();
+  const history = useHistory();
 
   const classes = useStyles();
   const user = useSelector((state) => {
@@ -147,6 +150,13 @@ function Conversations() {
     }
   };
 
+  const logout = () => {
+    localStorage.clear();
+    cookies.remove("SSID");
+    cookies.remove("USR");
+    history.push("/");
+  };
+
   return (
     <div className="page-container">
       <Typography variant="h5" gutterBottom className={classes.pageTitle}>
@@ -156,7 +166,9 @@ function Conversations() {
         <div className="settings-container">
           <div className="settings-title">Theme Options</div>
           <div className="settings-block">
-            <div className="settings-sub-title vertical-align">Dark Theme: </div>
+            <div className="settings-sub-title vertical-align">
+              Dark Theme:{" "}
+            </div>
             <Switch
               checked={darkThemeState}
               onChange={handleChange}
@@ -171,6 +183,16 @@ function Conversations() {
             <div className="accent-colors-container">
               <div className="theme-accent-icon accent-default"></div>
             </div>
+          </div>
+          <div className="settings-block column-flex">
+            <div className="settings-sub-title">Account Actions: </div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => logout()}
+            >
+              Logout
+            </Button>
           </div>
         </div>
       </Fade>

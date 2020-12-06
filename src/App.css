@@ -1,6 +1,6 @@
 :root {
   /*colors*/
-  --background_color: #212121;
+  --background_color: #000000;
   --foreground_element_color: rgb(60, 64, 67);
   --secondary_text_color: rgb(112, 112, 112);
   --background_alpha: 24, 24, 24;
@@ -12,10 +12,10 @@
   --sender_bubble_gradient: linear-gradient(
     to bottom,
     rgb(0, 140, 201) 15%,
-    rgb(0, 75, 107) 90%
+    #001655 90%
   );
   --send_text_color: rgb(255, 255, 255);
-  --receive_bubble_color: #404040;
+  --receive_bubble_color: #202020;
   --loader_color: #404040;
   --receive_text_color: rgb(240, 240, 240);
   --alert_color: rgb(255, 0, 102);
