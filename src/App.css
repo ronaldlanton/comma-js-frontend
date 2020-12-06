@@ -467,6 +467,11 @@ h1 {
   margin-top: 50vh;
 }
 
+.image-loader-small {
+  height: 24px !important;
+  width: 24px !important;
+}
+
 /* End of Message Bubbles */
 
 .MuiToggleButton-root {

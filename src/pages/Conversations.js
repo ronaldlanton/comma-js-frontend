@@ -25,6 +25,8 @@ import Fade from "@material-ui/core/Fade";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
+    height: "calc(100% - 90px)",
+    overflowY: "scroll",
     backgroundColor: "var(--background_color)",
     color: "var(--text_primary) !important",
   },
@@ -105,7 +107,7 @@ function Conversations() {
 
   useEffect(() => {
     var darkThemePreference =
-      cookies.get("darkThemePreference") === "true" ? true : false;
+      cookies.get("darkThemePreference") === "false" ? false : true;
 
     setDarkThemeState(darkThemePreference);
     setTheme(darkThemePreference ? "dark" : "light");

@@ -5,6 +5,7 @@ import Avatar from "@material-ui/core/Avatar";
 import axios from "axios";
 import SpotifyMiniPlayer from "./SpotifyMiniPlayer";
 import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +18,16 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(3),
     height: theme.spacing(3),
     animation: "grow 0.2s ease-in-out;",
+  },
+  imagePreview: {
+    width: "100%",
+    height: "auto",
+    objectFit: "cover",
+    borderRadius: "18px",
+  },
+  imageLoaderWrapper: {
+    height: "72px",
+    width: "72px",
   },
 }));
 
@@ -47,6 +58,7 @@ function MessageBubble({
 
   const [imageFile, setImageFile] = useState("");
   const [spotifyMeta, setSpotifyMeta] = useState();
+  const [imageLoading, setImageLoading] = useState(true);
 
   useEffect(() => {
     if (message.type === "image" && imageFile === "") {
@@ -90,63 +102,106 @@ function MessageBubble({
     }
     // eslint-disable-next-line
   }, []);
-  return (
-    <>
+
+  const imageOnload = () => {
+    let messagesContainer = document.getElementById("messagesContainer");
+    let imageElem = document.getElementById(message.file_name);
+
+    let isAlreadyAtBottom =
+      messagesContainer.scrollTop ===
+      messagesContainer.scrollHeight - messagesContainer.offsetHeight;
+
+    setTimeout(() => {
+      if (isAlreadyAtBottom) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }, 1);
+
+    setImageLoading(false);
+  };
+
+  const bubbleType =
+    message.sender === user._id ? "send-bubble" : "receive-bubble";
+  const dimmedClass = !message._id ? " bubble-dim" : "";
+  const bubbleClassName = bubbleType + dimmedClass;
+
+  const getTextBubble = () => {
+    return (
       <div className="bubblewrap">
-        {/* <Avatar alt={senderName} src={displayPicture} /> */}
-        <span
-          className={
-            (message.sender === user._id ? "send-bubble" : "receive-bubble") +
-            (!message._id ? " bubble-dim" : "")
-          }
-        >
-          {message.type === "text" ? (
-            <Typography>{message.content}</Typography>
-          ) : (
-            <img
-              alt={message.file_name}
-              src={imageFile}
-              style={{ width: "100%", height: "auto", borderRadius: "25px" }}
-            ></img>
-          )}
+        <span className={bubbleClassName}>
+          <Typography>{message.content}</Typography>
         </span>
       </div>
-      {message.content &&
-        message.content.includes("https://open.spotify.com/track/") &&
-        spotifyMeta &&
-        spotifyMeta.preview_url && (
-          <span
-            className={
-              (message.sender === user._id ? "send-bubble" : "receive-bubble") +
-              (!message._id ? " bubble-dim" : "")
-            }
-          >
-            <SpotifyMiniPlayer
-              trackInfo={spotifyMeta}
-              content={message.content}
-            />
-          </span>
-        )}
+    );
+  };
 
-      {lastSeenMessage === message._id && (
-        <div className="bubblewrap">
-          <Avatar
-            alt={senderName}
-            src={seenIcon}
-            style={{ display: "inline-block", marginLeft: "12px" }}
-            className={classes.small}
-          />
-          {isTyping && (
-            <div className="typing-container">
-              <div class="tiblock">
-                <div class="tidot"></div>
-                <div class="tidot"></div>
-                <div class="tidot"></div>
-              </div>
+  const getImageBubble = () => {
+    return (
+      <div className="bubblewrap">
+        <span className={bubbleClassName}>
+          <div
+            className={classes.imageLoaderWrapper}
+            style={{ display: imageLoading ? "block" : "none" }}
+          >
+            <CircularProgress
+              className="progres-circle image-loader-small"
+              style={{
+                color: "var(--primary_color)",
+              }}
+            />
+          </div>
+          <img
+            style={{ display: imageLoading ? "none" : "block" }}
+            alt={"Image from " + senderProfile.name.givenName}
+            src={imageFile}
+            onLoad={imageOnload}
+            className={classes.imagePreview}
+            id={message.file_name}
+          ></img>
+        </span>
+      </div>
+    );
+  };
+
+  const hasSpotifyLink = spotifyMeta && spotifyMeta.preview_url;
+
+  const getSpotifyPlayer = () => {
+    return (
+      <span className={bubbleClassName}>
+        <SpotifyMiniPlayer trackInfo={spotifyMeta} content={message.content} />
+      </span>
+    );
+  };
+
+  const getSeenAvatar = () => {
+    return (
+      <div className="bubblewrap">
+        <Avatar
+          alt={senderName}
+          src={seenIcon}
+          style={{ display: "inline-block", marginLeft: "12px" }}
+          className={classes.small}
+        />
+        {isTyping && (
+          <div className="typing-container">
+            <div class="tiblock">
+              <div class="tidot"></div>
+              <div class="tidot"></div>
+              <div class="tidot"></div>
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <>
+      {message.type === "text" ? getTextBubble() : getImageBubble()}
+
+      {hasSpotifyLink && getSpotifyPlayer()}
+
+      {lastSeenMessage === message._id && getSeenAvatar()}
     </>
   );
 }
