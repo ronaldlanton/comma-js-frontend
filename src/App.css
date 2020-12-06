@@ -7,6 +7,7 @@
   --split_button_background_color: rgb(0, 140, 201);
   --primary_color: rgb(0, 140, 201);
   --text_primary: rgb(240, 240, 240);
+  --info_text_color: rgb(228, 228, 228);
   --send_bubble_color: #00b2ff;
   --sender_bubble_gradient: linear-gradient(
     to bottom,
@@ -312,7 +313,7 @@ h1 {
   display: inline-block;
   text-transform: uppercase;
   text-align: center;
-  color: var(--receive_bubble_color);
+  color: var(--info_text_color);
   font-size: x-small;
   font-weight: bold;
   margin-bottom: 32px;
