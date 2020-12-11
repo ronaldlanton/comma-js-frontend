@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import Fade from "@material-ui/core/Fade";
 import Button from "@material-ui/core/Button";
+import subscribeUser from "../subscription";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -157,6 +158,22 @@ function Conversations() {
     history.push("/");
   };
 
+  const toggleNotification = () => {
+    if (!window.Notification) {
+      alert("Notification not supported!");
+    } else {
+      Notification.requestPermission().then(function (permission) {
+        console.log(permission);
+        if (permission === "denied") {
+          alert("Notification access denied");
+        } else if (permission === "granted") {
+          subscribeUser();
+          alert("Notifications have been enabled");
+        }
+      });
+    }
+  };
+
   return (
     <div className="page-container">
       <Typography variant="h5" gutterBottom className={classes.pageTitle}>
@@ -183,6 +200,16 @@ function Conversations() {
             <div className="accent-colors-container">
               <div className="theme-accent-icon accent-default"></div>
             </div>
+          </div>
+          <div className="settings-block column-flex">
+            <div className="settings-sub-title">Account Actions: </div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => toggleNotification()}
+            >
+              Turn on notifications
+            </Button>
           </div>
           <div className="settings-block column-flex">
             <div className="settings-sub-title">Account Actions: </div>
