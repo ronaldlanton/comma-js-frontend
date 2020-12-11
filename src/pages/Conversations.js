@@ -146,7 +146,7 @@ function Conversations() {
           "--text_primary:rgb(240, 240, 240)",
           "--receive_bubble_color:#202020",
           "--receive_text_color:rgb(240, 240, 240)",
-          "--sender_bubble_gradient:linear-gradient(to bottom,rgb(0, 140, 201) 15%,#001655 90%)",
+          "--sender_bubble_gradient:linear-gradient(to bottom,rgb(0, 140, 201) 15%,rgb(0, 80, 114) 90%)",
         ]);
         break;
       default:

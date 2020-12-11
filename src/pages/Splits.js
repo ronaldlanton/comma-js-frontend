@@ -43,7 +43,6 @@ function Splits() {
   }, [messages]);
 
   const [lastSeenMessage, setLastSeenMessage] = useState();
-  const [composedMessage, setComposedMessage] = useState("");
   const [isTabListLoading, setIsTabListLoading] = useState(true);
   const [isMessageListLoading, setIsMessageListLoading] = useState(true);
   const IsMessageListLoadingRef = useRef(isMessageListLoading);
@@ -258,11 +257,6 @@ function Splits() {
     if (payload.tab_id === currentTab._id) setIsTyping(payload.status);
   };
 
-  const updateComposedMessage = (event) => {
-    let composed = event.target.value;
-    setComposedMessage(composed);
-  };
-
   const processMessageOutSuccess = (successMessage) => {
     let stateMessage, sentMessage;
     let refArray = messagesRef.current;
@@ -323,7 +317,7 @@ function Splits() {
     }
   };
 
-  const sendMessage = () => {
+  const sendMessage = (composedMessage, setComposedMessage) => {
     let messageObject = {
       headers: {
         user_id: cookies.get("USR"),
@@ -463,64 +457,69 @@ function Splits() {
   //Render.
   return (
     <div className="page-container">
-      <ChatHeader
-        isTabListLoading={isTabListLoading}
-        isMessageListAfterTabChangeLoading={isMessageListAfterTabChangeLoading}
-        tabList={tabList}
-        newContentTabs={newContentTabs}
-        changeRenderedTab={changeRenderedTab}
-        isMessageLoading={isMessageListLoading}
-      />
-
-      {isMessageListAfterTabChangeLoading === true ? (
-        <CircularProgress
-          className="progres-circle fixed"
-          style={{ color: "var(--loader_color)" }}
+      <div className="chat-screen-container">
+        <ChatHeader
+          isTabListLoading={isTabListLoading}
+          isMessageListAfterTabChangeLoading={
+            isMessageListAfterTabChangeLoading
+          }
+          tabList={tabList}
+          newContentTabs={newContentTabs}
+          changeRenderedTab={changeRenderedTab}
+          isMessageLoading={isMessageListLoading}
         />
-      ) : (
-        <Fade in={true}>
-          <div
-            className="messages-container"
-            onScroll={handleScroll}
-            id="messagesContainer"
-          >
-            {historyTopReached && <div class="bubblewrap first-message"></div>}
-            <div className="bubblewrap messages-info-top">
-              Upto 30 days of message history is stored
-            </div>
-            {messages.map((message) => {
-              let senderProfile = currentConversation.thread_participants.find(
-                (participant) => {
-                  return participant._id === message.sender;
-                }
-              );
-              return (
-                <MessageBubble
-                  key={message._id}
-                  senderProfile={senderProfile}
-                  displayPicture={senderProfile}
-                  message={message}
-                  currentTab={currentTab}
-                  lastSeenMessage={lastSeenMessage}
-                  currentConversation={currentConversation}
-                  isTyping={isTyping}
-                />
-              );
-            })}
-            <div id="messageEnd" className="bubblewrap"></div>
-          </div>
-        </Fade>
-      )}
 
-      <ChatComposer
-        currentValue={composedMessage}
-        updateComposedMessage={updateComposedMessage}
-        sendMessage={sendMessage}
-        sendImages={sendImages}
-        isMessageListAfterTabChangeLoading={isMessageListAfterTabChangeLoading}
-        currentTab={currentTab}
-        setIsTyping={setIsTyping}
-      />
+        {isMessageListAfterTabChangeLoading === true ? (
+          <CircularProgress
+            className="progres-circle fixed"
+            style={{ color: "var(--loader_color)" }}
+          />
+        ) : (
+          <Fade in={true}>
+            <div
+              className="messages-container"
+              onScroll={handleScroll}
+              id="messagesContainer"
+            >
+              {historyTopReached && (
+                <div class="bubblewrap first-message"></div>
+              )}
+              <div className="bubblewrap messages-info-top">
+                Upto 30 days of message history is stored
+              </div>
+              {messages.map((message) => {
+                let senderProfile = currentConversation.thread_participants.find(
+                  (participant) => {
+                    return participant._id === message.sender;
+                  }
+                );
+                return (
+                  <MessageBubble
+                    key={message._id}
+                    senderProfile={senderProfile}
+                    displayPicture={senderProfile}
+                    message={message}
+                    currentTab={currentTab}
+                    lastSeenMessage={lastSeenMessage}
+                    currentConversation={currentConversation}
+                    isTyping={isTyping}
+                  />
+                );
+              })}
+              <div id="messageEnd" className="bubblewrap"></div>
+            </div>
+          </Fade>
+        )}
+
+        <ChatComposer
+          sendMessage={sendMessage}
+          sendImages={sendImages}
+          isMessageListAfterTabChangeLoading={
+            isMessageListAfterTabChangeLoading
+          }
+          currentTab={currentTab}
+        />
+      </div>
     </div>
   );
 }

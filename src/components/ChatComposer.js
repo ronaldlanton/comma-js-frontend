@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import CameraIcon from "@material-ui/icons/Camera";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -20,8 +21,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     width: "calc(100%-24px)",
-    margin: "8px",
-    marginBottom: "5px",
+    margin: "4px 8px",
     marginTop: "0",
     backgroundColor: "var(--receive_bubble_color)",
     borderRadius: "35px",
@@ -47,19 +47,19 @@ const useStyles = makeStyles((theme) => ({
 var timeout = undefined;
 
 function ChatComposer({
-  currentValue,
-  updateComposedMessage,
   sendMessage,
   sendImages,
   currentTab,
   isMessageListAfterTabChangeLoading,
-  setIsTyping,
 }) {
   const classes = useStyles();
   const [isImageUploadDialogOpen, setIsImageUploadDialogOpen] = useState(false);
   const [files, setFiles] = useState([]);
   const inputRef = useRef();
   const [typing, setTyping] = useState(false);
+  const [composedMessage, setComposedMessage] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+
   const cookies = new Cookies();
 
   const emitTyping = (boolean) => {
@@ -95,6 +95,7 @@ function ChatComposer({
   }
 
   const uploadFiles = () => {
+    setIsUploading(true);
     console.log(files, "uploading to tab", currentTab);
     if (files.length > 0) {
       let promises = [];
@@ -125,54 +126,23 @@ function ChatComposer({
           sendImages(fileNames);
           setFiles([]);
           setIsImageUploadDialogOpen(false);
+          setIsUploading(false);
         })
       );
     }
   };
   const onImageDialogClose = () => {
     setIsImageUploadDialogOpen(false);
+    setFiles([]);
   };
-  return (
-    <div className="compose-container">
-      <div className="message-container" id="message-container"></div>
-      <Paper component="form" className={classes.root}>
-        <IconButton
-          className={classes.iconButton}
-          onClick={() => setIsImageUploadDialogOpen(!isImageUploadDialogOpen)}
-          disabled={isMessageListAfterTabChangeLoading}
-        >
-          <CameraIcon style={{ opacity: "0.5" }} />
-        </IconButton>
-        <InputBase
-          autoComplete="off"
-          className={classes.input}
-          placeholder="Type a Message"
-          value={currentValue}
-          id="chat-composer-input"
-          onChange={updateComposedMessage}
-          onKeyDown={onKeyDownNotEnter}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              console.log("Enter key pressed");
-              e.preventDefault();
-              sendMessage();
-              inputRef.current.focus();
-            }
-          }}
-          inputRef={inputRef}
-        />
 
-        <IconButton
-          className={classes.iconButton}
-          onClick={() => {
-            sendMessage();
-            inputRef.current.focus();
-          }}
-          disabled={isMessageListAfterTabChangeLoading}
-        >
-          <span className="send-button">SEND</span>
-        </IconButton>
-      </Paper>
+  const updateComposedMessage = (event) => {
+    let composed = event.target.value;
+    setComposedMessage(composed);
+  };
+
+  const renderFormUploadDialog = () => {
+    return (
       <Dialog
         onClose={onImageDialogClose}
         aria-labelledby="customized-dialog-title"
@@ -185,6 +155,21 @@ function ChatComposer({
           Upload an image
         </MuiDialogTitle>
         <MuiDialogContent dividers>
+          {files.length > 0 && (
+            <div>
+              {files.map((file) => {
+                console.log(file);
+                return (
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={file.name}
+                    height={64}
+                    width={64}
+                  ></img>
+                );
+              })}
+            </div>
+          )}
           <Dropzone
             onDrop={(acceptedFiles) => {
               console.log(acceptedFiles);
@@ -195,16 +180,69 @@ function ChatComposer({
               <section>
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
-                  <p>Drag 'n' drop some files here, or click to select files</p>
+                  <center>
+                    <CloudUploadIcon />
+                    <p>Select files</p>
+                  </center>
                 </div>
               </section>
             )}
           </Dropzone>
         </MuiDialogContent>
         <MuiDialogActions>
-          <Button onClick={uploadFiles}>Upload</Button>
+          <Button
+            onClick={uploadFiles}
+            disabled={files.length === 0 || isUploading}
+          >
+            {isUploading ? "Uploading..." : "Upload"}
+          </Button>
         </MuiDialogActions>
       </Dialog>
+    );
+  };
+
+  return (
+    <div className="compose-container">
+      <Paper component="form" className={classes.root}>
+        <IconButton
+          className={classes.iconButton}
+          onClick={() => setIsImageUploadDialogOpen(!isImageUploadDialogOpen)}
+          disabled={isMessageListAfterTabChangeLoading}
+        >
+          <CameraIcon style={{ opacity: "0.5" }} />
+        </IconButton>
+        <InputBase
+          autoComplete="off"
+          className={classes.input}
+          placeholder="Type a Message"
+          value={composedMessage}
+          id="chat-composer-input"
+          onChange={updateComposedMessage}
+          onKeyDown={onKeyDownNotEnter}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              sendMessage(composedMessage, setComposedMessage);
+              inputRef.current.focus();
+            }
+          }}
+          inputRef={inputRef}
+          inputProps={{ "aria-label": "naked" }}
+          multiline
+        />
+
+        <IconButton
+          className={classes.iconButton}
+          onClick={() => {
+            sendMessage(composedMessage, setComposedMessage);
+            inputRef.current.focus();
+          }}
+          disabled={isMessageListAfterTabChangeLoading}
+        >
+          <span className="send-button">SEND</span>
+        </IconButton>
+      </Paper>
+      {renderFormUploadDialog()}
     </div>
   );
 }
