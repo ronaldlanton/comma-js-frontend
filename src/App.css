@@ -432,7 +432,8 @@ h1 {
 }
 
 .send-bubble,
-.receive-bubble {
+.receive-bubble,
+.bubblewrap {
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -478,6 +479,10 @@ h1 {
 }
 
 .bubble-dim {
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
   opacity: 0.5;
 }
 
