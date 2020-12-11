@@ -453,7 +453,7 @@ h1 {
 
 .send-bubble:active,
 .receive-bubble:active {
-  filter: brightness(0.5);
+  filter: brightness(1.5);
 }
 
 .bubblewrap {
