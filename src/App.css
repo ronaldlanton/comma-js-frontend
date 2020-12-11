@@ -437,6 +437,10 @@ h1 {
   word-break: break-word;
 }
 
+.send-bubble:hover,.receive-bubble:hover {
+  filter: brightness(1.5);
+}
+
 .bubblewrap {
   display: block;
   float: right;

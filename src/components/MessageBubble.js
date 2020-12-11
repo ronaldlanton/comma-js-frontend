@@ -214,7 +214,7 @@ function MessageBubble({
       {lightboxOpen && (
         <ImageLightbox
           image={imageFile}
-          title={"Image From " + senderName}
+          title={"Image from " + senderName}
           onClose={() => setLightboxOpen(false)}
         />
       )}
