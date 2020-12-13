@@ -501,6 +501,14 @@ h1 {
   filter: brightness(1.5);
 }
 
+/* .send-bubble.last {
+  border-bottom-right-radius: 4px;
+}
+
+.receive-bubble.last {
+  border-bottom-left-radius: 4px;
+} */
+
 .receive-bubble.last:before {
   content: "";
   position: absolute;
