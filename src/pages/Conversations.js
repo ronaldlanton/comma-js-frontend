@@ -191,6 +191,19 @@ function Conversations() {
     });
   };
 
+  const updateConversations = async () => {
+    if (document.visibilityState === "hidden") return;
+    
+    console.log("checking for new threads...")
+    let newThreads = await getThreads();
+
+    setConversationsList((currentThreads) => {
+      var ids = new Set(currentThreads.map((d) => d._id));
+      let merged = [...currentThreads, ...newThreads.filter((d) => !ids.has(d._id))];
+      return merged;
+    });
+  };
+
   const loadSplits = (conversation) => {
     dispatch(setCurrentConversation(conversation));
     history.push("/splits");
@@ -244,6 +257,7 @@ function Conversations() {
     if (user._id === null) return history.push("/");
     connectSocket();
     socket.on("_messageIn", markNewConversation);
+    document.addEventListener("visibilitychange", updateConversations);
     getThreads().then((threads) => {
       threads.forEach((thread, index) => {
         let allParticipants = thread.thread_participants;
@@ -258,6 +272,7 @@ function Conversations() {
     // returned function will be called on component unmount
     return () => {
       socket.off("_messageIn", markNewConversation);
+      document.removeEventListener("visibilitychange", updateConversations);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

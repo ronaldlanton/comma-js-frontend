@@ -560,6 +560,7 @@ h1 {
 .emoji-bubble {
   background-color: transparent;
   box-shadow: none;
+  padding: 6px 0;
 }
 
 .emoji-bubble > p {

@@ -175,6 +175,10 @@ function ChatComposer({
     setComposedMessage(composed);
   };
 
+  function isEmptyOrSpaces(str) {
+    return str === null || str.match(/^ *$/) !== null;
+  }
+
   const renderFormUploadDialog = () => {
     return (
       <Dialog
@@ -257,8 +261,10 @@ function ChatComposer({
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
-              sendMessage(composedMessage, setComposedMessage);
-              inputRef.current.focus();
+              if (!isEmptyOrSpaces(inputRef.current.value)) {
+                sendMessage(composedMessage, setComposedMessage);
+                inputRef.current.focus();
+              }
             }
           }}
           inputRef={inputRef}
@@ -269,8 +275,10 @@ function ChatComposer({
         <IconButton
           className={classes.iconButton}
           onClick={() => {
-            sendMessage(composedMessage, setComposedMessage);
-            inputRef.current.focus();
+            if (!isEmptyOrSpaces(inputRef.current.value)) {
+              sendMessage(composedMessage, setComposedMessage);
+              inputRef.current.focus();
+            }
           }}
           disabled={isMessageListAfterTabChangeLoading}
         >

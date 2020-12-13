@@ -403,6 +403,34 @@ function Splits() {
     }
   };
 
+  const checkForNewMessages = () => {
+    if (document.visibilityState === "hidden") return;
+
+    console.log("checking for new messages...");
+    axios
+      .get("/rest/v1/messages/getMessages", {
+        params: {
+          tab_id: currentTab._id,
+          limit: 10,
+          offset: 0,
+        },
+      })
+      .then((result) => {
+        if (result.data.status === 200) {
+          let messages = result.data.result;
+          messages = messages.reverse();
+          setMessages((msgs) => {
+            var ids = new Set(msgs.map((d) => d._id));
+            let merged = [...msgs, ...messages.filter((d) => !ids.has(d._id))];
+            return merged;
+          });
+        }
+      })
+      .catch((e) => {
+        console.error("Error loading messages:", e);
+      });
+  };
+
   useEffect(() => {
     //If user types the url directly, we would not have any conversation to display tabs and messages for, so redirect them to home.
     if (user._id === null || currentConversation._id === null)
@@ -413,7 +441,9 @@ function Splits() {
     socket.on("_messageSeen", setOtherUserMessageSeen);
     socket.on("_typingStatus", setTypingStatus);
     socket.on("_success", successHandler);
+    socket.on("_connect", checkForNewMessages);
     document.addEventListener("visibilitychange", updateSeen);
+    document.addEventListener("visibilitychange", checkForNewMessages);
 
     //When component loads, get all tabs and then render the messages for first tab in list.
     getTabs().then((tabs) => {
@@ -438,7 +468,9 @@ function Splits() {
       socket.off("_messageSeen", setOtherUserMessageSeen);
       socket.off("_typingStatus", setTypingStatus);
       socket.off("_success", successHandler);
+      socket.off("_connect", checkForNewMessages);
       document.removeEventListener("visibilitychange", updateSeen);
+      document.removeEventListener("visibilitychange", checkForNewMessages);
       currentTab = null;
       currentTabIds = [];
       messageQueue = [];

@@ -1,10 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import Cookies from "universal-cookie";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
@@ -77,9 +73,6 @@ function Conversations() {
   const history = useHistory();
 
   const classes = useStyles();
-  const user = useSelector((state) => {
-    return state.userReducer.user;
-  });
 
   const [darkThemeState, setDarkThemeState] = React.useState(true);
 

@@ -41,7 +41,7 @@ function ChatHeader({
   }, 500);
 
   const [currentTab, setCurrentTab] = React.useState(0);
-  const [showTabActions, setShowTabActions] = React.useState(0);
+  const [showTabActions, setShowTabActions] = React.useState(false);
 
   const user = useSelector((state) => {
     return state.userReducer.user;
