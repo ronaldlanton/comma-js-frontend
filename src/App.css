@@ -501,13 +501,13 @@ h1 {
   filter: brightness(1.5);
 }
 
-/* .send-bubble.last {
-  border-bottom-right-radius: 4px;
+.send-bubble.last {
+  border-bottom-right-radius: 2px;
 }
 
 .receive-bubble.last {
-  border-bottom-left-radius: 4px;
-} */
+  border-bottom-left-radius: 2px;
+}
 
 .receive-bubble.last:before {
   content: "";
@@ -518,7 +518,7 @@ h1 {
   height: 20px;
   width: 20px;
   background: var(--receive_bubble_color);
-  border-bottom-right-radius: 15px;
+  border-bottom-right-radius: 0px;
 }
 .receive-bubble.last:after {
   content: "";
@@ -542,7 +542,7 @@ h1 {
   width: 20px;
   background: var(--send_bubble_color);
   background-attachment: fixed;
-  border-bottom-left-radius: 15px;
+  border-bottom-left-radius: 0px;
 }
 
 .send-bubble.last:after {
