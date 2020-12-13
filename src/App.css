@@ -557,6 +557,19 @@ h1 {
   border-bottom-left-radius: 10px;
 }
 
+.emoji-bubble {
+  background-color: transparent;
+}
+
+.emoji-bubble > p {
+  font-size: xx-large;
+}
+
+.emoji-bubble::before,
+.emoji-bubble::after {
+  color: transparent;
+}
+
 .bubblewrap {
   display: block;
   float: right;
