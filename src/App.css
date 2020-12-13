@@ -10,10 +10,15 @@
   --info_text_color: rgb(228, 228, 228);
   --send_bubble_color: rgb(0, 140, 201);
   --sender_bubble_gradient: linear-gradient(
-    to bottom,
+    to right,
     rgb(0, 140, 201) 15%,
     rgb(0, 80, 114) 90%
   );
+  /* --receiver_bubble_gradient: linear-gradient(
+    to right,
+    #424242 0%,
+    #2e2e2e 100%
+  ); */
   --send_text_color: rgb(255, 255, 255);
   --receive_bubble_color: #202020;
   --loader_color: #404040;
@@ -432,6 +437,9 @@ h1 {
   color: var(--send_text_color);
   font-size: var(--conversation_font_size);
   font-weight: var(--conversation_font_weight);
+  -webkit-box-shadow: inset 0px 0px 12px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 0px 0px 12px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0px 0px 12px 1px rgba(0, 0, 0, 0.2);
 }
 
 .receive-bubble {
@@ -445,6 +453,7 @@ h1 {
   display: block;
   float: left;
   background-color: var(--receive_bubble_color);
+  /* background: var(--receiver_bubble_gradient); */
   color: var(--receive_text_color);
   font-size: var(--conversation_font_size);
   font-weight: var(--conversation_font_weight);
@@ -492,6 +501,54 @@ h1 {
   filter: brightness(1.5);
 }
 
+.receive-bubble.last:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  left: -7px;
+  height: 20px;
+  width: 20px;
+  background: var(--receive_bubble_color);
+  border-bottom-right-radius: 15px;
+}
+.receive-bubble.last:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: -10px;
+  width: 10px;
+  height: 20px;
+  background: var(--background_color);
+  border-bottom-right-radius: 10px;
+}
+
+.send-bubble.last:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  right: -8px;
+  height: 20px;
+  width: 20px;
+  background: var(--send_bubble_color);
+  background-attachment: fixed;
+  border-bottom-left-radius: 15px;
+}
+
+.send-bubble.last:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: -10px;
+  width: 10px;
+  height: 20px;
+  background: var(--background_color);
+  border-bottom-left-radius: 10px;
+}
+
 .bubblewrap {
   display: block;
   float: right;
@@ -509,7 +566,7 @@ h1 {
   /* background-image: url("https://ik.imagekit.io/shrihariprakash/ice_NUVdQw1NucU.jpg");
   background-size: cover;
   background-position: 0 0; */
-  background-attachment: fixed;
+  /* background-attachment: fixed; */
   /* backdrop-filter: brightness(60%); */
   opacity: 1;
 }

@@ -39,6 +39,7 @@ function MessageBubble({
   lastSeenMessage,
   currentConversation,
   isTyping,
+  isNextMessageSender,
 }) {
   const classes = useStyles();
   let senderName = senderProfile
@@ -126,12 +127,16 @@ function MessageBubble({
   const bubbleType =
     message.sender === user._id ? "send-bubble" : "receive-bubble";
   const dimmedClass = !message._id ? " bubble-dim" : "";
-  const bubbleClassName = bubbleType + dimmedClass;
+  const last = !isNextMessageSender && message.type === "text" ? " last" : "";
+  const bubbleClassName = bubbleType + dimmedClass + last;
 
   const getTextBubble = () => {
     return (
       <div className="bubblewrap">
-        <span className={bubbleClassName}>
+        <span
+          className={bubbleClassName}
+          style={{ marginBottom: isNextMessageSender ? "-3px" : "6px" }}
+        >
           <Typography>{message.content}</Typography>
         </span>
       </div>
@@ -141,7 +146,10 @@ function MessageBubble({
   const getImageBubble = () => {
     return (
       <div className="bubblewrap">
-        <span className={bubbleClassName + " minimum-padding-bubble"}>
+        <span
+          className={bubbleClassName + " minimum-padding-bubble"}
+          style={{ marginBottom: isNextMessageSender ? "-3px" : "6px" }}
+        >
           <div
             className={classes.imageLoaderWrapper}
             style={{ display: imageLoading ? "block" : "none" }}

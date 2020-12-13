@@ -487,12 +487,15 @@ function Splits() {
               <div className="bubblewrap messages-info-top">
                 Upto 30 days of message history is stored
               </div>
-              {messages.map((message) => {
+              {messages.map((message, index) => {
                 let senderProfile = currentConversation.thread_participants.find(
                   (participant) => {
                     return participant._id === message.sender;
                   }
                 );
+                let isNextMessageSender =
+                  messages[index + 1] &&
+                  messages[index + 1].sender === message.sender;
                 return (
                   <MessageBubble
                     key={message._id}
@@ -503,6 +506,7 @@ function Splits() {
                     lastSeenMessage={lastSeenMessage}
                     currentConversation={currentConversation}
                     isTyping={isTyping}
+                    isNextMessageSender={isNextMessageSender}
                   />
                 );
               })}

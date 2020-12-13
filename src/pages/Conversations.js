@@ -139,7 +139,7 @@ function Conversations() {
         break;
       case "dark":
         setThemeVariables([
-          "--background_color:#000000",
+          "--background_color:#1c1b1b",
           "--foreground_element_color:rgb(60, 64, 67)",
           "--background_alpha:24, 24, 24",
           "--split_button_background_color:rgb(0, 140, 201)",
