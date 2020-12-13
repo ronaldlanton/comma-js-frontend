@@ -8,8 +8,12 @@
   --primary_color: rgb(0, 140, 201);
   --text_primary: rgb(240, 240, 240);
   --info_text_color: rgb(228, 228, 228);
-  --send_bubble_color: #00b2ff;
-  --sender_bubble_gradient: linear-gradient( to bottom, rgb(0, 140, 201) 15%, rgb(0, 80, 114) 90%);
+  --send_bubble_color: rgb(0, 140, 201);
+  --sender_bubble_gradient: linear-gradient(
+    to bottom,
+    rgb(0, 140, 201) 15%,
+    rgb(0, 80, 114) 90%
+  );
   --send_text_color: rgb(255, 255, 255);
   --receive_bubble_color: #202020;
   --loader_color: #404040;
@@ -99,7 +103,8 @@ h1 {
   display: flex;
 }
 
-.settings-title, .settings-sub-title {
+.settings-title,
+.settings-sub-title {
   color: var(--text_primary);
   font-weight: bold;
   display: block;
@@ -138,11 +143,19 @@ h1 {
 }
 
 .accent-default {
-  background: linear-gradient( to bottom, rgb(0, 140, 201) 15%, rgb(0, 75, 107) 90%);
+  background: linear-gradient(
+    to bottom,
+    rgb(0, 140, 201) 15%,
+    rgb(0, 75, 107) 90%
+  );
 }
 
 .accent-red {
-  background: linear-gradient( to bottom, rgb(201, 0, 0) 15%, rgb(107, 0, 0) 90%);
+  background: linear-gradient(
+    to bottom,
+    rgb(201, 0, 0) 15%,
+    rgb(107, 0, 0) 90%
+  );
 }
 
 .page-title {
@@ -174,7 +187,11 @@ h1 {
   top: 0;
   width: 100%;
   z-index: 5;
-  background: linear-gradient( 180deg, var(--background_color) 85%, rgba(var(--background_alpha), 0) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--background_color) 85%,
+    rgba(var(--background_alpha), 0) 100%
+  );
   height: auto;
   min-height: 64px;
   padding: 12px 0px 28px;
@@ -221,7 +238,8 @@ h1 {
   /* Firefox */
 }
 
-.activeSplit, .inactiveSplit {
+.activeSplit,
+.inactiveSplit {
   padding: 6px 16px;
   border-radius: 25px;
   margin-right: 10px;
@@ -334,7 +352,11 @@ h1 {
 }
 
 .scrolled {
-  background: linear-gradient( 0deg, var(--background_color) 20%, rgba(var(--background_alpha), 0) 75%);
+  background: linear-gradient(
+    0deg,
+    var(--background_color) 20%,
+    rgba(var(--background_alpha), 0) 75%
+  );
 }
 
 /* End of Chat Screen divisions */
@@ -431,35 +453,42 @@ h1 {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
 }
 
-@media (min-width:320px) {
-  .send-bubble>img, .receive-bubble>img {
+@media (min-width: 320px) {
+  .send-bubble > img,
+  .receive-bubble > img {
     max-width: 200px;
   }
 }
 
-@media (min-width:961px) {
-  .send-bubble>img, .receive-bubble>img {
+@media (min-width: 961px) {
+  .send-bubble > img,
+  .receive-bubble > img {
     max-width: 350px;
   }
 }
 
-.send-bubble, .receive-bubble, .bubblewrap {
+.send-bubble,
+.receive-bubble,
+.bubblewrap {
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
 
-.receive-bubble>p, .send-bubble>p {
+.receive-bubble > p,
+.send-bubble > p {
   font-size: var(--conversation_font_size);
   word-break: break-word;
 }
 
-.send-bubble:hover, .receive-bubble:hover {
+.send-bubble:hover,
+.receive-bubble:hover {
   filter: brightness(1.5);
 }
 
-.send-bubble:active, .receive-bubble:active {
+.send-bubble:active,
+.receive-bubble:active {
   filter: brightness(1.5);
 }
 
@@ -476,7 +505,7 @@ h1 {
 .send-bubble {
   color: white;
   margin-left: 25%;
-  background: var(--sender_bubble_gradient);
+  /* background: var(--sender_bubble_gradient); */
   /* background-image: url("https://ik.imagekit.io/shrihariprakash/ice_NUVdQw1NucU.jpg");
   background-size: cover;
   background-position: 0 0; */
@@ -713,7 +742,7 @@ h1 {
   flex-direction: column;
 }
 
-.lb-header>* {
+.lb-header > * {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
