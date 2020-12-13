@@ -14,6 +14,7 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import socket from "../WebSocket";
 import Cookies from "universal-cookie";
+import imageCompression from "browser-image-compression";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -94,6 +95,39 @@ function ChatComposer({
     }
   }
 
+  const onDrop = async (acceptedFiles) => {
+    const fileList = await Promise.all(
+      acceptedFiles.map(async (file) => {
+        if (file.type === "image/png") return file;
+        const imageFile = file;
+        console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
+        console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+        };
+        try {
+          const compressedFile = await imageCompression(imageFile, options);
+          console.log(
+            "compressedFile instanceof Blob",
+            compressedFile instanceof Blob
+          ); // true
+          console.log(
+            `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
+          ); // smaller than maxSizeMB
+
+          return compressedFile;
+        } catch (error) {
+          console.log(error);
+        }
+      })
+    );
+    console.log(acceptedFiles);
+    setFiles(fileList);
+  };
+
   const uploadFiles = () => {
     setIsUploading(true);
     console.log(files, "uploading to tab", currentTab);
@@ -161,20 +195,21 @@ function ChatComposer({
                 console.log(file);
                 return (
                   <img
+                    key={file.name}
                     src={URL.createObjectURL(file)}
                     alt={file.name}
                     height={64}
                     width={64}
+                    style={{ objectFit: "cover" }}
                   ></img>
                 );
               })}
             </div>
           )}
           <Dropzone
-            onDrop={(acceptedFiles) => {
-              console.log(acceptedFiles);
-              setFiles(acceptedFiles);
-            }}
+            onDrop={onDrop}
+            accept="image/jpeg, image/png"
+            maxFiles={10}
           >
             {({ getRootProps, getInputProps }) => (
               <section>
