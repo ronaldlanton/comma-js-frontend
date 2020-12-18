@@ -501,13 +501,13 @@ h1 {
   filter: brightness(1.5);
 }
 
-/* .send-bubble.last {
-  border-bottom-right-radius: 4px;
+.send-bubble.last {
+  border-bottom-right-radius: 22px;
 }
 
 .receive-bubble.last {
-  border-bottom-left-radius: 4px;
-} */
+  border-bottom-left-radius: 22px;
+}
 
 .receive-bubble.last:before {
   content: "";
@@ -527,7 +527,7 @@ h1 {
   bottom: 0;
   left: -10px;
   width: 10px;
-  height: 20px;
+  height: 24px;
   background: var(--background_color);
   border-bottom-right-radius: 10px;
 }
@@ -552,7 +552,7 @@ h1 {
   bottom: 0;
   right: -10px;
   width: 10px;
-  height: 20px;
+  height: 24px;
   background: var(--background_color);
   border-bottom-left-radius: 10px;
 }
