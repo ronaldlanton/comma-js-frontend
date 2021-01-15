@@ -199,6 +199,16 @@ function Conversations() {
             <Button
               variant="contained"
               color="primary"
+              onClick={() => history.push("/edit-profile")}
+            >
+              Edit Profile
+            </Button>
+          </div>
+          <div className="settings-block column-flex">
+            <div className="settings-sub-title">Account Actions: </div>
+            <Button
+              variant="contained"
+              color="primary"
               onClick={() => toggleNotification()}
             >
               Turn on notifications

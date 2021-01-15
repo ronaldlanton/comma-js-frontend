@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   inputCustom: {
     borderRadius: "50px",
-    color: "white",
+    color: "var(--text_primary)",
     width: "18rem",
   },
   marginSpacing: {
