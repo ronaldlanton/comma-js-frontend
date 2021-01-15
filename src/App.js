@@ -6,6 +6,7 @@ import Splits from "./pages/Splits";
 import NewConversation from "./pages/NewConversation";
 import NewSplit from "./pages/NewSplit";
 import Settings from "./pages/Settings";
+import EditProfile from "./pages/EditProfile";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import "./App.css";
@@ -36,6 +37,11 @@ function App() {
                   />
                   <Route path="/new-split" exact component={NewSplit} />
                   <Route path="/settings" exact component={Settings} />
+                  <Route 
+                    path="/edit-profile" 
+                    exact 
+                    component={EditProfile} 
+                  />
                 </Switch>
               </CSSTransition>
             </TransitionGroup>
