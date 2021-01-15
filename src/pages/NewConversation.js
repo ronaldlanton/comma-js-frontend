@@ -10,6 +10,13 @@ import { useDispatch } from "react-redux";
 import { setCurrentConversation } from "../actions";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Grid from "@material-ui/core/Grid";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -17,16 +24,48 @@ function Alert(props) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "25ch",
-      color: "var(--text_primary)",
-    },
-    input: {
-      color: "var(--text_primary)",
-    },
+    flexGrow: 1,
+    height: "100%",
+    padding: "64px 0",
   },
+  large: {
+    width: theme.spacing(20),
+    height: theme.spacing(20),
+  },
+  inputCustom: {
+    borderRadius: "50px",
+    color: "white",
+    width: "18rem",
+  },
+  marginSpacing: {
+    margin: "10px",
+  },
+  button: {
+    borderRadius: "25px",
+    backgroundColor: "var(--receive_bubble_color)",
+    color: "var(--text_primary)",
+    textTransform: "none",
+    padding: "0px 50px",
+    fontSize: "large",
+    height: "48px",
+    width: "max-content",
+    "&:hover": { backgroundColor: "#212121", boxShadow: "none" },
+  },
+  heading: {
+    color: "var(--text_primary)",
+  },
+  buttonText: {
+    margin: "0 12px",
+    fontSize: "small"
+  }
 }));
+
+//DARK THEME
+const theme = createMuiTheme({
+  palette: {
+    type: "dark",
+  },
+});
 
 export default function NewConversation() {
   const classes = useStyles();
@@ -95,44 +134,54 @@ export default function NewConversation() {
   };
 
   return (
-    <div>
-      <center>
-        <form className={classes.root} noValidate autoComplete="off">
-          <Typography variant="h5" gutterBottom>
-            Add Friend
-          </Typography>
-          <TextField
-            error={isError}
-            id="filled-basic"
-            label="Enter Google ID"
-            variant="outlined"
-            onChange={updateStateEmail}
-            defaultValue="Default Value"
-            className={classes.input}
-            helperText={errorText}
-            margin="dense"
-          />
-          <FormHelperText id="my-helper-text">
-            This is typically their gmail address.
-          </FormHelperText>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={sendCreateRequest}
+    <ThemeProvider theme={theme}>
+      <div className="page-container">
+        <center>
+          <form className={classes.root} noValidate autoComplete="off">
+            <Typography variant="h5" gutterBottom className={classes.heading}>
+              Add Friend
+            </Typography>
+            <Grid>
+              <FormControl variant="outlined" className={classes.marginSpacing}>
+                <InputLabel>Google ID</InputLabel>
+                <OutlinedInput
+                  error={isError}
+                  id="firstName"
+                  type="text"
+                  onChange={updateStateEmail}
+                  className={classes.inputCustom}
+                  helperText={errorText}
+                  labelWidth={75}
+                  autoComplete={false}
+                />
+                {isError && (
+                  <FormHelperText id="my-helper-text">
+                    {errorText}
+                  </FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={sendCreateRequest}
+              className={classes.button}
+            >
+              <PersonAddIcon />
+              <span className={classes.buttonText}>ADD</span>
+            </Button>
+          </form>
+          <Snackbar
+            open={snackBarOpen}
+            autoHideDuration={5000}
+            onClose={handleClose}
           >
-            Add
-          </Button>
-        </form>
-        <Snackbar
-          open={snackBarOpen}
-          autoHideDuration={5000}
-          onClose={handleClose}
-        >
-          <Alert onClose={handleClose} severity="success">
-            Friend Added
-          </Alert>
-        </Snackbar>
-      </center>
-    </div>
+            <Alert onClose={handleClose} severity="success">
+              Friend Added
+            </Alert>
+          </Snackbar>
+        </center>
+      </div>
+    </ThemeProvider>
   );
 }
