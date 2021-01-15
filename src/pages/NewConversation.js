@@ -23,10 +23,7 @@ const useStyles = makeStyles((theme) => ({
       color: "var(--text_primary)",
     },
     input: {
-      "&::placeholder": {
-        color: "var(--text_primary)",
-        backgroundColor: "white",
-      },
+      color: "var(--text_primary)",
     },
   },
 }));
@@ -108,10 +105,12 @@ export default function NewConversation() {
             error={isError}
             id="filled-basic"
             label="Enter Google ID"
-            variant="filled"
+            variant="outlined"
             onChange={updateStateEmail}
+            defaultValue="Default Value"
+            className={classes.input}
             helperText={errorText}
-            InputProps={{ classes: { input: classes.input } }}
+            margin="dense"
           />
           <FormHelperText id="my-helper-text">
             This is typically their gmail address.
