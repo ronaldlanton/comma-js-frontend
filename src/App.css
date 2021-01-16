@@ -197,11 +197,8 @@ h1 {
   top: 0;
   width: 100%;
   z-index: 5;
-  background: linear-gradient(
-    180deg,
-    rgba(var(--background_alpha), 0.95) 85%,
-    rgba(var(--background_alpha), 0.95) 100%
-  );
+  background: rgba(var(--background_alpha), 0.85);
+
   backdrop-filter: blur(10px);
   height: auto;
   min-height: 64px;
