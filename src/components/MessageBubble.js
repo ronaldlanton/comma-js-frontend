@@ -167,7 +167,7 @@ function MessageBubble({
             <CircularProgress
               className="progres-circle image-loader-small"
               style={{
-                color: "var(--primary_color)",
+                color: "var(--text_primary)",
               }}
             />
           </div>
