@@ -52,6 +52,11 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
     color: "var(--text_primary)",
   },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+    border: "2px solid var(--text_primary)",
+  },
   large: {
     width: theme.spacing(6),
     height: theme.spacing(6),
@@ -228,10 +233,11 @@ function Conversations() {
           style={{ marginBottom: "4px" }}
           onClick={() => history.push("/settings")}
         >
-          <SettingsIcon
-            fontSize="small"
-            className={classes.iconButton}
-          ></SettingsIcon>
+          <Avatar
+            className={classes.small}
+            alt={"You"}
+            src={user.display_picture}
+          />
         </IconButton>
         <b>Conversations</b>{" "}
         <IconButton
