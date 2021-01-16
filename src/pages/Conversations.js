@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "700",
     color: "var(--primary_color)",
     margin: "22px 18px 0px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   listItem: {
     paddingTop: "16px",
@@ -123,13 +126,16 @@ function Conversations() {
 
   const updateConversations = async () => {
     if (document.visibilityState === "hidden") return;
-    
-    console.log("checking for new threads...")
+
+    console.log("checking for new threads...");
     let newThreads = await getThreads();
 
     setConversationsList((currentThreads) => {
       var ids = new Set(currentThreads.map((d) => d._id));
-      let merged = [...currentThreads, ...newThreads.filter((d) => !ids.has(d._id))];
+      let merged = [
+        ...currentThreads,
+        ...newThreads.filter((d) => !ids.has(d._id)),
+      ];
       return merged;
     });
   };
@@ -218,13 +224,6 @@ function Conversations() {
     //If loading is complete.
     <div className="page-container">
       <Typography variant="h5" gutterBottom className={classes.pageTitle}>
-        <b>Conversations</b>{" "}
-        <IconButton
-          style={{ marginBottom: "4px" }}
-          onClick={() => history.push("/new-conversation")}
-        >
-          <AddIcon fontSize="small" className={classes.iconButton}></AddIcon>
-        </IconButton>
         <IconButton
           style={{ marginBottom: "4px" }}
           onClick={() => history.push("/settings")}
@@ -233,6 +232,13 @@ function Conversations() {
             fontSize="small"
             className={classes.iconButton}
           ></SettingsIcon>
+        </IconButton>
+        <b>Conversations</b>{" "}
+        <IconButton
+          style={{ marginBottom: "4px" }}
+          onClick={() => history.push("/new-conversation")}
+        >
+          <AddIcon fontSize="small" className={classes.iconButton}></AddIcon>
         </IconButton>
       </Typography>
       <Fade in={true}>
