@@ -547,7 +547,7 @@ function Splits() {
           </Fade>
         )}
 
-        {!isMessageListLoading && (
+        {!isMessageListAfterTabChangeLoading && (
           <ChatComposer
             sendMessage={sendMessage}
             sendImages={sendImages}
