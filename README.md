@@ -5,6 +5,11 @@
 
 An open source messenger based on Node.js and React
 
+Conversations             |  Splits
+:-------------------------:|:-------------------------:
+![plot](./branding-assets/screenshots/conversation-list.png) | ![plot](./branding-assets/screenshots/conversation.png)
+
+
 **Is this another 'chat' application built based on YouTube examples? NO**
 
 **Ok it's not that, so how does it standout?**
