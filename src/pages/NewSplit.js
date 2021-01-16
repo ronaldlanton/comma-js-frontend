@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useSelector } from "react-redux";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
-import AddCommentIcon from '@material-ui/icons/AddComment';
+import AddCommentIcon from "@material-ui/icons/AddComment";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -57,13 +54,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "small",
   },
 }));
-
-//DARK THEME
-const theme = createMuiTheme({
-  palette: {
-    type: "dark",
-  },
-});
 
 export default function BasicTextFields() {
   const classes = useStyles();
@@ -121,49 +111,47 @@ export default function BasicTextFields() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className="page-container">
-        <center>
-          <form className={classes.root} noValidate autoComplete="off">
-            <Typography variant="h5" gutterBottom className={classes.heading}>
-              Create Split
-            </Typography>
-            <Grid>
-              <FormControl variant="outlined" className={classes.marginSpacing}>
-                <InputLabel>Split Name</InputLabel>
-                <OutlinedInput
-                  error={isError}
-                  id="firstName"
-                  type="text"
-                  onChange={updateStateTabName}
-                  className={classes.inputCustom}
-                  helperText={errorText}
-                  labelWidth={76}
-                  autoComplete={false}
-                />
-              </FormControl>
-            </Grid>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={sendCreateRequest}
-              className={classes.button}
-            >
-              <AddCommentIcon />
-              <span className={classes.buttonText}>CREATE</span>
-            </Button>
-          </form>
-          <Snackbar
-            open={snackBarOpen}
-            autoHideDuration={5000}
-            onClose={handleClose}
+    <div className="page-container">
+      <center>
+        <form className={classes.root} noValidate autoComplete="off">
+          <Typography variant="h5" gutterBottom className={classes.heading}>
+            Create Split
+          </Typography>
+          <Grid>
+            <FormControl variant="outlined" className={classes.marginSpacing}>
+              <InputLabel>Split Name</InputLabel>
+              <OutlinedInput
+                error={isError}
+                id="firstName"
+                type="text"
+                onChange={updateStateTabName}
+                className={classes.inputCustom}
+                helperText={errorText}
+                labelWidth={76}
+                autoComplete={false}
+              />
+            </FormControl>
+          </Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={sendCreateRequest}
+            className={classes.button}
           >
-            <Alert onClose={handleClose} severity="success">
-              <span className={classes.buttonText}>Split Created!</span>
-            </Alert>
-          </Snackbar>
-        </center>
-      </div>
-    </ThemeProvider>
+            <AddCommentIcon />
+            <span className={classes.buttonText}>CREATE</span>
+          </Button>
+        </form>
+        <Snackbar
+          open={snackBarOpen}
+          autoHideDuration={5000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity="success">
+            <span className={classes.buttonText}>Split Created!</span>
+          </Alert>
+        </Snackbar>
+      </center>
+    </div>
   );
 }

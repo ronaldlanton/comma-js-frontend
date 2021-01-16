@@ -1,6 +1,6 @@
 :root {
   /*colors*/
-  --background_color: #000000;
+  --background_color: #1c1b1b;
   --foreground_element_color: rgb(60, 64, 67);
   --secondary_text_color: rgb(112, 112, 112);
   --background_alpha: 24, 24, 24;
@@ -199,9 +199,10 @@ h1 {
   z-index: 5;
   background: linear-gradient(
     180deg,
-    var(--background_color) 85%,
-    rgba(var(--background_alpha), 0) 100%
+    rgba(var(--background_alpha), 0.95) 85%,
+    rgba(var(--background_alpha), 0.95) 100%
   );
+  backdrop-filter: blur(10px);
   height: auto;
   min-height: 64px;
   padding: 12px 0px 28px;
@@ -314,9 +315,9 @@ h1 {
   top: calc(15% + 18px);
   left: calc(50% - 12px);
   z-index: 5;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   -webkit-animation: fadein 0.3s;
   /* Safari, Chrome and Opera > 12.1 */
   -moz-animation: fadein 0.3s;

@@ -75,11 +75,19 @@ socket.on("reconnect", function () {
 
 const store = createStore(rootReducer);
 
+var darkThemePreference =
+  cookies.get("darkThemePreference") === "false" ? false : true;
+var themePreference = darkThemePreference ? "dark" : "light";
+
 const theme = createMuiTheme({
   typography: {
     fontFamily: ["DM Sans"].join(","),
   },
+  palette: {
+    type: themePreference,
+  },
 });
+
 
 /* subscribeUser(); */
 

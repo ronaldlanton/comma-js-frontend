@@ -9,8 +9,6 @@ import { useDispatch } from "react-redux";
 import { setCurrentConversation } from "../actions";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -48,23 +46,15 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "large",
     height: "48px",
     width: "max-content",
-    "&:hover": { backgroundColor: "#212121", boxShadow: "none" },
   },
   heading: {
     color: "var(--text_primary)",
   },
   buttonText: {
     margin: "0 12px",
-    fontSize: "small"
-  }
-}));
-
-//DARK THEME
-const theme = createMuiTheme({
-  palette: {
-    type: "dark",
+    fontSize: "small",
   },
-});
+}));
 
 export default function NewConversation() {
   const classes = useStyles();
@@ -133,54 +123,50 @@ export default function NewConversation() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className="page-container">
-        <center>
-          <form className={classes.root} noValidate autoComplete="off">
-            <Typography variant="h5" gutterBottom className={classes.heading}>
-              Add Friend
-            </Typography>
-            <Grid>
-              <FormControl variant="outlined" className={classes.marginSpacing}>
-                <InputLabel>Google ID</InputLabel>
-                <OutlinedInput
-                  error={isError}
-                  id="firstName"
-                  type="text"
-                  onChange={updateStateEmail}
-                  className={classes.inputCustom}
-                  helperText={errorText}
-                  labelWidth={75}
-                  autoComplete={false}
-                />
-                {isError && (
-                  <FormHelperText id="my-helper-text">
-                    {errorText}
-                  </FormHelperText>
-                )}
-              </FormControl>
-            </Grid>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={sendCreateRequest}
-              className={classes.button}
-            >
-              <PersonAddIcon />
-              <span className={classes.buttonText}>ADD</span>
-            </Button>
-          </form>
-          <Snackbar
-            open={snackBarOpen}
-            autoHideDuration={5000}
-            onClose={handleClose}
+    <div className="page-container">
+      <center>
+        <form className={classes.root} noValidate autoComplete="off">
+          <Typography variant="h5" gutterBottom className={classes.heading}>
+            Add Friend
+          </Typography>
+          <Grid>
+            <FormControl variant="outlined" className={classes.marginSpacing}>
+              <InputLabel>Google ID</InputLabel>
+              <OutlinedInput
+                error={isError}
+                id="firstName"
+                type="text"
+                onChange={updateStateEmail}
+                className={classes.inputCustom}
+                helperText={errorText}
+                labelWidth={75}
+                autoComplete={false}
+              />
+              {isError && (
+                <FormHelperText id="my-helper-text">{errorText}</FormHelperText>
+              )}
+            </FormControl>
+          </Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={sendCreateRequest}
+            className={classes.button}
           >
-            <Alert onClose={handleClose} severity="success">
-              Friend Added
-            </Alert>
-          </Snackbar>
-        </center>
-      </div>
-    </ThemeProvider>
+            <PersonAddIcon />
+            <span className={classes.buttonText}>ADD</span>
+          </Button>
+        </form>
+        <Snackbar
+          open={snackBarOpen}
+          autoHideDuration={5000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity="success">
+            Friend Added
+          </Alert>
+        </Snackbar>
+      </center>
+    </div>
   );
 }

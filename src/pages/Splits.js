@@ -547,14 +547,16 @@ function Splits() {
           </Fade>
         )}
 
-        <ChatComposer
-          sendMessage={sendMessage}
-          sendImages={sendImages}
-          isMessageListAfterTabChangeLoading={
-            isMessageListAfterTabChangeLoading
-          }
-          currentTab={currentTab}
-        />
+        {!isMessageListLoading && (
+          <ChatComposer
+            sendMessage={sendMessage}
+            sendImages={sendImages}
+            isMessageListAfterTabChangeLoading={
+              isMessageListAfterTabChangeLoading
+            }
+            currentTab={currentTab}
+          />
+        )}
       </div>
     </div>
   );
