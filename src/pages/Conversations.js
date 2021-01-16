@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     color: "var(--primary_color)",
     margin: "22px 18px 0px",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   listItem: {
@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "12px",
   },
   iconButton: {
-    padding: 10,
     color: "var(--text_primary)",
   },
   small: {
