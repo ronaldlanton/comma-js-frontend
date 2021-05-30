@@ -37,6 +37,8 @@ function Login() {
   const token = params.get("token");
 
   const redirectToGoogle = () => {
+    /* window.location.href =
+      "http://localhost:26398/api/rest/v1/auth/google"; */
     window.location.href =
       "https://comma-js.herokuapp.com/api/rest/v1/auth/google";
   };

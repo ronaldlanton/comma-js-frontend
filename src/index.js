@@ -19,6 +19,7 @@ const cookies = new Cookies();
 
 //Set defaults for all APIs to send Auth token and content-type.
 axios.defaults.baseURL = "https://comma-js.herokuapp.com/api/";
+/* axios.defaults.baseURL = "http://localhost:26398/api/"; */
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + cookies.get("SSID");
 axios.defaults.headers.common["x-cm-user-id"] = cookies.get("USR");
@@ -87,7 +88,6 @@ const theme = createMuiTheme({
     type: themePreference,
   },
 });
-
 
 /* subscribeUser(); */
 
